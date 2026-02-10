@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt
 from app import db
 from app.models import Property, User, PROPERTY_STATUS_APPROVED, PROPERTY_STATUS_PENDING
+from pathlib import Path
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -12,6 +13,38 @@ def _require_admin():
         return jsonify({"message": "Admin access required."}), 403
     return None
 
+def delete_property_images(property_obj):
+    """Delete all image files for a property."""
+    try:
+        # Get uploads directory
+        current_file = Path(__file__).resolve()
+        backend_dir = current_file.parent.parent  # routes → app
+        uploads_dir = backend_dir / "uploads" / "properties"
+        
+        deleted_files = []
+        for image in property_obj.images:
+            image_url = image.image_url
+            
+            # Extract filename from various URL formats
+            if "/" in image_url:
+                # Get the last part after the last slash
+                filename = image_url.split("/")[-1]
+            else:
+                filename = image_url
+            
+            # Try to delete the file
+            file_path = uploads_dir / filename
+            if file_path.exists():
+                os.remove(file_path)
+                deleted_files.append(filename)
+                print(f"Deleted: {filename}")
+        
+        print(f"DEBUG: Deleted {len(deleted_files)} image files for property {property_obj.id}")
+        return deleted_files
+        
+    except Exception as e:
+        print(f"ERROR deleting property images: {str(e)}")
+        return []
 
 @admin_bp.route("/users", methods=["GET"])
 @jwt_required()
@@ -92,6 +125,8 @@ def reject(prop_id):
     prop = Property.query.get_or_404(prop_id)
     if prop.status != PROPERTY_STATUS_PENDING:
         return jsonify({"message": "Property is not pending approval."}), 400
+    
+    deleted_files = delete_property_images(prop)
     db.session.delete(prop)
     db.session.commit()
-    return jsonify({"message": "Property rejected and removed."}), 200
+    return jsonify({"message": "Property rejected and removed.", "deleted files": len(deleted_files)}), 200

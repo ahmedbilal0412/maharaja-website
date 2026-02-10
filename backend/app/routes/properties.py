@@ -12,38 +12,38 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # routes
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads", "properties")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
-# def delete_property_images(property_obj):
-#     """Delete all image files for a property."""
-#     try:
-#         # Get uploads directory
-#         current_file = Path(__file__).resolve()
-#         backend_dir = current_file.parent.parent.parent  # routes → app → backend
-#         uploads_dir = backend_dir / "uploads" / "properties"
+def delete_property_images(property_obj):
+    """Delete all image files for a property."""
+    try:
+        # Get uploads directory
+        current_file = Path(__file__).resolve()
+        backend_dir = current_file.parent.parent  # routes → app
+        uploads_dir = backend_dir / "uploads" / "properties"
         
-#         deleted_files = []
-#         for image in property_obj.images:
-#             image_url = image.image_url
+        deleted_files = []
+        for image in property_obj.images:
+            image_url = image.image_url
             
-#             # Extract filename from various URL formats
-#             if "/" in image_url:
-#                 # Get the last part after the last slash
-#                 filename = image_url.split("/")[-1]
-#             else:
-#                 filename = image_url
+            # Extract filename from various URL formats
+            if "/" in image_url:
+                # Get the last part after the last slash
+                filename = image_url.split("/")[-1]
+            else:
+                filename = image_url
             
-#             # Try to delete the file
-#             file_path = uploads_dir / filename
-#             if file_path.exists():
-#                 os.remove(file_path)
-#                 deleted_files.append(filename)
-#                 print(f"Deleted: {filename}")
+            # Try to delete the file
+            file_path = uploads_dir / filename
+            if file_path.exists():
+                os.remove(file_path)
+                deleted_files.append(filename)
+                print(f"Deleted: {filename}")
         
-#         print(f"DEBUG: Deleted {len(deleted_files)} image files for property {property_obj.id}")
-#         return deleted_files
+        print(f"DEBUG: Deleted {len(deleted_files)} image files for property {property_obj.id}")
+        return deleted_files
         
-#     except Exception as e:
-#         print(f"ERROR deleting property images: {str(e)}")
-#         return []
+    except Exception as e:
+        print(f"ERROR deleting property images: {str(e)}")
+        return []
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -120,11 +120,7 @@ def my_properties():
 @properties_bp.route("/<int:prop_id>", methods=["GET"])
 @jwt_required(optional=True)
 def get_property(prop_id):
-    """Get single property.
-
-    - Public users see only approved & non-expired properties.
-    - Owners and admins can see their own properties even if pending.
-    """
+    """Get single property."""
     user_id = get_jwt_identity()
     prop = Property.query.get_or_404(prop_id)
 
@@ -134,18 +130,35 @@ def get_property(prop_id):
         prop.status = PROPERTY_STATUS_PENDING
         db.session.commit()
 
-    if prop.status != PROPERTY_STATUS_APPROVED:
-        if not user_id:
-            return jsonify({"message": "Property not found."}), 404
-        try:
-            owner_id = int(user_id)
-        except (TypeError, ValueError):
-            owner_id = None
-        owner = User.query.get(owner_id) if owner_id is not None else None
-        if not owner or (not owner.is_admin and prop.seller_id != owner_id):
-            return jsonify({"message": "Property not found."}), 404
-
+    # Check if user can view this property
+    can_access = _can_access_property(prop, user_id)
+    if not can_access:
+        return jsonify({"message": "Property not found."}), 404
+    
     return jsonify(prop.to_dict()), 200
+
+def _can_access_property(prop, user_id):
+    """Check if user can access property."""
+    # Approved properties: anyone can access
+    if prop.status == PROPERTY_STATUS_APPROVED:
+        return True
+    
+    # No user logged in
+    if not user_id:
+        return False
+    
+    # Get user
+    try:
+        user_id_int = int(user_id)
+    except (TypeError, ValueError):
+        return False
+    
+    user = User.query.get(user_id_int)
+    if not user:
+        return False
+    
+    # Owner or admin can view pending properties
+    return prop.seller_id == user_id_int or user.is_admin
 
 
 @properties_bp.route("", methods=["POST"])
@@ -228,14 +241,16 @@ def delete_property(prop_id):
     """Seller can delete own property."""
     user_id = int(get_jwt_identity())
     prop = Property.query.get_or_404(prop_id)
-    if prop.seller_id != user_id:
+
+    can_access = _can_access_property(prop, user_id)
+    if not can_access:
         return jsonify({"message": "Not allowed to delete this property."}), 403
-    
-    # deleted_files = delete_property_images(prop)
+        
+    deleted_files = delete_property_images(prop)
 
     db.session.delete(prop)
     db.session.commit()
-    return jsonify({"message": "Property deleted."}), 200
+    return jsonify({"message": "Property deleted.", "deleted_images": len(deleted_files)}), 200
 
 @properties_bp.route("/upload", methods=["POST"])
 @jwt_required()

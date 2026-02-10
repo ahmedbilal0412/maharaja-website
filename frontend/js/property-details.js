@@ -32,12 +32,14 @@
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
 
+  const token = getToken();
+
   if (!id) {
     document.querySelector(".content").innerHTML = "<h2>Property not found</h2>";
     return;
   }
 
-  fetch(API_BASE + "/properties/" + id)
+  fetch(API_BASE + "/properties/" + id, { headers: { Authorization: "Bearer " + token } })
     .then(function (r) {
       if (!r.ok) throw new Error("Not found");
       return r.json();

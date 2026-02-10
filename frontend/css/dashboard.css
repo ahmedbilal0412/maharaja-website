@@ -24,6 +24,12 @@ body {
   z-index: 1000;
 }
 
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .mobile-menu-toggle {
   display: block;
   background: none;
@@ -319,7 +325,7 @@ body {
   justify-content: center;
   margin-bottom: 20px;
   padding-top: 20px;
-  max-width: 170px;
+  width: 200px;
 }
 
 /* Card Actions */
@@ -615,6 +621,11 @@ body {
   .stats {
     grid-template-columns: 1fr; /* Single column on very small screens */
     gap: 10px;
+  }
+
+  .logo-container {
+    justify-content: start;
+    padding-left: 20px;
   }
 
   .stat-card {

@@ -46,6 +46,39 @@
     return url;
   }
 
+  function deleteProperty(id, cardEl) {
+    function doDelete() {
+      fetch(API_BASE + "/properties/" + id, {
+        method: "DELETE",
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then(function (res) {
+          if (res.status === 401) { logout(); return; }
+          return res.json();
+        })
+        .then(function (data) {
+          if (data && data.message) {
+            if (cardEl && cardEl.parentNode) cardEl.parentNode.removeChild(cardEl);
+            if (typeof showToast === "function") showToast("Listing deleted.", "success");
+          } else {
+            var msg = (data && data.message) ? data.message : "Delete failed.";
+            if (typeof showToast === "function") showToast(msg, "error");
+            else alert(msg);
+          }
+        })
+        .catch(function () {
+          if (typeof showToast === "function") showToast("Request failed.", "error");
+          else alert("Request failed.");
+        });
+    }
+    if (typeof showConfirm === "function") {
+      showConfirm("Delete this listing?", doDelete);
+      return;
+    }
+    if (!confirm("Delete this listing?")) return;
+    doDelete();
+  }
+
   function render(listings) {
     grid.innerHTML = "";
     const list = listings || [];
@@ -75,9 +108,11 @@
             '">Approve</button><button type="button" class="action-btn reject-btn" data-id="' +
             p.id +
             '">Reject</button>'
-          : "") +
+          : '<button type="button" class="delete-btn" data-id="' + p.id + '"><i class="fas fa-trash"></i> Delete</button>') +
         "</div>" +
         "</div>";
+      const deleteBtn = card.querySelector(".delete-btn");
+      if (deleteBtn) deleteBtn.addEventListener("click", () => deleteProperty(p.id, card));
       if (p.status === "pending_approval") {
         card.querySelector(".approve-btn").addEventListener("click", function () { doApproveReject(p.id, true); });
         card.querySelector(".reject-btn").addEventListener("click", function () { doApproveReject(p.id, false); });
