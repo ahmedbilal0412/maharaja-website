@@ -1,0 +1,422 @@
+/* Page-specific (about) */
+    /* ---------- ABOUT HERO ---------- */
+    .about-hero {
+      background: linear-gradient(rgba(13, 46, 30, 0.9), rgba(13, 46, 30, 0.8)), 
+                  url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      padding: 100px 20px;
+      text-align: center;
+      color: var(--pure-white);
+    }
+
+    .about-hero-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .about-hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .about-hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ---------- OUR STORY ---------- */
+    .our-story {
+      padding: 80px 20px;
+      background: var(--pure-white);
+    }
+
+    .our-story-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .story-text h2 {
+      font-size: 2.5rem;
+      color: var(--primary-green);
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .story-text h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: var(--accent-gold);
+    }
+
+    .story-text p {
+      margin-bottom: 20px;
+      color: var(--text-light);
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .story-image img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ---------- CORE VALUES ---------- */
+    .core-values {
+      padding: 80px 20px;
+      background: var(--light-green);
+    }
+
+    .core-values-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .core-values h2 {
+      font-size: 2.5rem;
+      color: var(--primary-green);
+      margin-bottom: 10px;
+    }
+
+    .core-subheading {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      margin-bottom: 50px;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .value-card {
+      background: var(--pure-white);
+      padding: 40px 30px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .value-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .value-card img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+      object-fit: contain;
+    }
+
+    .value-card h3 {
+      color: var(--primary-green);
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+
+    .value-card p {
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* ---------- ACHIEVEMENTS ---------- */
+    .achievements {
+      padding: 80px 20px;
+      background: var(--pure-white);
+    }
+
+    .achievements-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .achievements h2 {
+      font-size: 2.5rem;
+      color: var(--primary-green);
+      margin-bottom: 10px;
+    }
+
+    .achievements-subheading {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      margin-bottom: 50px;
+    }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+    }
+
+    .achievement-card {
+      background: var(--light-green);
+      padding: 40px 20px;
+      border-radius: 12px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .achievement-card:hover {
+      background: var(--primary-green);
+      color: var(--pure-white);
+      transform: translateY(-5px);
+    }
+
+    .achievement-card:hover .achievement-number,
+    .achievement-card:hover p {
+      color: var(--pure-white);
+    }
+
+    .achievement-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-bottom: 10px;
+    }
+
+    .achievement-card p {
+      color: var(--text-dark);
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    /* ---------- MISSION & VISION ---------- */
+    .mission-vision {
+      padding: 80px 20px;
+      background: var(--light-green);
+    }
+
+    .mission-vision-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .mission-vision h2 {
+      font-size: 2.5rem;
+      color: var(--primary-green);
+      margin-bottom: 50px;
+    }
+
+    .mv-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 40px;
+    }
+
+    .mv-card {
+      background: var(--pure-white);
+      padding: 50px 40px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .mv-icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 30px;
+      object-fit: contain;
+    }
+
+    .mv-card h3 {
+      color: var(--primary-green);
+      margin-bottom: 20px;
+      font-size: 1.6rem;
+    }
+
+    .mv-card p {
+      color: var(--text-light);
+      line-height: 1.8;
+      font-size: 1.1rem;
+    }
+
+    /* ---------- DREAM HOME ---------- */
+    .dream-home {
+      padding: 80px 20px;
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      text-align: center;
+      color: var(--pure-white);
+    }
+
+    .dream-home-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .dream-home h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .dream-home p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .dream-home-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 15px 40px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn.browse {
+      background: var(--accent-gold);
+      color: var(--primary-green);
+    }
+
+    .btn.browse:hover {
+      background: var(--pure-white);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn.list {
+      background: transparent;
+      color: var(--pure-white);
+      border: 2px solid var(--pure-white);
+    }
+
+    .btn.list:hover {
+      background: var(--pure-white);
+      color: var(--primary-green);
+      transform: translateY(-3px);
+    }
+
+    /* ---------- RESPONSIVE DESIGN ---------- */
+    @media (max-width: 992px) {
+      .our-story-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      
+      .story-image img {
+        height: 300px;
+      }
+      
+      .mv-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .navbar {
+        padding: 15px 20px;
+      }
+      
+      .nav-left {
+        left: 20px;
+      }
+      
+      .user-nav {
+        right: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .about-hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .story-text h2,
+      .core-values h2,
+      .achievements h2,
+      .mission-vision h2,
+      .dream-home h2 {
+        font-size: 2rem;
+      }
+      
+      .nav-center {
+        display: none;
+      }
+      
+      .navbar {
+        justify-content: space-between;
+      }
+      
+      .nav-left,
+      .user-nav {
+        position: static;
+      }
+      
+      .user-nav a:not(.signup-btn) {
+        display: none;
+      }
+      
+      .footer-container {
+        flex-direction: column;
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .about-hero {
+        padding: 60px 20px;
+      }
+      
+      .about-hero h1 {
+        font-size: 2rem;
+      }
+      
+      .about-hero p {
+        font-size: 1rem;
+      }
+      
+      .values-grid,
+      .achievements-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .dream-home-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+      
+      .navbar {
+        padding: 10px;
+        flex-wrap: wrap;
+      }
+      
+      .user-nav .signup-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+      }
+    }

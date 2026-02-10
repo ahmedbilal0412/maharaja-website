@@ -1,0 +1,51 @@
+.payment-section {
+  display: none;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+}
+
+.free-listing {
+  display: none;
+  color: green;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.payment-section label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.payment-methods label {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.payment-info {
+  font-size: 14px;
+  color: #444;
+}
+
+.image-preview {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.preview-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 2px solid var(--primary-green);
+}

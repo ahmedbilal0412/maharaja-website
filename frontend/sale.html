@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Select Country - Maharaja Builders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/sale.css" />
+</head>
+<body>
+
+  <div data-include="components/navbar.html"></div>
+
+  <!-- COUNTRY SELECTION HERO -->
+  <section class="country-hero">
+    <div class="country-hero-content">
+      <h1>Select Your Region</h1>
+      <p class="country-hero-subtitle">
+        Maharaja Builders & Realtors proudly serves clients across multiple regions. 
+        Select your preferred location to explore our premium property offerings and services.
+      </p>
+    </div>
+  </section>
+
+  <!-- COUNTRY CARDS SECTION -->
+  <section class="country-cards-section">
+    <div class="cards-container">
+      <!-- PAKISTAN CARD -->
+      <div class="country-card pakistan-card" onclick="window.location.href='buy-pakistan.html'">
+        <div class="country-flag">
+          <i class="fas fa-star-and-crescent"></i>
+        </div>
+        <h2>Pakistan</h2>
+        <p class="country-description">
+          Explore our extensive portfolio of premium properties across Pakistan's major cities. 
+          From luxurious villas in Islamabad to commercial spaces in Karachi, find your perfect property.
+        </p>
+        
+        <div class="country-stats">
+          <div class="stat-item">
+            <span class="stat-number">4,236+</span>
+            <span class="stat-label">Properties</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">15+</span>
+            <span class="stat-label">Cities</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">98%</span>
+            <span class="stat-label">Client Satisfaction</span>
+          </div>
+        </div>
+        
+        <div class="country-features">
+          <h3>Key Locations</h3>
+          <ul class="features-list">
+            <li>Islamabad - Capital City Properties</li>
+            <li>Lahore - Historic & Modern Developments</li>
+            <li>Karachi - Commercial & Residential Spaces</li>
+            <li>Rawalpindi - Affordable Housing Solutions</li>
+            <li>Bahria Towns - Premium Gated Communities</li>
+          </ul>
+        </div>
+        
+        <a href="buy-pakistan.html" class="country-button">
+          <i class="fas fa-search"></i> Explore Pakistan Properties
+        </a>
+      </div>
+
+      <!-- UAE CARD -->
+      <div class="country-card uae-card" onclick="openUaeModal()">
+        <div class="country-flag">
+          <i class="fas fa-building"></i>
+        </div>
+        <h2>United Arab Emirates</h2>
+        <p class="country-description">
+          Connect with our UAE office for premium property consultations and investment opportunities. 
+          Our expert team is ready to assist you with your real estate needs in the Emirates.
+        </p>
+        
+        <div class="country-stats">
+          <div class="stat-item">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">Support</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">10+</span>
+            <span class="stat-label">Years Experience</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Dedicated Service</span>
+          </div>
+        </div>
+        
+        <div class="country-features">
+          <h3>Our UAE Services</h3>
+          <ul class="features-list">
+            <li>Property Investment Consultation</li>
+            <li>Real Estate Market Analysis</li>
+            <li>Legal & Documentation Support</li>
+            <li>Property Management Services</li>
+            <li>Investment Portfolio Management</li>
+          </ul>
+        </div>
+        
+        <button class="country-button" onclick="openUaeModal()">
+          <i class="fas fa-headset"></i> Contact UAE Office
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIMPLE UAE CONTACT MODAL -->
+  <div id="uaeModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeUaeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <div class="modal-header">
+        <h2>UAE Contact Information</h2>
+        <p>Get in touch with our UAE office for premium real estate services</p>
+      </div>
+      
+      <div class="modal-body">
+        <div class="phone-number-container">
+          <div class="phone-icon">
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          
+          <div class="phone-number">+971 4 223 4567</div>
+          <div class="phone-label">UAE Office Hotline</div>
+        </div>
+        
+        <div class="message">
+          Our dedicated UAE team is available to assist you with all your property needs in the Emirates. 
+          Feel free to call us anytime for expert consultation and personalized service.
+        </div>
+        
+        <a href="tel:+97142234567" class="call-button">
+          <i class="fas fa-phone-alt"></i> Call Now
+        </a>
+        
+        <button class="close-button" onclick="closeUaeModal()">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+ 
+
+  <div data-include="components/footer.html"></div>
+
+  <script src="js/load-components.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

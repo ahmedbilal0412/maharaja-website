@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Property - Maharaja Builders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/add-property.css" />
+  <link rel="stylesheet" href="css/notify.css" />
+  <script src="https://kit.fontawesome.com/a2d9d6f6a7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <a href="index.html" title="Back to Home"><img src="img/maharaja.png" alt="Logo" /></a>
+      </div>
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+          ☰
+        </button>
+      <nav id="navbar">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="my-listings.html">My Listings</a>
+        <a href="#" class="active">Add Property</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="dashboard-header">
+        <h1>Add New Property</h1>
+      </header>
+
+      <section class="add-property-section">
+        <form id="addPropertyForm">
+          <div class="form-group">
+            <label>Property Title</label>
+            <input type="text" id="title" placeholder="Luxury Villa in F-7" required>
+          </div>
+
+          <div class="form-group">
+            <label>City</label>
+            <select id="city" required>
+              <option value="">Select City</option>
+              <option value="Islamabad">Islamabad</option>
+              <option value="Lahore">Lahore</option>
+              <option value="Karachi">Karachi</option>
+              <option value="Rawalpindi">Rawalpindi</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" id="location" placeholder="F-7 Markaz, Islamabad" required>
+          </div>
+
+          <div id="freeListingMsg" class="free-listing">
+            ✅ Listing is free for this location.
+          </div>
+
+          <div id="paymentSection" class="payment-section">
+            <label>Payment Required: Rs. 500</label>
+            <div class="payment-methods">
+              <label><input type="radio" name="payment" value="easypaisa"> Easypaisa</label>
+              <label><input type="radio" name="payment" value="jazzcash"> JazzCash</label>
+            </div>
+            <div class="payment-info">
+              Send payment to: <strong>0300-1234567</strong><br>
+              Once paid, click "Submit for Approval".
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Price (PKR)</label>
+            <input type="number" id="price" placeholder="125000000" required>
+          </div>
+
+          <div class="form-group">
+            <label>Property Type</label>
+            <select id="type" required>
+              <option value="">Select Type</option>
+              <option value="house">House</option>
+              <option value="apartment">Apartment</option>
+              <option value="villa">Villa</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Listing Type</label>
+            <select id="listing" required>
+              <option value="">Select Listing</option>
+              <option value="sale">For Sale</option>
+              <option value="rent">For Rent</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Bedrooms</label>
+            <input type="number" id="beds" placeholder="5" required>
+          </div>
+
+          <div class="form-group">
+            <label>Bathrooms</label>
+            <input type="number" id="baths" placeholder="4" required>
+          </div>
+
+          <div class="form-group">
+            <label>Size (sqft)</label>
+            <input type="number" id="size" placeholder="5500" required>
+          </div>
+
+          <div class="form-group">
+            <label>Amenities</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" value="swimming_pool"> Pool</label>
+              <label><input type="checkbox" value="gym"> Gym</label>
+              <label><input type="checkbox" value="parking"> Parking</label>
+              <label><input type="checkbox" value="security"> Security</label>
+              <label><input type="checkbox" value="garden"> Garden</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+              <label>Property Images (Max 5)</label>
+                 <input type="file" id="images" accept="image/*" multiple required>
+              <div id="image-preview" class="image-preview"></div>
+          </div>
+
+          <button type="submit" class="submit-btn">Submit for Approval</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/notify.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/add-property.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

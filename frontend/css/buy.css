@@ -1,0 +1,1152 @@
+.country-hero {
+    background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 100%);
+    padding: 120px 20px 100px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    color: var(--pure-white);
+    flex: 1;
+}
+
+.country-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.country-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.country-hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.country-hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: var(--pure-white);
+    line-height: 1.1;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.country-hero-subtitle {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 700px;
+    margin: 0 auto 60px;
+    line-height: 1.6;
+}
+
+/* COUNTRY CARDS SECTION */
+.country-cards-section {
+    max-width: 1200px;
+    margin: -60px auto 100px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 3;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 50px;
+    justify-content: center;
+}
+
+.country-card {
+    background: var(--pure-white);
+    border-radius: 25px;
+    padding: 60px 50px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 3px solid transparent;
+    box-shadow: 0 20px 50px rgba(13, 46, 30, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.country-card:hover {
+    transform: translateY(-20px) scale(1.02);
+    box-shadow: 0 30px 70px rgba(13, 46, 30, 0.25);
+    border-color: var(--accent-gold);
+}
+
+.country-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, var(--accent-gold) 0%, #ffd700 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.country-card:hover::before {
+    transform: scaleX(1);
+}
+
+.country-flag {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+    color: var(--pure-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 40px;
+    font-size: 4rem;
+    transition: all 0.4s ease;
+    box-shadow: 0 15px 30px rgba(13, 46, 30, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.country-card:hover .country-flag {
+    transform: scale(1.15) rotate(10deg);
+    background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
+    box-shadow: 0 20px 40px rgba(13, 46, 30, 0.3);
+}
+
+.country-flag i {
+    transition: transform 0.4s ease;
+}
+
+.country-card:hover .country-flag i {
+    transform: scale(1.2);
+}
+
+.country-card h2 {
+    font-size: 2.5rem;
+    color: var(--primary-green);
+    margin-bottom: 20px;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.country-card h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--accent-gold);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.country-card:hover h2::after {
+    width: 120px;
+}
+
+.country-description {
+    color: var(--text-light);
+    margin-bottom: 40px;
+    font-size: 1.2rem;
+    line-height: 1.7;
+}
+
+.country-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: rgba(13, 46, 30, 0.03);
+    border-radius: 15px;
+    border: 2px solid rgba(13, 46, 30, 0.05);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--primary-green);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.country-features {
+    text-align: left;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: rgba(13, 46, 30, 0.02);
+    border-radius: 15px;
+}
+
+.country-features h3 {
+    color: var(--primary-green);
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+}
+
+.features-list li {
+    margin-bottom: 15px;
+    padding-left: 30px;
+    position: relative;
+    color: var(--text-light);
+    line-height: 1.5;
+}
+
+.features-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent-gold);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.country-button {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: var(--pure-white);
+    text-decoration: none;
+    padding: 18px 50px;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(13, 46, 30, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.country-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(13, 46, 30, 0.3);
+    background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
+}
+
+.country-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.country-button:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+    }
+    100% {
+    transform: scale(30, 30);
+    opacity: 0;
+    }
+}
+
+/* UAE CARD SPECIFIC STYLES */
+.uae-card .country-flag {
+    background: linear-gradient(135deg, #ce1126 0%, #009739 100%);
+}
+
+.uae-card:hover .country-flag {
+    background: linear-gradient(135deg, #009739 0%, #ce1126 100%);
+}
+
+/* PAKISTAN CARD SPECIFIC STYLES */
+.pakistan-card .country-flag {
+    background: linear-gradient(135deg, #01411C 0%, #FFFFFF 100%);
+}
+
+.pakistan-card:hover .country-flag {
+    background: linear-gradient(135deg, #FFFFFF 0%, #01411C 100%);
+}
+
+/* NEW: PAKISTAN PROPERTY SELECTION SECTION */
+.pakistan-selection-section {
+    max-width: 1200px;
+    margin: 40px auto 80px;
+    padding: 0 20px;
+    display: none;
+}
+
+.selection-container {
+    background: var(--pure-white);
+    border-radius: 25px;
+    padding: 60px 50px;
+    box-shadow: 0 20px 50px rgba(13, 46, 30, 0.15);
+    border: 3px solid var(--accent-gold);
+}
+
+.selection-title {
+    text-align: center;
+    color: var(--primary-green);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.selection-subtitle {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    margin-bottom: 50px;
+    line-height: 1.6;
+}
+
+.selection-step {
+    margin-bottom: 60px;
+}
+
+.step-title {
+    color: var(--primary-green);
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.step-title i {
+    color: var(--accent-gold);
+    font-size: 1.5rem;
+}
+
+.selection-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.option-card {
+    background: rgba(13, 46, 30, 0.03);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.option-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(13, 46, 30, 0.1);
+    border-color: var(--accent-gold);
+    background: rgba(13, 46, 30, 0.05);
+}
+
+.option-card.selected {
+    background: linear-gradient(135deg, rgba(13, 46, 30, 0.1) 0%, rgba(212, 175, 55, 0.1) 100%);
+    border-color: var(--accent-gold);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(13, 46, 30, 0.15);
+}
+
+.option-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: var(--pure-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+}
+
+.option-card:hover .option-icon {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
+}
+
+.option-card h3 {
+    color: var(--primary-green);
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.option-card p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.selection-action {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.action-button {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: var(--pure-white);
+    text-decoration: none;
+    padding: 18px 50px;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(13, 46, 30, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.action-button:hover:not(:disabled) {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(13, 46, 30, 0.3);
+    background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
+}
+
+.action-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.back-button {
+    display: inline-block;
+    background: transparent;
+    color: var(--primary-green);
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border: 2px solid var(--primary-green);
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.back-button:hover {
+    background: var(--primary-green);
+    color: var(--pure-white);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(13, 46, 30, 0.15);
+}
+
+/* NEW: PROPERTIES DISPLAY SECTION */
+.properties-display-section {
+    max-width: 1200px;
+    margin: 40px auto 80px;
+    padding: 0 20px;
+    display: none;
+}
+
+.properties-title {
+    text-align: center;
+    color: var(--primary-green);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.properties-subtitle {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    margin-bottom: 50px;
+    line-height: 1.6;
+}
+
+.properties-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+}
+
+.property-card {
+    background: var(--pure-white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(13, 46, 30, 0.1);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.property-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(13, 46, 30, 0.15);
+    border-color: var(--accent-gold);
+}
+
+.property-image {
+    height: 250px;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--pure-white);
+    font-size: 3rem;
+}
+
+.property-content {
+    padding: 30px;
+}
+
+.property-title {
+    color: var(--primary-green);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.property-location {
+    color: var(--text-light);
+    font-size: 1rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.property-location i {
+    color: var(--accent-gold);
+}
+
+.property-features {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(13, 46, 30, 0.03);
+    border-radius: 12px;
+}
+
+.property-feature {
+    text-align: center;
+}
+
+.feature-icon {
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.feature-value {
+    color: var(--primary-green);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.feature-label {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.property-price {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 20px;
+}
+
+.property-button {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: var(--pure-white);
+    text-align: center;
+    padding: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.property-button:hover {
+    background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(13, 46, 30, 0.2);
+}
+
+.no-properties {
+    text-align: center;
+    padding: 60px;
+    background: rgba(13, 46, 30, 0.03);
+    border-radius: 20px;
+    border: 2px dashed var(--accent-gold);
+}
+
+.no-properties i {
+    font-size: 4rem;
+    color: var(--accent-gold);
+    margin-bottom: 20px;
+}
+
+.no-properties h3 {
+    color: var(--primary-green);
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.no-properties p {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
+/* SIMPLE UAE CONTACT MODAL */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(13, 46, 30, 0.85);
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: linear-gradient(135deg, #f8f9fa 0%, var(--pure-white) 100%);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    z-index: 2001;
+    overflow: hidden;
+    animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    border: 3px solid var(--accent-gold);
+    padding: 0;
+}
+
+@keyframes modalSlideIn {
+    to {
+    transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #ce1126 0%, #009739 100%);
+    padding: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.modal-header h2 {
+    font-size: 1.8rem;
+    color: var(--pure-white);
+    margin-bottom: 10px;
+    font-weight: 800;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.modal-body {
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.phone-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #ce1126 0%, #009739 100%);
+    color: var(--pure-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2.2rem;
+    box-shadow: 0 10px 25px rgba(206, 17, 38, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+    box-shadow: 0 10px 25px rgba(206, 17, 38, 0.3);
+    }
+    50% {
+    box-shadow: 0 10px 35px rgba(206, 17, 38, 0.5);
+    transform: scale(1.05);
+    }
+    100% {
+    box-shadow: 0 10px 25px rgba(206, 17, 38, 0.3);
+    }
+}
+
+.phone-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-green);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.phone-label {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.message {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    line-height: 1.5;
+    margin: 25px 0;
+    padding: 20px;
+    background: rgba(13, 46, 30, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid var(--accent-gold);
+    font-style: italic;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.call-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #009739 0%, #ce1126 100%);
+    color: var(--pure-white);
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(206, 17, 38, 0.3);
+    flex: 1;
+    max-width: 180px;
+}
+
+.call-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(206, 17, 38, 0.4);
+    background: linear-gradient(135deg, #ce1126 0%, #009739 100%);
+}
+
+.close-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--primary-green);
+    border: 2px solid var(--primary-green);
+    padding: 13px 30px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    max-width: 180px;
+}
+
+.close-button:hover {
+    background: var(--primary-green);
+    color: var(--pure-white);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(13, 46, 30, 0.15);
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: var(--pure-white);
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.close-modal:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: rotate(90deg);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1200px) {
+    .cards-container {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+    margin: 0 auto;
+    }
+    
+    .country-hero h1 {
+    font-size: 3.5rem;
+    }
+    
+    .properties-container {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar {
+    padding: 15px 30px;
+    }
+    
+    .country-hero h1 {
+    font-size: 3rem;
+    }
+    
+    .country-hero-subtitle {
+    font-size: 1.3rem;
+    }
+    
+    .country-card {
+    padding: 50px 40px;
+    }
+    
+    .cards-container {
+    gap: 40px;
+    }
+    
+    .selection-container {
+    padding: 50px 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+    flex-wrap: wrap;
+    padding: 15px 20px;
+    }
+    
+    .nav-center {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 20px;
+    }
+    
+    .country-hero {
+    padding: 100px 20px 80px;
+    }
+    
+    .country-hero h1 {
+    font-size: 2.5rem;
+    }
+    
+    .country-hero-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 50px;
+    }
+    
+    .country-cards-section {
+    margin: -40px auto 80px;
+    }
+    
+    .cards-container {
+    gap: 30px;
+    }
+    
+    .country-card {
+    padding: 40px 30px;
+    }
+    
+    .country-flag {
+    width: 100px;
+    height: 100px;
+    font-size: 3.5rem;
+    margin-bottom: 30px;
+    }
+    
+    .country-card h2 {
+    font-size: 2rem;
+    }
+    
+    .country-description {
+    font-size: 1.1rem;
+    }
+    
+    .country-stats {
+    flex-direction: column;
+    gap: 20px;
+    padding: 25px;
+    }
+    
+    .stat-item {
+    margin-bottom: 15px;
+    }
+    
+    .stat-number {
+    font-size: 2rem;
+    }
+    
+    .country-button {
+    padding: 16px 40px;
+    font-size: 1.1rem;
+    }
+    
+    .selection-container {
+    padding: 40px 30px;
+    }
+    
+    .selection-title {
+    font-size: 2rem;
+    }
+    
+    .selection-options {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    }
+    
+    .properties-title {
+    font-size: 2rem;
+    }
+    
+    .properties-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .cards-container {
+    grid-template-columns: 1fr;
+    }
+    
+    .country-card {
+    padding: 35px 25px;
+    }
+    
+    .country-hero h1 {
+    font-size: 2.2rem;
+    }
+    
+    .country-hero-subtitle {
+    font-size: 1.1rem;
+    }
+    
+    .country-flag {
+    width: 90px;
+    height: 90px;
+    font-size: 3rem;
+    }
+    
+    .country-card h2 {
+    font-size: 1.8rem;
+    }
+    
+    .country-description {
+    font-size: 1rem;
+    }
+    
+    .country-stats {
+    padding: 20px;
+    }
+    
+    .stat-number {
+    font-size: 1.8rem;
+    }
+    
+    .country-features {
+    padding: 20px;
+    }
+    
+    .country-button {
+    padding: 14px 35px;
+    font-size: 1rem;
+    }
+    
+    .selection-container {
+    padding: 30px 20px;
+    }
+    
+    .selection-title {
+    font-size: 1.8rem;
+    }
+    
+    .selection-options {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    }
+    
+    .option-card {
+    padding: 25px;
+    }
+    
+    .properties-title {
+    font-size: 1.8rem;
+    }
+    
+    .property-card {
+    margin: 0 auto;
+    max-width: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    }
+    
+    .nav-center {
+    order: 2;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    }
+    
+    .user-nav {
+    order: 3;
+    margin-top: 10px;
+    }
+    
+    .country-hero {
+    padding: 80px 15px 60px;
+    }
+    
+    .country-hero h1 {
+    font-size: 1.8rem;
+    }
+    
+    .country-cards-section {
+    margin: -30px auto 60px;
+    padding: 0 15px;
+    }
+    
+    .country-card {
+    padding: 30px 20px;
+    }
+    
+    .country-flag {
+    width: 80px;
+    height: 80px;
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    }
+    
+    .country-card h2 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    }
+    
+    .country-description {
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+    }
+    
+    .country-stats {
+    padding: 15px;
+    margin-bottom: 30px;
+    }
+    
+    .country-features {
+    padding: 15px;
+    margin-bottom: 30px;
+    }
+    
+    .country-button {
+    padding: 12px 30px;
+    font-size: 1rem;
+    }
+    
+    .selection-action {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    }
+    
+    .back-button {
+    margin-right: 0;
+    width: 100%;
+    max-width: 300px;
+    }
+    
+    .action-button {
+    width: 100%;
+    max-width: 300px;
+    }
+}

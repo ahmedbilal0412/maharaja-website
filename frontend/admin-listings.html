@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Listings Management | Maharaja Admin</title>
+  <link rel="stylesheet" href="css/admin-listings.css" />
+  <link rel="stylesheet" href="css/notify.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a2d9d6f6a7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="admin-container">
+    
+    <!-- Sidebar -->
+     <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">
+      <i class="fas fa-bars">☰</i>
+    </button>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="index.html" title="Back to Home"><img src="img/maharaja.png" alt="Logo" class="logo" /></a>
+        <h2>Maharaja Admin</h2>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="admin-listings.html" class="active"><i class="fas fa-building"></i> Listings</a>
+        <a href="admin-users.html"><i class="fas fa-users"></i> Users</a>
+        <a href="index.html"><i class="fas fa-home"></i> Back to Home</a>
+        <button type="button" class="logout-btn" id="admin-logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="page-header">
+        <h1>Listings Management</h1>
+        <div class="header-actions">
+          <div class="search-container">
+            <input type="text" id="search-property" placeholder="Search listings..." />
+            <i class="fas fa-search"></i>
+          </div>
+
+          <select id="status-filter">
+            <option value="all">All Listings</option>
+            <option value="approved">Approved</option>
+            <option value="pending">Pending</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+      </header>
+
+      <section class="property-section">
+        <div class="property-grid" id="property-list">
+          <!-- Cards generated in JS -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/notify.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin-listings.js"></script>
+  <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

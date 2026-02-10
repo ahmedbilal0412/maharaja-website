@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact - Maharaja Builders & Realtors</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/contact.css" />
+</head>
+<body>
+  <div data-include="components/navbar.html"></div>
+
+  <!-- Contact Page Hero Section -->
+  <section class="contact-hero">
+    <div class="contact-hero-container">
+      <h1>Get in Touch</h1>
+      <p>We'd love to hear from you. Let's start a conversation today.</p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <div class="contact-container">
+      <!-- Left Side: Contact Info -->
+      <div class="contact-info">
+        <div class="info-card">
+          <i class="fas fa-phone-alt"></i>
+          <h3>Phone</h3>
+          <p>+92 51 2345678<br>+92 51 2345679</p>
+        </div>
+
+        <div class="info-card">
+          <i class="fas fa-envelope"></i>
+          <h3>Email</h3>
+          <p>info@maharajabuilders.pk<br>support@maharajabuilders.pk</p>
+        </div>
+
+        <div class="info-card">
+          <i class="fas fa-map-marker-alt"></i>
+          <h3>Head Office</h3>
+          <p>Plot 123, Street 5, F-7 Markaz,<br>Islamabad, Pakistan 44000</p>
+        </div>
+
+        <div class="info-card">
+          <i class="fas fa-clock"></i>
+          <h3>Working Hours</h3>
+          <p>Monday - Friday: 9:00 AM - 7:00 PM<br>
+             Saturday: 10:00 AM - 5:00 PM<br>
+             Sunday: Closed</p>
+        </div>
+      </div>
+
+      <!-- Right Side: Contact Form -->
+      <div class="contact-form">
+        <h2>Send us a Message</h2>
+        <div id="contact-message" class="form-message" role="alert" style="display: none;"></div>
+        <form id="contactForm">
+          <div class="form-row">
+            <input type="text" id="firstName" placeholder="First Name" required>
+            <input type="text" id="lastName" placeholder="Last Name" required>
+          </div>
+          <input type="email" id="email" placeholder="Email Address" required>
+          <input type="tel" id="phone" placeholder="Phone Number" required>
+          <input type="text" id="subject" placeholder="Subject" required>
+          <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+          <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div data-include="components/footer.html"></div>
+
+  <script src="js/load-components.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/contact.js"></script>
+</body>
+</html>

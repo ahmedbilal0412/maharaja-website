@@ -1,0 +1,13 @@
+/* Global base styles - load after variables.css */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--pure-white);
+  color: var(--text-dark);
+  line-height: 1.6;
+}

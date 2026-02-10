@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Properties - Maharaja Builders & Realtors</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/properties.css" />
+</head>
+<body>
+  <div data-include="components/navbar.html"></div>
+
+  <!-- Hero -->
+  <section class="properties-hero">
+    <h1>Luxury Properties</h1>
+    <p>Explore our curated selection of premium real estate listings across Pakistan's most desirable cities.</p>
+  </section>
+
+  <!-- Filter & Properties -->
+  <section class="properties-section">
+    <aside class="filter-sidebar">
+      <h3><i class="fas fa-filter"></i> Filter Properties</h3>
+      <button class="reset-btn" id="reset-filters">Reset All Filters</button>
+
+      <div class="filter-group">
+        <label for="property-type">Property Type</label>
+        <select id="property-type">
+          <option value="">All Types</option>
+          <option value="house">House</option>
+          <option value="apartment">Apartment</option>
+          <option value="villa">Villa</option>
+          <option value="penthouse">Penthouse</option>
+          <option value="commercial">Commercial</option>
+          <option value="plot">Plot</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="city-filter">City</label>
+        <select id="city-filter">
+          <option value="">All Cities</option>
+          <option value="islamabad">Islamabad</option>
+          <option value="rawalpindi">Rawalpindi</option>
+          <option value="karachi">Karachi</option>
+          <option value="lahore">Lahore</option>
+          <option value="peshawar">Peshawar</option>
+          <option value="faisalabad">Faisalabad</option>
+          <option value="multan">Multan</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Listing Type</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" value="sale" class="listing-filter"> For Sale</label>
+          <label><input type="checkbox" value="rent" class="listing-filter"> For Rent</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Bedrooms</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" value="1" class="bedroom-filter"> 1 Bedroom</label>
+          <label><input type="checkbox" value="2" class="bedroom-filter"> 2 Bedrooms</label>
+          <label><input type="checkbox" value="3" class="bedroom-filter"> 3 Bedrooms</label>
+          <label><input type="checkbox" value="4" class="bedroom-filter"> 4+ Bedrooms</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Price Range</label>
+        <select id="price-filter">
+          <option value="">Any Price</option>
+          <option value="0-10000000">Under PKR 1 Crore</option>
+          <option value="10000000-25000000">PKR 1-2.5 Crore</option>
+          <option value="25000000-50000000">PKR 2.5-5 Crore</option>
+          <option value="50000000-100000000">PKR 5-10 Crore</option>
+          <option value="100000000+">Over PKR 10 Crore</option>
+        </select>
+      </div>
+    </aside>
+
+    <div class="properties-right">
+      <div class="properties-top">
+        <p id="properties-count">Loading Properties...</p>
+        <select id="sort-properties">
+          <option value="newest">Newest First</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="bedrooms">Most Bedrooms</option>
+        </select>
+      </div>
+
+      <div id="properties-grid" class="properties-grid">
+        <!-- Properties will be loaded here dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <div data-include="components/footer.html"></div>
+
+  <script src="js/load-components.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/properties.js"></script>
+</body>
+</html>

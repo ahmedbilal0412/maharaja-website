@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard - Maharaja Builders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <a href="index.html" title="Back to Home"><img src="img/maharaja.png" alt="Logo" /></a>
+      </div>
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+          ☰
+        </button>
+      <nav id="navbar">
+        <a href="#" class="active">Dashboard</a>
+        <a href="my-listings.html">My Listings</a>
+        <a href="add-property.html">Add Property</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+
+ 
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="dashboard-header">
+        <h1>Dashboard</h1>
+        <div class="user-info">
+          <p>Welcome, <span id="username"></span></p>
+          <button id="logout-btn">Logout</button>
+        </div>
+      </header>
+
+      <!-- Stats Section -->
+      <section class="stats">
+        <div class="stat-card">
+          <h3>Total Listings</h3>
+          <p id="total-listings">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Approved</h3>
+          <p id="total-approved">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Pending</h3>
+          <p id="total-pending">0</p>
+        </div>
+      </section>
+
+      <!-- Recent Activity -->
+      <section class="recent-activity">
+        <h2>Recent Activity</h2>
+        <ul id="activity-list">
+          <li class="no-activity">Loading…</li>
+        </ul>
+      </section>
+
+      <!-- My Listings Section -->
+      <section class="my-listings">
+        <h2>My Listings</h2>
+        <p class="subtitle">Your most recent property listings</p>
+        <div class="listing-grid" id="dashboard-listing-grid">
+          <!-- Filled by dashboard.js -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

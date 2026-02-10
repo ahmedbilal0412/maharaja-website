@@ -1,0 +1,327 @@
+/* Page-specific (properties) */
+body { background: var(--light-green); }
+/* ---------- HERO ---------- */
+.properties-hero {
+    background: var(--dark-green);
+    padding: 80px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.properties-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
+    pointer-events: none;
+}
+
+.properties-hero h1 {
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+    color: var(--pure-white);
+    position: relative;
+}
+
+.properties-hero p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* ---------- FILTER + PROPERTY GRID ---------- */
+.properties-section {
+    display: flex;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+    flex-wrap: wrap;
+}
+
+.filter-sidebar {
+    background: var(--pure-white);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 25px;
+    flex: 0 0 270px;
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+}
+
+.filter-sidebar h3 {
+    color: var(--primary-green);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-sidebar h3 i {
+    color: var(--accent-gold);
+}
+
+.filter-group {
+    margin-bottom: 25px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+    background: var(--pure-white);
+    cursor: pointer;
+}
+
+.checkbox-group {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.checkbox-group::-webkit-scrollbar {
+    width: 6px;
+}
+
+.checkbox-group::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.checkbox-group::-webkit-scrollbar-thumb {
+    background: var(--accent-gold);
+    border-radius: 3px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    accent-color: var(--primary-green);
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+.reset-btn {
+    width: 100%;
+    background: var(--primary-green);
+    color: var(--pure-white);
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.reset-btn:hover {
+    background: var(--secondary-green);
+    transform: translateY(-2px);
+}
+
+/* ---------- PROPERTY GRID ---------- */
+.properties-right {
+    flex: 1;
+    min-width: 300px;
+}
+
+.properties-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: var(--pure-white);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.properties-top p {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.properties-top select {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+    background: var(--pure-white);
+    cursor: pointer;
+}
+
+.properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.property-card {
+    background: var(--pure-white);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.property-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+.property-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.property-info {
+    padding: 20px;
+}
+
+.property-info h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.property-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.property-location i {
+    color: var(--accent-gold);
+}
+
+.property-features {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.feature i {
+    color: var(--primary-green);
+}
+
+.price {
+    color: var(--primary-green);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-top: 6px;
+}
+
+.property-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: var(--accent-gold);
+    color: var(--primary-green);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.card-top {
+    position: relative;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px;
+    color: var(--text-light);
+}
+
+.no-results i {
+    font-size: 3rem;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+/* NEW: VIEW DETAILS BUTTON */
+.view-details-btn {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.view-details-btn:hover {
+    background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 46, 30, 0.2);
+}
+
+@media (max-width: 900px) {
+    .properties-section {
+    flex-direction: column;
+    align-items: center;
+    }
+    
+    .filter-sidebar {
+    position: static;
+    width: 100%;
+    max-width: 500px;
+    }
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Listings - Maharaja Builders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/notify.css" />
+  <script src="https://kit.fontawesome.com/a2d9d6f6a7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <a href="index.html" title="Back to Home"><img src="img/maharaja.png" alt="Logo" /></a>
+      </div>
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+          ☰
+        </button>
+      <nav id="navbar">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="#" class="active">My Listings</a>
+        <a href="add-property.html">Add Property</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="dashboard-header">
+        <h1>My Listings</h1>
+        <div class="user-info">
+          <a href="index.html" class="back-home-link"><i class="fas fa-home"></i> Home</a>
+          <a href="add-property.html" class="add-new-btn"><i class="fas fa-plus"></i> Add New</a>
+        </div>
+      </header>
+
+      <section class="listing-grid" id="my-listings-grid">
+        <!-- Filled by my-listings.js -->
+      </section>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/notify.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/my-listings.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

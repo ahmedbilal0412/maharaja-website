@@ -1,0 +1,713 @@
+/* Base Styles - Mobile First */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #fafafa;
+  color: #1a1a1a;
+  font-size: 14px; /* Base font size for mobile */
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+  display: flex;
+  flex-direction: column; /* Stack on mobile */
+  min-height: 100vh;
+}
+
+/* Sidebar - Mobile Styles */
+.sidebar {
+  width: 100%;
+  background-color: #0b3d2e;
+  color: white;
+  padding: 15px;
+  position: relative;
+  z-index: 1000;
+}
+
+.mobile-menu-toggle {
+  display: block;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  position: absolute;
+  top: 15px;
+  right: 60px;
+  cursor: pointer;
+}
+
+.sidebar nav.collapsed {
+  display: none;
+}
+
+.sidebar .logo img {
+  width: 150px;
+  max-width: 100%;
+  margin-bottom: 15px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sidebar nav a {
+  text-decoration: none;
+  color: white;
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  background: #145f47;
+  transform: translateX(5px);
+}
+
+/* Main Content */
+.main-content {
+  padding: 20px 15px;
+  flex: 1;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.dashboard-header .user-info {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.back-home-link {
+  color: #0b3d2e;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #e8f5ee;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.back-home-link:hover {
+  text-decoration: none;
+  background: #d4ede0;
+}
+
+.add-new-btn {
+  text-decoration: none;
+  background: linear-gradient(135deg, #0b3d2e, #145f47);
+  color: #ffffff;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(11, 61, 46, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.add-new-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(11, 61, 46, 0.3);
+}
+
+#logout-btn {
+  background-color: #f4b400;
+  border: none;
+  color: #0b3d2e;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  width: 100%;
+  max-width: 200px;
+}
+
+/* Stats Grid */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 15px;
+  text-align: center;
+}
+
+.stat-card h3 {
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.stat-card .number {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0b3d2e;
+}
+
+/* Recent Activity */
+.recent-activity {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.recent-activity h2 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.recent-activity ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent-activity li {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+/* My Listings Section */
+.my-listings {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.my-listings h2 {
+  font-size: 1.3rem;
+  margin-bottom: 5px;
+  color: #0b3d2e;
+}
+
+.my-listings .subtitle {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.listing-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Single column on mobile */
+  gap: 20px;
+}
+
+.property-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.property-card img {
+  width: 100%;
+  height: 150px; /* Smaller on mobile */
+  object-fit: cover;
+}
+
+.property-card h3 {
+  font-size: 1rem;
+  color: #0b3d2e;
+  margin: 15px 15px 5px;
+}
+
+.property-card .location {
+  color: #777;
+  font-size: 0.85rem;
+  margin: 0 15px;
+}
+
+.property-card .price {
+  color: #0b3d2e;
+  font-weight: 600;
+  margin: 8px 15px;
+  font-size: 1.1rem;
+}
+
+.property-card .status-badge {
+  display: inline-block;
+  margin: 0 15px 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.property-card .status-approved { background: #e0f7e0; color: #2e7d32; }
+.property-card .status-pending_approval { background: #fff3cd; color: #856404; }
+
+.stat-link { color: #0b3d2e; text-decoration: none; font-size: 0.95rem; }
+.stat-link:hover { text-decoration: underline; }
+
+.no-listings { padding: 20px; color: #666; }
+.no-listings a { color: #0b3d2e; font-weight: 500; }
+.recent-activity .no-activity { color: #666; }
+
+.property-card .details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 15px;
+  color: #555;
+  font-size: 0.8rem;
+}
+
+.property-card .details span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.view-btn {
+  display: block;
+  background: #0b3d2e;
+  color: white;
+  border: none;
+  margin: 10px 15px 15px;
+  padding: 10px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.3s;
+  width: calc(100% - 50px);
+  text-align: center;
+}
+
+.logo {
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding-top: 20px;
+  max-width: 170px;
+}
+
+/* Card Actions */
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 15px 15px;
+}
+
+.edit-btn,
+.delete-btn {
+  border: none;
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 500;
+  width: 100%;
+}
+
+/* Favourites Page */
+.remove-fav-btn {
+  width: calc(100% - 30px);
+  margin: 10px 15px 15px;
+}
+
+/* Messages Page - Mobile Optimized */
+.messages-section {
+  display: flex;
+  flex-direction: column; /* Stack on mobile */
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-top: 20px;
+  height: 70vh; /* Fixed height for mobile */
+}
+
+/* Message List */
+.message-list {
+  max-width: 100%;
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.message-preview {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+/* Chat Box */
+.chat-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  padding: 15px;
+  background: #0b3d2e;
+  color: white;
+}
+
+.chat-messages {
+  padding: 15px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f8f8f8;
+}
+
+.message {
+  max-width: 85%; /* More space for messages on mobile */
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+
+.chat-input {
+  display: flex;
+  border-top: 1px solid #ddd;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 12px 15px;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.chat-input button {
+  min-width: 60px; /* Smaller button on mobile */
+  padding: 12px;
+}
+
+/* Add Property Page */
+.add-property-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #0b3d2e;
+  margin-bottom: 8px;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.checkbox-group label {
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.submit-btn {
+  background: #0b3d2e;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Tablet Styles (min-width: 768px) */
+@media (min-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+
+  .dashboard-container {
+    flex-direction: row;
+  }
+
+  .sidebar {
+    width: 220px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .mobile-menu-toggle {
+    display: none;
+  }
+
+  .sidebar.collapsed {
+    display: flex;
+  }
+
+  .main-content {
+    padding: 30px;
+  }
+
+  .dashboard-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .user-info {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  #logout-btn {
+    width: auto;
+  }
+
+  .stats {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .listing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .messages-section {
+    flex-direction: row;
+    height: 600px;
+  }
+
+  .message-list {
+    max-width: 300px;
+    max-height: none;
+    border-right: 1px solid #eee;
+    border-bottom: none;
+  }
+
+  .card-actions {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    width: auto;
+    min-width: 80px;
+  }
+}
+
+/* Desktop Styles (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+
+  .sidebar {
+    width: 240px;
+    padding: 20px;
+  }
+
+  .main-content {
+    padding: 40px;
+  }
+
+  .listing-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .property-card img {
+    height: 180px;
+  }
+
+  .messages-section {
+    height: 700px;
+  }
+
+  .message-list {
+    max-width: 350px;
+  }
+
+  .checkbox-group {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Large Desktop (min-width: 1200px) */
+@media (min-width: 1200px) {
+  .listing-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .stats {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .main-content {
+    padding: 15px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .recent-activity,
+  .my-listings {
+    padding: 15px;
+  }
+
+  .property-card .details {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .messages-section {
+    height: 65vh;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Better touch targets */
+  .sidebar nav a,
+  .view-btn,
+  .edit-btn,
+  .delete-btn,
+  .submit-btn,
+  #logout-btn {
+    min-height: 44px; /* Apple's minimum touch target size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Remove hover effects for touch devices */
+  .property-card:hover {
+    transform: none;
+  }
+
+  /* Better scrolling on mobile */
+  .message-list,
+  .chat-messages {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Landscape Mode */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sidebar {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .messages-section {
+    height: 50vh;
+  }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .stat-card,
+  .property-card,
+  .recent-activity,
+  .my-listings {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .sidebar,
+  .dashboard-header,
+  .view-btn,
+  .edit-btn,
+  .delete-btn,
+  .submit-btn,
+  .chat-input,
+  .remove-fav-btn {
+    display: none;
+  }
+
+  .dashboard-container {
+    display: block;
+  }
+
+  .main-content {
+    padding: 0;
+  }
+
+  body {
+    background: white;
+    font-size: 12pt;
+  }
+}
