@@ -501,7 +501,6 @@
 
 .properties-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 40px;
 }
 
@@ -512,6 +511,7 @@
     box-shadow: 0 15px 40px rgba(13, 46, 30, 0.1);
     transition: all 0.3s ease;
     border: 2px solid transparent;
+    max-width: 400px;
 }
 
 .property-card:hover {
@@ -524,7 +524,6 @@
     height: 250px;
     background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
     display: flex;
-    align-items: center;
     justify-content: center;
     color: var(--pure-white);
     font-size: 3rem;
@@ -638,6 +637,12 @@
     color: var(--text-light);
     font-size: 1.2rem;
     line-height: 1.6;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 /* SIMPLE UAE CONTACT MODAL */
@@ -859,10 +864,6 @@
     
     .country-hero h1 {
     font-size: 3.5rem;
-    }
-    
-    .properties-container {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
 }
 

@@ -8,6 +8,34 @@ function closeUaeModal() {
   document.body.style.overflow = "auto";
 }
 
+function resolveImageUrl(url) {
+    if (!url) return null;
+    
+    // Already a full HTTP URL
+    if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) return url;
+    
+    // Handle local file paths (C:/Users/...)
+    if (url.includes(':/') || url.includes('\\')) {
+        // Extract just the filename from the path
+        const filename = url.split(/[/\\]/).pop(); // Works with both / and \ separators
+        return `http://localhost:5000/api/properties/uploads/properties/${filename}`;
+    }
+    
+    // Handle relative paths starting with /uploads/
+    if (url.indexOf("/uploads/") === 0) {
+        const apiRoot = (API_BASE || "").replace(/\/api.*$/, "");
+        return apiRoot + url;
+    }
+    
+    // Handle other relative paths (just filename)
+    if (!url.startsWith('/')) {
+        return `http://localhost:5000/api/properties/uploads/properties/${url}`;
+    }
+    
+    // Default fallback
+    return url;
+  }
+
 let selectedCity = "";
 let selectedArea = "";
 let currentStep = 1;
@@ -113,25 +141,33 @@ function showProperties() {
       const list = (data && data.properties) ? data.properties : [];
       container.innerHTML = "";
 
+      const titleContainer = document.createElement("div");
+      titleContainer.className = "title-container";
       const title = document.createElement("h2");
       title.className = "properties-title";
       title.textContent = "Properties in " + (cityNames[selectedCity] || selectedCity) + " – " + (areaNames[selectedArea] || selectedArea);
       const subtitle = document.createElement("p");
       subtitle.className = "properties-subtitle";
+      const cardContainer = document.createElement("div");
+      cardContainer.className = "card-container";
       subtitle.textContent = list.length + " propert" + (list.length === 1 ? "y" : "ies") + " found.";
-      container.appendChild(title);
-      container.appendChild(subtitle);
+      container.appendChild(titleContainer);
+      titleContainer.appendChild(title);
+      titleContainer.appendChild(subtitle);
+      container.appendChild(cardContainer);
 
       if (list.length === 0) {
         const empty = document.createElement("p");
         empty.className = "no-properties";
         empty.textContent = "No properties match your selection. Try a different city or area.";
-        container.appendChild(empty);
+        titleContainer.appendChild(empty);
       } else {
         list.forEach((p) => {
           const card = document.createElement("div");
           card.className = "property-card";
-          const imgSrc = p.image_url || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80";
+          const imgSrc =
+            resolveImageUrl(p.image_url) ||
+            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80";
           card.innerHTML = `
             <div class="property-image">
                 <img src="${imgSrc.replace(/"/g, '&quot;')}" alt="">
@@ -164,7 +200,7 @@ function showProperties() {
                 </a>
             </div>
         `;
-          container.appendChild(card);
+          cardContainer.appendChild(card);
         });
       }
 
