@@ -43,7 +43,12 @@ body {
 }
 
 .sidebar nav.collapsed {
-  display: none;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .sidebar .logo img {
@@ -56,6 +61,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  max-height: 500px; 
+  opacity: 1;
+  transition: max-height 0.4s ease-in, opacity 0.3s ease-in;
+  overflow: hidden;
 }
 
 .sidebar nav a {
