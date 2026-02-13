@@ -1,6 +1,5 @@
 (function () {
-  const API_BASE = window.API_BASE || "http://localhost:5000/api";
-
+  const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
   if (!window.getToken || !window.getUser || !window.logout) return;
   const token = getToken();
   const user = getUser();
