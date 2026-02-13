@@ -1,5 +1,5 @@
 (function () {
-  const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
+  const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com";
 
   function resolveImageUrl(url) {
     if (!url) return null;

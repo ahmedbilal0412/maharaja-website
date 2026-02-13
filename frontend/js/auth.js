@@ -3,7 +3,7 @@
  * After login/signup, store token and user; navbar and dashboards read from here.
  * API_BASE is set by config.js or defaults to window.API_BASE || fallback.
  */
-if (typeof window !== "undefined" && !window.API_BASE) window.API_BASE = "https://maharaja-website.onrender.com/api";
+if (typeof window !== "undefined" && !window.API_BASE) window.API_BASE = "https://maharaja-website.onrender.com";
 ;
 const API_BASE = window.API_BASE;
 

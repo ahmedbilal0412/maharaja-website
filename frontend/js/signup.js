@@ -1,5 +1,5 @@
 (function () {
-  const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
+  const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com";
   const form = document.getElementById("signup-form");
   const messageEl = document.getElementById("signup-message");
   if (!form) return;

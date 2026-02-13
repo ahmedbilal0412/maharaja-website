@@ -15,7 +15,7 @@
   const logoutBtn = document.getElementById("logout-btn");
   if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
-  const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
+  const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com";
   const token = getToken();
 
   function formatPrice(price, listingType) {

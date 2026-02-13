@@ -9,6 +9,6 @@
     (typeof document !== "undefined" &&
       document.querySelector('meta[name="api-base"]') &&
       document.querySelector('meta[name="api-base"]').getAttribute("content")) ||
-    "https://maharaja-website.onrender.com";
+    "https://maharaja-website.onrender.com/api";
   if (typeof window !== "undefined") window.API_BASE = base.replace(/\/$/, "");
 })();
