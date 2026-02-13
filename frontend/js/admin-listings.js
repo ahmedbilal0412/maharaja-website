@@ -24,27 +24,36 @@
     // Already a full HTTP URL
     if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) return url;
     
+    // Determine the base URL for images
+    const imageBaseUrl = window.location.hostname === 'localhost' 
+        ? 'http://localhost:5000' 
+        : 'https://maharaja-website.onrender.com';
+    
     // Handle local file paths (C:/Users/...)
     if (url.includes(':/') || url.includes('\\')) {
         // Extract just the filename from the path
-        const filename = url.split(/[/\\]/).pop(); // Works with both / and \ separators
-        return `http://localhost:5000/api/properties/uploads/properties/${filename}`;
+        const filename = url.split(/[/\\]/).pop();
+        return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
     }
     
     // Handle relative paths starting with /uploads/
     if (url.indexOf("/uploads/") === 0) {
         const apiRoot = (API_BASE || "").replace(/\/api.*$/, "");
+        // If apiRoot is empty or localhost, use imageBaseUrl
+        if (!apiRoot || apiRoot.includes('localhost')) {
+            return imageBaseUrl + url;
+        }
         return apiRoot + url;
     }
     
     // Handle other relative paths (just filename)
     if (!url.startsWith('/')) {
-        return `http://localhost:5000/api/properties/uploads/properties/${url}`;
+        return `${imageBaseUrl}/api/properties/uploads/properties/${url}`;
     }
     
     // Default fallback
     return url;
-  }
+}
 
   function deleteProperty(id, cardEl) {
     function doDelete() {
