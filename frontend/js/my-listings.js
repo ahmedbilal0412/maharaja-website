@@ -131,7 +131,7 @@
           <span>${p.size_sqft} sqft</span>
         </div>
         <div class="card-actions">
-          <a href="property-details?id=${p.id}" class="edit-btn"><i class="fas fa-eye"></i> View</a>
+          <a href="property-details.html?id=${p.id}" class="edit-btn"><i class="fas fa-eye"></i> View</a>
           <button type="button" class="delete-btn" data-id="${p.id}"><i class="fas fa-trash"></i> Delete</button>
         </div>
       `;

@@ -112,7 +112,7 @@ function renderProperties() {
           <div class="feature"><i class="fas fa-ruler-combined"></i><span>${areaStr}</span></div>
         </div>
         <div class="price">${priceText}</div>
-        <a href="property-details?id=${property.id}" class="view-details-btn">
+        <a href="property-details.html?id=${property.id}" class="view-details-btn">
           <i class="fas fa-eye"></i> View Details
         </a>
       </div>`;

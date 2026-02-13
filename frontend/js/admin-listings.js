@@ -122,7 +122,7 @@
         "<p>PKR " + Number(p.price).toLocaleString() + "</p>" +
         '<p><span class="status ' + statusClass + '">' + (p.status || "").replace(/</g, "&lt;") + "</span></p>" +
         '<div class="action-btns">' +
-        '<a href="property-details?id=' + p.id + '" class="action-btn view-btn">View details</a>' +
+        '<a href="property-details.html?id=' + p.id + '" class="action-btn view-btn">View details</a>' +
         (p.status === "pending_approval"
           ? '<button type="button" class="action-btn approve-btn" data-id="' +
             p.id +

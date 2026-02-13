@@ -126,7 +126,7 @@
           <span>${p.bathrooms} Baths</span>
           <span>${p.size_sqft} sqft</span>
         </div>
-        <a href="property-details?id=${p.id}" class="view-btn">View Details</a>
+        <a href="property-details.html?id=${p.id}" class="view-btn">View Details</a>
       `;
       grid.appendChild(card);
     });

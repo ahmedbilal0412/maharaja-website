@@ -216,7 +216,7 @@ function showProperties() {
                     </div>
                 </div>
                 <div class="property-price">${formatPrice(p.price, p.listing_type)}</div>
-                <a href="property-details?id=${p.id}" class="property-button">
+                <a href="property-details.html?id=${p.id}" class="property-button">
                     <i class="fas fa-eye"></i> View Details
                 </a>
             </div>
