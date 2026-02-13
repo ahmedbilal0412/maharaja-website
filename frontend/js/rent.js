@@ -19,9 +19,21 @@ function resolveImageUrl(url) {
         ? 'http://localhost:5000' 
         : 'https://maharaja-website.onrender.com';
     
+    // ✅ NEW: Handle URLs that already have the correct /api/ format
+    if (url.startsWith('/api/')) {
+        return imageBaseUrl + url;
+    }
+    
+    // Handle old/wrong paths that might still be in the database
+    // This includes absolute server paths like //opt/render/project/...
+    if (url.includes('/uploads/') || url.includes('\\uploads\\')) {
+        // Extract just the filename from any path
+        const filename = url.split(/[/\\]/).pop();
+        return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
+    }
+    
     // Handle local file paths (C:/Users/...)
     if (url.includes(':/') || url.includes('\\')) {
-        // Extract just the filename from the path
         const filename = url.split(/[/\\]/).pop();
         return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
     }

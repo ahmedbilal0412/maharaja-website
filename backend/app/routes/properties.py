@@ -277,7 +277,7 @@ def upload_images():
             
             file.save(filepath)
             # Return URL path (your Flask app will need to serve these)
-            image_urls.append(f"/{UPLOAD_FOLDER}/{unique_filename}")
+            image_urls.append(f"/api/properties/uploads/properties/{unique_filename}")
         else:
             return jsonify({"message": f"File {file.filename} has invalid extension"}), 400
     
