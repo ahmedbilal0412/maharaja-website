@@ -1,5 +1,5 @@
 
-const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com";
+const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
 
 const propertyGrid = document.getElementById("properties-grid");
 const propertyCount = document.getElementById("properties-count");
