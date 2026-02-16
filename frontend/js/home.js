@@ -23,7 +23,42 @@
     }, 300);
   }
 
+  // Home page search functionality
+  function setupHomeSearch() {
+    const searchBtn = document.getElementById('home-search-btn');
+    if (!searchBtn) return;
+
+    searchBtn.addEventListener('click', function() {
+      const city = document.getElementById('home-city')?.value || '';
+      const area = document.getElementById('home-area')?.value || '';
+      const listingType = document.getElementById('home-listing-type')?.value || '';
+      const propertyType = document.getElementById('home-property-type')?.value || '';
+
+      // Build query string
+      const params = new URLSearchParams();
+      if (city) params.append('city', city);
+      if (area) params.append('area', area);
+      if (listingType) params.append('listing_type', listingType);
+      if (propertyType) params.append('property_type', propertyType);
+
+      // Redirect to properties page with filters
+      window.location.href = `properties.html?${params.toString()}`;
+    });
+
+    // Allow Enter key to trigger search
+    const inputs = ['home-city', 'home-area', 'home-listing-type', 'home-property-type'];
+    inputs.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') searchBtn.click();
+        });
+      }
+    });
+  }
+
   function init() {
+    setupHomeSearch();
     var modal = document.getElementById('uaeModal');
     if (modal) {
       modal.addEventListener('click', function (e) {

@@ -22,6 +22,124 @@
   50% { box-shadow: 0 8px 35px rgba(212, 175, 55, 0.3); }
 }
 
+/* Quick Search Section */
+.quick-search-section {
+  padding: 60px 20px;
+}
+
+.quick-search-section .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.quick-search-section .section-title {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--primary-green);
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+.search-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(13, 46, 30, 0.1);
+}
+
+.search-select {
+  flex: 1;
+  min-width: 200px;
+  padding: 15px 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-select:hover {
+  border-color: var(--primary-green);
+}
+
+.search-select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.search-btn {
+  flex: 0 0 auto;
+  padding: 15px 40px;
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(13, 46, 30, 0.2);
+  background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
+}
+
+.search-btn i {
+  font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .quick-search-section {
+    padding: 40px 15px;
+  }
+
+  .quick-search-section .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+
+  .search-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .search-select {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .search-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-search-section {
+    padding: 30px 15px;
+  }
+
+  .quick-search-section .section-title {
+    font-size: 1.3rem;
+  }
+}
+
 .hero-notification i {
   color: var(--accent-gold);
   font-size: 1.8rem;

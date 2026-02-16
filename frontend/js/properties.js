@@ -1,6 +1,4 @@
-
-const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
-
+// DOM Elements
 const propertyGrid = document.getElementById("properties-grid");
 const propertyCount = document.getElementById("properties-count");
 const resetBtn = document.getElementById("reset-filters");
@@ -11,8 +9,11 @@ const priceFilterSelect = document.getElementById("price-filter");
 const listingFilters = document.querySelectorAll(".listing-filter");
 const bedroomFilters = document.querySelectorAll(".bedroom-filter");
 
+// State
 let allProperties = [];
 let filteredProperties = [];
+
+// ==================== HELPER FUNCTIONS ====================
 
 function formatPrice(price, listingType) {
   if (listingType === "rent") return "PKR " + Number(price).toLocaleString() + "/month";
@@ -22,105 +23,52 @@ function formatPrice(price, listingType) {
 }
 
 function resolveImageUrl(url) {
-    if (!url) return null;
-    
-    // Already a full HTTP URL
-    if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) return url;
-    
-    // Determine the base URL for images
-    const imageBaseUrl = window.location.hostname === 'localhost' 
-        ? 'http://localhost:5000' 
-        : 'https://maharaja-website.onrender.com';
-    
-    // ✅ NEW: Handle URLs that already have the correct /api/ format
-    if (url.startsWith('/api/')) {
-        return imageBaseUrl + url;
-    }
-    
-    // Handle old/wrong paths that might still be in the database
-    // This includes absolute server paths like //opt/render/project/...
-    if (url.includes('/uploads/') || url.includes('\\uploads\\')) {
-        // Extract just the filename from any path
-        const filename = url.split(/[/\\]/).pop();
-        return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
-    }
-    
-    // Handle local file paths (C:/Users/...)
-    if (url.includes(':/') || url.includes('\\')) {
-        const filename = url.split(/[/\\]/).pop();
-        return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
-    }
-    
-    // Handle relative paths starting with /uploads/
-    if (url.indexOf("/uploads/") === 0) {
-        const apiRoot = (API_BASE || "").replace(/\/api.*$/, "");
-        // If apiRoot is empty or localhost, use imageBaseUrl
-        if (!apiRoot || apiRoot.includes('localhost')) {
-            return imageBaseUrl + url;
-        }
-        return apiRoot + url;
-    }
-    
-    // Handle other relative paths (just filename)
-    if (!url.startsWith('/')) {
-        return `${imageBaseUrl}/api/properties/uploads/properties/${url}`;
-    }
-    
-    // Default fallback
-    return url;
-}
+  if (!url) return null;
 
-function renderProperties() {
-  propertyGrid.innerHTML = "";
+  // Already a full HTTP URL
+  if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) return url;
 
-  if (filteredProperties.length === 0) {
-    propertyGrid.innerHTML = `
-      <div class="no-results">
-        <i class="fas fa-search"></i>
-        <h3>No Properties Found</h3>
-        <p>Try adjusting your filters or check back later.</p>
-      </div>`;
-    propertyCount.textContent = "0 Properties Found";
-    return;
+  // Determine the base URL for images
+  const imageBaseUrl = window.location.hostname === 'localhost'
+    ? 'http://localhost:5000'
+    : 'https://maharaja-website.onrender.com';
+
+  // Handle URLs that already have the correct /api/ format
+  if (url.startsWith('/api/')) {
+    return imageBaseUrl + url;
   }
 
-  filteredProperties.forEach((property) => {
-    const card = document.createElement("div");
-    card.classList.add("property-card");
-    const isForRent = property.listing_type === "rent";
-    const priceText = isForRent ? formatPrice(property.price, "rent") : formatPrice(property.price, "sale");
-    const tagText = isForRent ? "FOR RENT" : "FOR SALE";
-    const imgSrc =
-      resolveImageUrl(property.image_url) ||
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80";
-    const areaStr = (property.size_sqft || 0) + " sq ft";
+  // Handle old/wrong paths that might still be in the database
+  if (url.includes('/uploads/') || url.includes('\\uploads\\')) {
+    const filename = url.split(/[/\\]/).pop();
+    return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
+  }
 
-    card.innerHTML = `
-      <div class="card-top">
-        <span class="property-tag">${tagText}</span>
-        <img src="${imgSrc.replace(/"/g, "&quot;")}" alt="${(property.title || "").replace(/"/g, "&quot;")}" class="property-img">
-      </div>
-      <div class="property-info">
-        <h3>${(property.title || "").replace(/</g, "&lt;")}</h3>
-        <div class="property-location">
-          <i class="fas fa-map-marker-alt"></i>
-          <span>${(property.location || "").replace(/</g, "&lt;")}</span>
-        </div>
-        <div class="property-features">
-          <div class="feature"><i class="fas fa-bed"></i><span>${property.bedrooms || 0} Bed</span></div>
-          <div class="feature"><i class="fas fa-bath"></i><span>${property.bathrooms || 0} Bath</span></div>
-          <div class="feature"><i class="fas fa-ruler-combined"></i><span>${areaStr}</span></div>
-        </div>
-        <div class="price">${priceText}</div>
-        <a href="property-details.html?id=${property.id}" class="view-details-btn">
-          <i class="fas fa-eye"></i> View Details
-        </a>
-      </div>`;
-    propertyGrid.appendChild(card);
-  });
+  // Handle local file paths (C:/Users/...)
+  if (url.includes(':/') || url.includes('\\')) {
+    const filename = url.split(/[/\\]/).pop();
+    return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
+  }
 
-  propertyCount.textContent = filteredProperties.length + " Properties Found";
+  // Handle relative paths starting with /uploads/
+  if (url.indexOf("/uploads/") === 0) {
+    const apiRoot = (API_BASE || "").replace(/\/api.*$/, "");
+    if (!apiRoot || apiRoot.includes('localhost')) {
+      return imageBaseUrl + url;
+    }
+    return apiRoot + url;
+  }
+
+  // Handle other relative paths (just filename)
+  if (!url.startsWith('/')) {
+    return `${imageBaseUrl}/api/properties/uploads/properties/${url}`;
+  }
+
+  // Default fallback
+  return url;
 }
+
+// ==================== FILTER & SORT FUNCTIONS ====================
 
 function filterProperties() {
   const propertyType = propertyTypeSelect ? propertyTypeSelect.value : "";
@@ -135,15 +83,24 @@ function filterProperties() {
     .map((cb) => cb.value);
 
   filteredProperties = allProperties.filter((property) => {
+    // Property type filter
     if (propertyType && property.property_type !== propertyType) return false;
+
+    // City filter
     const cityVal = (property.city || "").toLowerCase();
     if (city && cityVal.indexOf(city.toLowerCase()) < 0) return false;
+
+    // Listing type filter (sale/rent)
     if (activeListingTypes.length > 0 && !activeListingTypes.includes(property.listing_type)) return false;
+
+    // Bedrooms filter
     if (activeBedrooms.length > 0) {
       const beds = property.bedrooms || 0;
       if (activeBedrooms.includes("4") && beds < 4) return false;
       if (!activeBedrooms.includes("4") && !activeBedrooms.includes(String(beds))) return false;
     }
+
+    // Price range filter
     if (priceRange) {
       if (priceRange === "100000000+") {
         if (property.price < 100000000) return false;
@@ -152,6 +109,7 @@ function filterProperties() {
         if (property.price < min || property.price > max) return false;
       }
     }
+
     return true;
   });
 
@@ -189,10 +147,105 @@ function resetFilters() {
   if (sortSelect) sortSelect.value = "newest";
   (listingFilters || []).forEach((cb) => (cb.checked = false));
   (bedroomFilters || []).forEach((cb) => (cb.checked = false));
+
   filteredProperties = [...allProperties];
   sortProperties();
   renderProperties();
 }
+
+// ==================== URL PARAMETER HANDLING ====================
+
+function applyFiltersFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const cityParam = urlParams.get('city');
+  const areaParam = urlParams.get('area');      // Not directly used yet
+  const listingTypeParam = urlParams.get('listing_type');
+  const propertyTypeParam = urlParams.get('property_type');
+
+  console.log("📋 URL Parameters received:", {
+    city: cityParam,
+    area: areaParam,
+    listing_type: listingTypeParam,
+    property_type: propertyTypeParam
+  });
+  
+  // Apply city filter
+  if (cityParam && cityFilterSelect) {
+    cityFilterSelect.value = cityParam;
+  }
+
+  // Apply listing type filter (sale/rent)
+  if (listingTypeParam && listingFilters) {
+    listingFilters.forEach(cb => {
+      if (cb.value === listingTypeParam) cb.checked = true;
+    });
+  }
+
+  // Apply property type filter
+  if (propertyTypeParam && propertyTypeSelect) {
+    propertyTypeSelect.value = propertyTypeParam;
+  }
+}
+
+// ==================== RENDER FUNCTION ====================
+
+function renderProperties() {
+  propertyGrid.innerHTML = "";
+
+  if (filteredProperties.length === 0) {
+    propertyGrid.innerHTML = `
+      <div class="no-results">
+        <i class="fas fa-search"></i>
+        <h3>No Properties Found</h3>
+        <p>Try adjusting your filters or check back later.</p>
+      </div>`;
+    propertyCount.textContent = "0 Properties Found";
+    return;
+  }
+
+  filteredProperties.forEach((property) => {
+    const card = document.createElement("div");
+    card.classList.add("property-card");
+
+    const isForRent = property.listing_type === "rent";
+    const priceText = isForRent ? formatPrice(property.price, "rent") : formatPrice(property.price, "sale");
+    const tagText = isForRent ? "FOR RENT" : "FOR SALE";
+
+    const imgSrc = resolveImageUrl(property.image_url) ||
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80";
+
+    const areaStr = (property.size_sqft || 0) + " sq ft";
+
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="property-tag">${tagText}</span>
+        <img src="${imgSrc.replace(/"/g, "&quot;")}" alt="${(property.title || "").replace(/"/g, "&quot;")}" class="property-img">
+      </div>
+      <div class="property-info">
+        <h3>${(property.title || "").replace(/</g, "&lt;")}</h3>
+        <div class="property-location">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>${(property.location || "").replace(/</g, "&lt;")}</span>
+        </div>
+        <div class="property-features">
+          <div class="feature"><i class="fas fa-bed"></i><span>${property.bedrooms || 0} Bed</span></div>
+          <div class="feature"><i class="fas fa-bath"></i><span>${property.bathrooms || 0} Bath</span></div>
+          <div class="feature"><i class="fas fa-ruler-combined"></i><span>${areaStr}</span></div>
+        </div>
+        <div class="price">${priceText}</div>
+        <a href="property-details.html?id=${property.id}" class="view-details-btn">
+          <i class="fas fa-eye"></i> View Details
+        </a>
+      </div>`;
+
+    propertyGrid.appendChild(card);
+  });
+
+  propertyCount.textContent = filteredProperties.length + " Properties Found";
+}
+
+// ==================== EVENT LISTENERS ====================
 
 if (propertyTypeSelect) propertyTypeSelect.addEventListener("change", filterProperties);
 if (cityFilterSelect) cityFilterSelect.addEventListener("change", filterProperties);
@@ -202,17 +255,25 @@ if (sortSelect) sortSelect.addEventListener("change", filterProperties);
 (bedroomFilters || []).forEach((cb) => cb.addEventListener("change", filterProperties));
 if (resetBtn) resetBtn.addEventListener("click", resetFilters);
 
+// ==================== INITIAL DATA LOAD ====================
+
 fetch(API_BASE + "/properties")
   .then((r) => r.json())
   .then((data) => {
     allProperties = (data && data.properties) ? data.properties : [];
-    filteredProperties = [...allProperties];
-    sortProperties();
-    renderProperties();
+    
+    applyFiltersFromURL();    
+    filterProperties(); 
+    
   })
   .catch(() => {
     allProperties = [];
     filteredProperties = [];
     propertyCount.textContent = "0 Properties Found";
-    propertyGrid.innerHTML = '<div class="no-results"><i class="fas fa-exclamation-triangle"></i><h3>Could not load properties</h3><p>Please try again later.</p></div>';
+    propertyGrid.innerHTML = `
+      <div class="no-results">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Could not load properties</h3>
+        <p>Please try again later.</p>
+      </div>`;
   });

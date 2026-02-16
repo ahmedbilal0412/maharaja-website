@@ -28,7 +28,6 @@
   </div>
 
   <!-- HERO SECTION -->
-  
   <header class="hero">
     <div class="hero-content">
       <div class="logo-container">        
@@ -36,14 +35,46 @@
       </div>
       <h1>Discover Premium Properties in Pakistan & UAE</h1>
       <p class="hero-subtitle">Find your dream home, commercial space, or investment property with Pakistan's most trusted real estate partner</p>
-      <div class="hero-cta">
-        <a href="buy.html" class="cta-button">
-          <i class="fas fa-search"></i> Browse Properties
-        </a>
-        <a href="sale.html" class="cta-button secondary">
-          <i class="fas fa-tag"></i> List Your Property
-        </a>
-      </div>
+      <section class="quick-search-section">
+        <div class="container">
+          <div class="search-container">
+            <select id="home-city" class="search-select">
+              <option value="">Select City</option>
+              <option value="islamabad">Islamabad</option>
+              <option value="rawalpindi">Rawalpindi</option>
+              <option value="lahore">Lahore</option>
+              <option value="karachi">Karachi</option>
+              <option value="peshawar">Peshawar</option>
+              <option value="faisalabad">Faisalabad</option>
+              <option value="multan">Multan</option>
+            </select>
+
+            <select id="home-area" class="search-select">
+              <option value="">Select Area</option>
+              <option value="DHA">DHA</option>
+              <option value="Bahria Town">Bahria Town</option>
+              <option value="Other">Other Areas</option>
+            </select>
+
+            <select id="home-listing-type" class="search-select">
+              <option value="">Buy or Rent</option>
+              <option value="sale">For Sale</option>
+              <option value="rent">For Rent</option>
+            </select>
+
+            <select id="home-property-type" class="search-select">
+              <option value="">Property Type</option>
+              <option value="house">House</option>
+              <option value="apartment">Apartment</option>
+              <option value="villa">Villa</option>
+            </select>
+
+            <button id="home-search-btn" class="search-btn">
+              <i class="fas fa-search"></i> Search Properties
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   </header>
 
