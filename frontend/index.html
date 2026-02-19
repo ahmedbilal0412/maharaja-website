@@ -27,60 +27,95 @@
     </div>
   </div>
 
-  <!-- HERO SECTION -->
-  <header class="hero">
-    <div class="hero-content">
-      <div class="logo-container">        
-        <img src="img/maharaja.png" alt="Maharaja Builders Logo" class="logo-hero" />
+    <!-- Modern Hero Section -->
+  <section class="hero-modern">
+    <div class="hero-modern-content">
+      <div class="hero-title">
+        <img src="/img/maharaja.png" alt="logo" />
+        <h1>Your home search starts here</h1>
+        <p class="subtitle">Find properties to rent, buy or invest in Pakistan</p>
       </div>
-      <h1>Discover Premium Properties in Pakistan & UAE</h1>
-      <p class="hero-subtitle">Find your dream home, commercial space, or investment property with Pakistan's most trusted real estate partner</p>
-      <section class="quick-search-section">
-        <div class="container">
-          <div class="search-container">
-            <select id="home-city" class="search-select">
-              <option value="">Select City</option>
-              <option value="islamabad">Islamabad</option>
-              <option value="rawalpindi">Rawalpindi</option>
-              <option value="lahore">Lahore</option>
-              <option value="karachi">Karachi</option>
-              <option value="peshawar">Peshawar</option>
-              <option value="faisalabad">Faisalabad</option>
-              <option value="multan">Multan</option>
-            </select>
 
-            <select id="home-area" class="search-select">
-              <option value="">Select Area</option>
-              <option value="DHA">DHA</option>
-              <option value="Bahria Town">Bahria Town</option>
-              <option value="Other">Other Areas</option>
-            </select>
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <div class="filter-tab active" data-filter="rent">Rent</div>
+        <div class="filter-tab" data-filter="buy">Buy</div>
+      </div>
 
-            <select id="home-listing-type" class="search-select">
-              <option value="">Buy or Rent</option>
-              <option value="sale">For Sale</option>
-              <option value="rent">For Rent</option>
-            </select>
-
-            <select id="home-property-type" class="search-select">
-              <option value="">Property Type</option>
-              <option value="house">House</option>
-              <option value="apartment">Apartment</option>
-              <option value="villa">Villa</option>
-            </select>
-
-            <button id="home-search-btn" class="search-btn">
-              <i class="fas fa-search"></i> Search Properties
-            </button>
-          </div>
+      <!-- Search Bar -->
+      <div class="search-bar-modern">
+        <div class="search-input-group">
+          <i class="fas fa-search"></i>
+          <input type="text" id="location-search" placeholder="City, community or building" value="Islamabad">
         </div>
-      </section>
+        <div class="search-input-group">
+          <i class="fas fa-building"></i>
+          <select id="property-type-filter">
+            <option value="">Property type</option>
+            <option value="house">House</option>
+            <option value="apartment">Apartment</option>
+            <option value="villa">Villa</option>
+            <option value="commercial">Commercial</option>
+            <option value="plot">Plot</option>
+          </select>
+        </div>
+        <button class="search-btn-modern" id="hero-search-btn">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
     </div>
-  </header>
+  </section>
+
+    <!-- Advertisement Banner -->
+  <div class="ad-banner">
+    <div class="ad-content">
+      <span class="ad-badge">BETA</span>
+      <h3>Track your home's worth.</h3>
+      <h3>Plan your next move</h3>
+      <p>Get instant valuations, trends & forecasts - all in the app</p>
+      
+      <div class="ad-stats">
+        <div class="ad-stat">
+          <span class="number">6,380,000</span>
+          <span class="label">Current Value</span>
+        </div>
+        <div class="ad-stat">
+          <span class="number">10%</span>
+          <span class="label">Growth (580,000 AED)</span>
+        </div>
+      </div>
+      
+      <a href="#" class="ad-cta">Download App</a>
+    </div>
+    <div class="ad-qr">
+      <i class="fas fa-qrcode"></i>
+      <p>Scan to download the app</p>
+    </div>
+  </div>
+
+  <!-- New Properties Section-->
+   <section class="new-projects">
+      <div class="section-header">
+        <h2>Explore new projects in Pakistan</h2>
+        <div class="city-tabs">
+          <button class="city-tab active" data-city="">All Cities</button>
+          <button class="city-tab" data-city="islamabad">Islamabad</button>
+          <button class="city-tab" data-city="lahore">Lahore</button>
+          <button class="city-tab" data-city="rawalpindi">Rawalpindi</button>
+          <button class="city-tab" data-city="karachi">Karachi</button>
+        </div>
+      </div>
+    <div class="project-grid">
+      <!-- Projects will be loaded dynamically via JavaScript -->
+    </div>
+   </section>
 
   <!-- Simple Image Grid -->
   <section class="simple-image-grid">
     <div class="container">
+      <div class="section-header">
+        <h2>Projects by Developers</h2>
+      </div>
       <div class="image-grid">
         <div class="grid-item">
           <img src="img/card1.jpeg" alt="Card 1">
@@ -221,6 +256,107 @@
       </div>
     </div>
   </div>
+
+    <!-- Explore More Section -->
+  <section class="explore-more">
+    <div class="explore-container">
+      <div class="section-header">
+        <h2>Explore More</h2>
+      </div>
+      <div class="explore-tabs">
+        <div class="explore-tab active" data-explore="rent">Rent</div>
+        <div class="explore-tab" data-explore="buy">Buy</div>
+      </div>
+
+      <!-- City Pills -->
+      <div class="city-grid">
+        <span class="city-pill active" data-city="islamabad">Islamabad</span>
+        <span class="city-pill" data-city="lahore">Lahore</span>
+        <span class="city-pill" data-city="rawalpindi">Rawalpindi</span>
+        <span class="city-pill" data-city="karachi">Karachi</span>
+      </div>
+
+      <!-- Locations Grid - Islamabad (Default) -->
+      <div class="locations-grid" id="islamabad-locations">
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in F-6, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in F-7, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in F-8, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in F-10, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in E-7, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in E-11, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-6, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-7, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-8, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-9, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-10, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-11, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in I-8, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in I-9, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in I-10, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in Bahria Enclave</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in DHA Valley</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in Gulberg Greens</a>
+      </div>
+
+      <!-- Locations Grid - Lahore (Hidden by default) -->
+      <div class="locations-grid" id="lahore-locations" style="display: none;">
+        <a href="/properties.html?city=lahore" class="location-link">Properties in DHA Lahore</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Bahria Town Lahore</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Gulberg</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Johar Town</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Model Town</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Garden Town</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Askari</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Lake City</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Valencia Town</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Wapda Town</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Cavalry Ground</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in MM Alam Road</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Liberty</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Cantt</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Township</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Thokar Niaz Baig</a>
+      </div>
+
+      <!-- Locations Grid - Rawalpindi (Hidden by default) -->
+      <div class="locations-grid" id="rawalpindi-locations" style="display: none;">
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Bahria Town Rawalpindi</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in DHA Rawalpindi</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Gulraiz</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Askari</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Westridge</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Chaklala</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Saddar</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Satellite Town</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Commercial Market</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in 6th Road</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Peshawar Road</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Murree Road</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Adiala Road</a>
+        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Khayaban-e-Sir Syed</a>
+      </div>
+
+      <!-- Locations Grid - Karachi (Hidden by default) -->
+      <div class="locations-grid" id="karachi-locations" style="display: none;">
+        <a href="/properties.html?city=karachi" class="location-link">Properties in DHA Karachi</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Clifton</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Gulshan-e-Iqbal</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Bahria Town Karachi</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Saddar</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Korangi</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in North Nazimabad</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in PECHS</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Tariq Road</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Shahrah-e-Faisal</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Malir</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Scheme 33</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Gulistan-e-Johar</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in FB Area</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Liaquatabad</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Nazimabad</a>
+      </div>
+    </div>
+  </section>
 
   <div data-include="components/footer.html"></div>
 
