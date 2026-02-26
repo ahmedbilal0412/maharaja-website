@@ -1,15 +1,15 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv  # Import at the top!
 
 # Load .env from project root (parent of backend/)
 _env_path = Path(__file__).resolve().parent.parent / ".env"
 if _env_path.exists():
-    from dotenv import load_dotenv
     load_dotenv(_env_path)
 
+# If not on Render, also try loading from default .env location
 if os.environ.get('RENDER') is None:
     load_dotenv()
-
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or "dev-secret-change-in-production"

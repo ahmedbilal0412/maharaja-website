@@ -122,3 +122,35 @@ class PropertyImage(db.Model):
             "image_url": self.image_url,
             "is_primary": self.is_primary
         }
+
+class Ad(db.Model):
+    __tablename__ = "ads"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    image_url = db.Column(db.String(500), nullable=False)
+    link_url = db.Column(db.String(500), nullable=True)  # Optional external link
+    duration = db.Column(db.String(20), nullable=False)  # '1week', '2weeks', '1month'
+    price = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(30), default="pending", nullable=False)  # pending, approved, rejected, expired
+    payment_status = db.Column(db.String(30), default="unpaid", nullable=False)  # unpaid, paid
+    start_date = db.Column(db.DateTime, nullable=True)
+    end_date = db.Column(db.DateTime, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship("User", backref=db.backref("ads", lazy="dynamic"))
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "user_name": self.user.full_name if self.user else None,
+            "image_url": self.image_url,
+            "link_url": self.link_url,
+            "duration": self.duration,
+            "price": self.price,
+            "status": self.status,
+            "payment_status": self.payment_status,
+            "start_date": self.start_date.isoformat() if self.start_date else None,
+            "end_date": self.end_date.isoformat() if self.end_date else None,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }

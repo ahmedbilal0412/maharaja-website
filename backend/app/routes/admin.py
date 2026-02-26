@@ -130,3 +130,94 @@ def reject(prop_id):
     db.session.delete(prop)
     db.session.commit()
     return jsonify({"message": "Property rejected and removed.", "deleted files": len(deleted_files)}), 200
+
+@admin_bp.route("/ads", methods=["GET"])
+@jwt_required()
+def list_all_ads():
+    """Admin: List all ads with optional status filter."""
+    from app.models import Ad
+    
+    err = _require_admin()
+    if err:
+        return err
+    
+    status = request.args.get("status", "").strip().lower()
+    query = Ad.query.order_by(Ad.created_at.desc())
+    
+    if status in ["pending", "approved", "rejected", "expired"]:
+        query = query.filter_by(status=status)
+    
+    ads = query.all()
+    return jsonify({"ads": [ad.to_dict() for ad in ads]}), 200
+
+@admin_bp.route("/ads/<int:ad_id>/approve", methods=["POST"])
+@jwt_required()
+def approve_ad(ad_id):
+    """Admin: Approve ad and set start/end dates."""
+    from app import db
+    from app.models import Ad
+    from datetime import datetime, timedelta
+    
+    err = _require_admin()
+    if err:
+        return err
+    
+    ad = Ad.query.get_or_404(ad_id)
+    
+    if ad.payment_status != "paid":
+        return jsonify({"message": "Ad payment not completed."}), 400
+    
+    if ad.status != "pending":
+        return jsonify({"message": "Ad is not pending approval."}), 400
+    
+    # Set start and end dates based on duration
+    now = datetime.utcnow()
+    ad.start_date = now
+    
+    if ad.duration == "1week":
+        ad.end_date = now + timedelta(days=7)
+    elif ad.duration == "2weeks":
+        ad.end_date = now + timedelta(days=14)
+    elif ad.duration == "1month":
+        ad.end_date = now + timedelta(days=30)
+    
+    ad.status = "approved"
+    db.session.commit()
+    
+    return jsonify({"message": "Ad approved.", "ad": ad.to_dict()}), 200
+
+@admin_bp.route("/ads/<int:ad_id>/reject", methods=["POST"])
+@jwt_required()
+def reject_ad(ad_id):
+    """Admin: Reject ad and optionally delete image."""
+    from app import db
+    from app.models import Ad
+    import os
+    from pathlib import Path
+    
+    err = _require_admin()
+    if err:
+        return err
+    
+    ad = Ad.query.get_or_404(ad_id)
+    
+    if ad.status != "pending":
+        return jsonify({"message": "Ad is not pending approval."}), 400
+    
+    # Delete image file
+    try:
+        current_file = Path(__file__).resolve()
+        backend_dir = current_file.parent.parent
+        uploads_dir = backend_dir / "uploads" / "ads"
+        
+        filename = ad.image_url.split("/")[-1]
+        file_path = uploads_dir / filename
+        if file_path.exists():
+            os.remove(file_path)
+    except Exception as e:
+        print(f"Error deleting ad image: {str(e)}")
+    
+    ad.status = "rejected"
+    db.session.commit()
+    
+    return jsonify({"message": "Ad rejected."}), 200

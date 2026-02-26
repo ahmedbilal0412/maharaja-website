@@ -20,18 +20,20 @@
   <div class="hero-notification">
     <div class="notification-content">
       <p class="notification-text">
-        Property listing is 
+        Property listings are 
         <span class="highlight">COMPLETELY FREE</span> 
-        in DHA & Bahria Town. Other Properties Have a Fee
+        in DHA & Bahria Town. Other Properties Have a Fee.
       </p>
     </div>
   </div>
 
     <!-- Modern Hero Section -->
   <section class="hero-modern">
+    <video autoplay muted loop id="#hero-video" style="position: absolute;width: 100vw;">
+      <source src="img/hero-video.mp4" type="video/mp4">
+    </video>
     <div class="hero-modern-content">
       <div class="hero-title">
-        <img src="/img/maharaja.png" alt="logo" />
         <h1>Your home search starts here</h1>
         <p class="subtitle">Find properties to rent, buy or invest in Pakistan</p>
       </div>
@@ -67,29 +69,23 @@
   </section>
 
     <!-- Advertisement Banner -->
-  <div class="ad-banner">
+  <div class="ad-banner" id="adBanner">
     <div class="ad-content">
-      <span class="ad-badge">BETA</span>
-      <h3>Track your home's worth.</h3>
-      <h3>Plan your next move</h3>
-      <p>Get instant valuations, trends & forecasts - all in the app</p>
+      <span class="ad-badge" id="adBadge">Advertisement</span>
+      <h3 id="adTitle">Your ad could be here!</h3>
+      <p id="adDescription">Promote your business to thousands of potential customers</p>
       
-      <div class="ad-stats">
-        <div class="ad-stat">
-          <span class="number">6,380,000</span>
-          <span class="label">Current Value</span>
-        </div>
-        <div class="ad-stat">
-          <span class="number">10%</span>
-          <span class="label">Growth (580,000 AED)</span>
-        </div>
+      <div class="ad-stats" id="adStats" style="display: none;">
+        <!-- Stats will be shown if available -->
       </div>
       
-      <a href="#" class="ad-cta">Download App</a>
+      <a href="register-ad.html" class="ad-cta" id="adCTA">
+        Promote Your Business <i class="fas fa-arrow-right"></i>
+      </a>
     </div>
-    <div class="ad-qr">
-      <i class="fas fa-qrcode"></i>
-      <p>Scan to download the app</p>
+    <div class="ad-qr" id="adQR">
+      <i class="fas fa-ad"></i>
+      <p>Ad Space Available</p>
     </div>
   </div>
 
@@ -111,24 +107,24 @@
    </section>
 
   <!-- Simple Image Grid -->
-  <section class="simple-image-grid">
-    <div class="container">
-      <div class="section-header">
-        <h2>Projects by Developers</h2>
+    <section class="simple-image-grid">
+      <div class="container">
+        <div class="section-header">
+          <h2>Projects by Developers</h2>
+        </div>
+        <div class="image-grid">
+          <div class="grid-item">
+            <img src="img/card1.jpeg" alt="Card 1">
+          </div>
+          <div class="grid-item">
+            <img src="img/card2.jpeg" alt="Card 2">
+          </div>
+          <div class="grid-item">
+            <img src="img/card3.jpeg" alt="Card 3">
+          </div>
+        </div>
       </div>
-      <div class="image-grid">
-        <div class="grid-item">
-          <img src="img/card1.jpeg" alt="Card 1">
-        </div>
-        <div class="grid-item">
-          <img src="img/card2.jpeg" alt="Card 2">
-        </div>
-        <div class="grid-item">
-          <img src="img/card3.jpeg" alt="Card 3">
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
   <!-- First Time Buyer Section -->
   <section class="first-time-buyer">
@@ -246,6 +242,7 @@
 
   <div data-include="components/footer.html"></div>
 
+  <script src="js/config.js"></script>
   <script src="js/load-components.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/navbar.js"></script>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Ads - Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/admin-dashboard.css" />
+  <link rel="stylesheet" href="css/admin-ads.css" />
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="header-container">
+        <div class="sidebar-header">
+          <a href="index.html" title="Back to Home"><img src="img/maharaja.png" alt="Logo" class="logo" /></a>
+        </div>
+      </div>
+      <h2 class="admin-heading">Maharaja Admin</h2>
+
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <a href="admin-dashboard.html"> Dashboard</a>
+        <a href="admin-listings.html"> Listings</a>
+        <a href="admin-users.html"> Users</a>
+        <a href="admin-ads.html" class="active"> Advertisements</a>
+        <a href="index.html"> Back to Home</a>
+        <button type="button" class="logout-btn" id="admin-logout-btn"> Logout</button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>Manage Advertisements</h1>
+        <div class="filter-tabs">
+          <span class="filter-tab active" data-filter="all">All Ads</span>
+          <span class="filter-tab" data-filter="pending">Pending</span>
+          <span class="filter-tab" data-filter="approved">Approved</span>
+          <span class="filter-tab" data-filter="rejected">Rejected</span>
+          <span class="filter-tab" data-filter="expired">Expired</span>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <h3>Total Ads</h3>
+          <div class="number" id="totalAds">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Pending Approval</h3>
+          <div class="number" id="pendingAds">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Active Now</h3>
+          <div class="number" id="activeAds">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Total Revenue</h3>
+          <div class="revenue" id="totalRevenue">PKR 0</div>
+        </div>
+      </div>
+
+      <!-- Ads Grid -->
+      <div class="ads-grid" id="adsGrid">
+        <div class="no-ads">
+          <i class="fas fa-ad"></i>
+          <h3>Loading advertisements...</h3>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin-ads.js"></script>
+</body>
+</html>

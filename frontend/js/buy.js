@@ -142,94 +142,37 @@ function formatPrice(price, listingType) {
 }
 
 function showProperties() {
-  document.getElementById("pakistanSelection").style.display = "none";
-  document.getElementById("propertiesDisplay").style.display = "block";
-  const container = document.querySelector("#propertiesDisplay .properties-container");
-  container.innerHTML = "<p class=\"loading-properties\">Loading properties…</p>";
-
+  // Build query string with user's selections
   const params = new URLSearchParams();
+  
+  // Always include listing_type (default to "sale" if not specified, but we have it from selection)
   params.set("listing_type", "sale");
-  if (selectedCity) params.set("city", selectedCity);
-  if (selectedArea) {
-    if (selectedArea === "dha") params.set("area", "DHA");
-    else if (selectedArea === "bahria") params.set("area", "Bahria");
-    else params.set("area", "Other");
+  
+  // Add city if selected
+  if (selectedCity) {
+    // Convert to proper format (islamabad → Islamabad)
+    const cityMap = {
+      islamabad: "islamabad",
+      lahore: "lahore",
+      rawalpindi: "rawalpindi",
+      karachi: "karachi"
+    };
+    params.set("city", cityMap[selectedCity] || selectedCity);
   }
-
-  fetch(API_BASE + "/properties?" + params.toString())
-    .then((r) => r.json())
-    .then((data) => {
-      const list = (data && data.properties) ? data.properties : [];
-      container.innerHTML = "";
-
-      const titleContainer = document.createElement("div");
-      titleContainer.className = "title-container";
-      const title = document.createElement("h2");
-      title.className = "properties-title";
-      title.textContent = "Properties in " + (cityNames[selectedCity] || selectedCity) + " – " + (areaNames[selectedArea] || selectedArea);
-      const subtitle = document.createElement("p");
-      subtitle.className = "properties-subtitle";
-      const cardContainer = document.createElement("div");
-      cardContainer.className = "card-container";
-      subtitle.textContent = list.length + " propert" + (list.length === 1 ? "y" : "ies") + " found.";
-      container.appendChild(titleContainer);
-      titleContainer.appendChild(title);
-      titleContainer.appendChild(subtitle);
-      container.appendChild(cardContainer);
-
-      if (list.length === 0) {
-        const empty = document.createElement("p");
-        empty.className = "no-properties";
-        empty.textContent = "No properties match your selection. Try a different city or area.";
-        titleContainer.appendChild(empty);
-      } else {
-        list.forEach((p) => {
-          const card = document.createElement("div");
-          card.className = "property-card";
-          const imgSrc =
-            resolveImageUrl(p.image_url) ||
-            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80";
-          card.innerHTML = `
-            <div class="property-image">
-                <img src="${imgSrc.replace(/"/g, '&quot;')}" alt="">
-            </div>
-            <div class="property-content">
-                <h3 class="property-title">${(p.title || "").replace(/</g, "&lt;")}</h3>
-                <div class="property-location">
-                    <i class="fas fa-map-marker-alt"></i> ${(p.location || "").replace(/</g, "&lt;")}
-                </div>
-                <div class="property-features">
-                    <div class="property-feature">
-                        <div class="feature-icon"><i class="fas fa-bed"></i></div>
-                        <div class="feature-value">${p.bedrooms || 0}</div>
-                        <div class="feature-label">Bedrooms</div>
-                    </div>
-                    <div class="property-feature">
-                        <div class="feature-icon"><i class="fas fa-bath"></i></div>
-                        <div class="feature-value">${p.bathrooms || 0}</div>
-                        <div class="feature-label">Bathrooms</div>
-                    </div>
-                    <div class="property-feature">
-                        <div class="feature-icon"><i class="fas fa-ruler-combined"></i></div>
-                        <div class="feature-value">${p.size_sqft || 0}</div>
-                        <div class="feature-label">Sq Ft</div>
-                    </div>
-                </div>
-                <div class="property-price">${formatPrice(p.price, p.listing_type)}</div>
-                <a href="property-details.html?id=${p.id}" class="property-button">
-                    <i class="fas fa-eye"></i> View Details
-                </a>
-            </div>
-        `;
-          cardContainer.appendChild(card);
-        });
-      }
-
-      document.getElementById("propertiesDisplay").scrollIntoView({ behavior: "smooth" });
-    })
-    .catch(() => {
-      container.innerHTML = "<p class=\"no-properties\">Unable to load properties. Please try again.</p>";
-    });
+  
+  // Add area if selected
+  if (selectedArea) {
+    if (selectedArea === "dha") {
+      params.set("area", "DHA");
+    } else if (selectedArea === "bahria") {
+      params.set("area", "Bahria Town");
+    } else if (selectedArea === "other") {
+      params.set("area", "Other");
+    }
+  }
+  
+  // Redirect to properties page with all filters
+  window.location.href = `properties.html?${params.toString()}`;
 }
 
 window.onclick = function(event) {

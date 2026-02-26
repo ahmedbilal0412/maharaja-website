@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Ad - Maharaja Builders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <style>
+    .ad-form-container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 40px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .ad-form-title {
+      color: var(--primary-green);
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: var(--primary-green);
+      margin-bottom: 8px;
+    }
+    
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: "Poppins", sans-serif;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+    }
+    
+    .image-preview {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: 2px dashed #e0e0e0;
+      padding: 10px;
+      display: none;
+    }
+    
+    .price-display {
+      background: var(--light-bg);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 30px 0;
+    }
+    
+    .price-display .amount {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-green);
+    }
+    
+    .price-display .period {
+      font-size: 1rem;
+      color: var(--text-light);
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(11,61,46,0.2);
+    }
+    
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .duration-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 10px;
+    }
+    
+    .duration-option {
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .duration-option.selected {
+      border-color: var(--accent-gold);
+      background: rgba(212,175,55,0.1);
+    }
+    
+    .duration-option .duration {
+      font-weight: 600;
+      color: var(--primary-green);
+    }
+    
+    .duration-option .price {
+      margin-top: 10px;
+      font-size: 1.2rem;
+      color: var(--accent-gold);
+    }
+  </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo-container">
+        <div class="logo">
+          <a href="index.html" title="Back to Home"><img src="img/maharaja.png" alt="Logo" /></a>
+        </div>
+      </div>
+      <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+        ☰
+      </button>
+      <nav id="navbar">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="my-listings.html">My Listings</a>
+        <a href="add-property.html">Add Property</a>
+        <a href="#" class="active">Promote Business</a>
+        <a href="my-ads.html">My Ads</a>
+      </nav>
+    </aside>
+  
+  <div class="ad-form-container">
+    <h1 class="ad-form-title">Promote Your Business</h1>
+    <p style="text-align: center; color: var(--text-light); margin-bottom: 40px;">
+      Get your ad featured on our homepage for maximum visibility
+    </p>
+    
+    <form id="adForm">
+      <div class="form-group">
+        <label>Ad Image *</label>
+        <input type="file" id="adImage" accept="image/*" required>
+        <img id="imagePreview" class="image-preview" alt="Preview">
+      </div>
+      
+      <div class="form-group">
+        <label>Link URL (Optional)</label>
+        <input type="url" id="linkUrl" placeholder="https://your-website.com">
+        <small style="color: var(--text-light);">Leave empty to link to your profile</small>
+      </div>
+      
+      <div class="form-group">
+        <label>Duration *</label>
+        <div class="duration-options" id="durationOptions">
+          <div class="duration-option" data-duration="1week">
+            <div class="duration">1 Week</div>
+            <div class="price">PKR 500</div>
+          </div>
+          <div class="duration-option" data-duration="2weeks">
+            <div class="duration">2 Weeks</div>
+            <div class="price">PKR 900</div>
+          </div>
+          <div class="duration-option" data-duration="1month">
+            <div class="duration">1 Month</div>
+            <div class="price">PKR 1,500</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="price-display" id="priceDisplay" style="display: none;">
+        <div class="amount" id="totalAmount">0</div>
+        <div class="period" id="totalPeriod"></div>
+      </div>
+      
+      <button type="submit" class="submit-btn" id="submitBtn" disabled>
+        Continue to Payment
+      </button>
+    </form>
+  </div>
+    </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/load-components.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/register-ad.js"></script>
+</body>
+</html>
