@@ -161,7 +161,8 @@
     })
     .then(res => {
       if (res.status === 403) {
-        window.location.href = 'login.html';
+        showToast('Admin access required', 'error');
+        setTimeout(() => { window.location.href = 'login.html'; }, 1500);
         return;
       }
       return res.json();
@@ -173,6 +174,7 @@
     })
     .catch(err => {
       console.error('Error loading ads:', err);
+      showToast('Failed to load ads. Please try again.', 'error');
       adsGrid.innerHTML = `
         <div class="no-ads">
           <i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i>
@@ -195,43 +197,43 @@
 
   // Approve handler
   window.handleApprove = function(adId) {
-    if (!confirm('Approve this advertisement? It will become active immediately.')) return;
-
-    fetch(`${API_BASE}/admin/ads/${adId}/approve`, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.message) {
-        alert('Ad approved successfully!');
-        loadAds(currentFilter);
-      }
-    })
-    .catch(err => {
-      console.error('Error approving ad:', err);
-      alert('Failed to approve ad. Please try again.');
+    showConfirm('Approve this advertisement? It will become active immediately.', function() {
+      fetch(`${API_BASE}/admin/ads/${adId}/approve`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message) {
+          showToast('Ad approved successfully!', 'success');
+          loadAds(currentFilter);
+        }
+      })
+      .catch(err => {
+        console.error('Error approving ad:', err);
+        showToast('Failed to approve ad. Please try again.', 'error');
+      });
     });
   };
 
   // Reject handler
   window.handleReject = function(adId) {
-    if (!confirm('Reject this advertisement? This action cannot be undone.')) return;
-
-    fetch(`${API_BASE}/admin/ads/${adId}/reject`, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.message) {
-        alert('Ad rejected successfully!');
-        loadAds(currentFilter);
-      }
-    })
-    .catch(err => {
-      console.error('Error rejecting ad:', err);
-      alert('Failed to reject ad. Please try again.');
+    showConfirm('Reject this advertisement? This action cannot be undone.', function() {
+      fetch(`${API_BASE}/admin/ads/${adId}/reject`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message) {
+          showToast('Ad rejected successfully!', 'success');
+          loadAds(currentFilter);
+        }
+      })
+      .catch(err => {
+        console.error('Error rejecting ad:', err);
+        showToast('Failed to reject ad. Please try again.', 'error');
+      });
     });
   };
 

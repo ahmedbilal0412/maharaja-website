@@ -1,6 +1,7 @@
 (function() {
   if (!getToken()) {
-    window.location.href = 'login.html';
+    showToast('Please log in to register an ad', 'error');
+    setTimeout(() => { window.location.href = 'login.html'; }, 1500);
     return;
   }
 
@@ -62,12 +63,13 @@
       const data = await response.json();
       if (response.ok) {
         uploadedImageUrl = data.image_url;
+        showToast('Image uploaded successfully!', 'success');
       } else {
-        alert('Upload failed: ' + (data.message || 'Unknown error'));
+        showToast('Upload failed: ' + (data.message || 'Unknown error'), 'error');
       }
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Upload failed. Please try again.');
+      showToast('Upload failed. Please try again.', 'error');
     }
 
     updateSubmitButton();
@@ -83,7 +85,7 @@
     e.preventDefault();
 
     if (!uploadedImageUrl || !selectedDuration) {
-      alert('Please select an image and duration.');
+      showToast('Please select an image and duration.', 'error');
       return;
     }
 
@@ -107,23 +109,33 @@
       
       if (response.ok) {
         // Simulate payment - in real app, redirect to payment gateway
-        if (confirm(`Payment required: PKR ${data.payment_amount}. Click OK to simulate payment.`)) {
-          const payResponse = await fetch(`${API_BASE}/ads/pay/${data.ad.id}`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          
-          if (payResponse.ok) {
-            alert('Ad submitted and payment recorded! Awaiting admin approval.');
-            window.location.href = 'my-ads.html';
+        showConfirm(`Payment required: PKR ${data.payment_amount}. Proceed with payment?`, async function() {
+          try {
+            const payResponse = await fetch(`${API_BASE}/ads/pay/${data.ad.id}`, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
+            if (payResponse.ok) {
+              showToast('Ad submitted and payment recorded! Awaiting admin approval.', 'success');
+              setTimeout(() => { window.location.href = 'my-ads.html'; }, 2000);
+            } else {
+              const payData = await payResponse.json();
+              showToast(payData.message || 'Payment failed', 'error');
+            }
+          } catch (error) {
+            console.error('Payment error:', error);
+            showToast('Payment failed. Please try again.', 'error');
           }
-        }
+        }, function() {
+          showToast('Payment cancelled', 'info');
+        });
       } else {
-        alert('Error: ' + data.message);
+        showToast('Error: ' + data.message, 'error');
       }
     } catch (error) {
       console.error('Submission error:', error);
-      alert('Failed to submit ad. Please try again.');
+      showToast('Failed to submit ad. Please try again.', 'error');
     }
   });
 })();

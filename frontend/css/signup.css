@@ -115,3 +115,38 @@ body, html {
   border: 1px solid #f5c6cb;
 }
 .form-message:empty { display: none !important; }
+
+
+/* Loading spinner for buttons */
+button[type="submit"] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Disabled button state */
+button[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Ensure button text doesn't wrap */
+button[type="submit"] span.spinner + span {
+  margin-left: 5px;
+}

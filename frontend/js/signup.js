@@ -2,6 +2,8 @@
   const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
   const form = document.getElementById("signup-form");
   const messageEl = document.getElementById("signup-message");
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+  
   if (!form) return;
 
   function showMessage(text, isError) {
@@ -9,6 +11,18 @@
     messageEl.textContent = text;
     messageEl.className = "form-message " + (isError ? "error" : "success");
     messageEl.style.display = text ? "block" : "none";
+  }
+
+  function setLoading(isLoading) {
+    if (!submitBtn) return;
+    
+    if (isLoading) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span> Creating account...';
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Create Account';
+    }
   }
 
   form.addEventListener("submit", async (e) => {
@@ -32,6 +46,8 @@
 
     const userData = { full_name, email, phone, password };
 
+    setLoading(true);
+
     try {
       const res = await fetch(`${API_BASE}/users/signup`, {
         method: "POST",
@@ -39,6 +55,8 @@
         body: JSON.stringify(userData),
       });
       const data = await res.json();
+
+      setLoading(false);
 
       if (!res.ok) {
         showMessage(data.message || "Signup failed.", true);
@@ -49,6 +67,7 @@
       setTimeout(() => { window.location.href = "login.html"; }, 1200);
     } catch (err) {
       console.error("Signup error:", err);
+      setLoading(false);
       showMessage("An error occurred. Please try again.", true);
     }
   });
