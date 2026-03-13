@@ -974,7 +974,6 @@ header.hero::before {
 
 .hero-modern-content {
   max-width: 1200px;
-  backdrop-filter: blur(10px);
   margin: 0 auto;
   padding: 30px;
   position: relative;
@@ -1585,7 +1584,7 @@ header.hero::before {
 }
 
 .buyer-content h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: 15px;
   line-height: 1.2;
@@ -1763,6 +1762,10 @@ header.hero::before {
     font-size: 0.7rem;
     padding: 2px 6px;
   }
+
+  #karachi-marker {
+    top: 95% !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1774,4 +1777,16 @@ header.hero::before {
     width: 22px;
     height: 22px;
   }
+}
+
+@media (max-width: 560px) {
+  .locations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    font-size: 0.9rem;
+  }
+}
+
+.map-title {
+  font-size: 2rem;
+  color: var(--primary-green);
 }

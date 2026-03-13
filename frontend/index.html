@@ -22,7 +22,7 @@
       <p class="notification-text">
         Property listings are 
         <span class="highlight">COMPLETELY FREE</span> 
-        in DHA & Bahria Town. Other Properties Have a Fee.
+        in DHA & Bahria Town. Listings for properties in other areas are subject to a fee.
       </p>
     </div>
   </div>
@@ -126,8 +126,6 @@
       </div>
     </section>
 
-    
-
   <!-- First Time Buyer Section -->
   <section class="first-time-buyer">
     <div class="buyer-container">
@@ -140,6 +138,53 @@
       </div>
     </div>
   </section>
+
+  <!-- Pakistan Map Section with Visible Hotspots -->
+    <section class="map-section">
+      <div class="container">
+        <h2 class="map-title">Explore Properties by City</h2>
+        <p class="section-subtitle">Click on any city marker to see available properties</p>
+        
+        <div class="map-container">
+          <img src="img/pakistan-map-outline.png" alt="Pakistan Map" class="pakistan-map" usemap="#cityMap">
+          
+          <!-- Visible city markers overlay -->
+          <div class="city-markers">
+            <!-- Islamabad -->
+            <a href="properties.html?city=islamabad" class="city-marker" style="top: 33%; left: 68%;">
+              <span class="marker-dot"></span>
+              <span class="marker-label">Islamabad</span>
+            </a>
+            
+            <!-- Rawalpindi -->
+            <a href="properties.html?city=rawalpindi" class="city-marker" style="top: 36%; left: 65%;">
+              <span class="marker-dot"></span>
+              <span class="marker-label">Rawalpindi</span>
+            </a>
+            
+            <!-- Lahore -->
+            <a href="properties.html?city=lahore" class="city-marker" style="top: 50%; left: 69%;">
+              <span class="marker-dot"></span>
+              <span class="marker-label">Lahore</span>
+            </a>
+            
+            <!-- Karachi -->
+            <a href="properties.html?city=karachi" class="city-marker" id="karachi-marker" style="top: 100%; left: 40%;">
+              <span class="marker-dot"></span>
+              <span class="marker-label">Karachi</span>
+            </a>
+          </div>
+          
+          <!-- Keep the image map for actual clicking (optional but ensures clicking works) -->
+          <map name="cityMap">
+            <area shape="circle" coords="300,150,20" alt="Islamabad" href="properties.html?city=islamabad">
+            <area shape="circle" coords="290,170,20" alt="Rawalpindi" href="properties.html?city=rawalpindi">
+            <area shape="circle" coords="340,200,20" alt="Lahore" href="properties.html?city=lahore">
+            <area shape="circle" coords="220,340,20" alt="Karachi" href="properties.html?city=karachi">
+          </map>
+        </div>
+      </div>
+    </section>
 
     <!-- Explore More Section -->
   <section class="explore-more">
@@ -162,6 +207,8 @@
 
       <!-- Locations Grid - Islamabad (Default) -->
       <div class="locations-grid" id="islamabad-locations">
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in B-17, Islamabad</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in D-12</a>
         <a href="/properties.html?city=islamabad" class="location-link">Properties in F-6, Islamabad</a>
         <a href="/properties.html?city=islamabad" class="location-link">Properties in F-7, Islamabad</a>
         <a href="/properties.html?city=islamabad" class="location-link">Properties in F-8, Islamabad</a>
@@ -177,16 +224,28 @@
         <a href="/properties.html?city=islamabad" class="location-link">Properties in I-8, Islamabad</a>
         <a href="/properties.html?city=islamabad" class="location-link">Properties in I-9, Islamabad</a>
         <a href="/properties.html?city=islamabad" class="location-link">Properties in I-10, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in Bahria Enclave</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in DHA Valley</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in Bahria Town</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in DHA Defense</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in Bani Gala</a>
         <a href="/properties.html?city=islamabad" class="location-link">Properties in Gulberg Greens</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in Faisal Hills</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in Top CIty 1</a>
+        <a href="/properties.html?city=islamabad" class="location-link">Properties in Faisal Town F-18</a>
       </div>
 
       <!-- Locations Grid - Lahore (Hidden by default) -->
       <div class="locations-grid" id="lahore-locations" style="display: none;">
         <a href="/properties.html?city=lahore" class="location-link">Properties in DHA Lahore</a>
         <a href="/properties.html?city=lahore" class="location-link">Properties in Bahria Town Lahore</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Bahria Orchard</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in LDA Road</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in LDA Avenue</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Central Park Housing</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Main Canal Bank Road</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in GT Road</a>
         <a href="/properties.html?city=lahore" class="location-link">Properties in Gulberg</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Raiwind Road</a>
+        <a href="/properties.html?city=lahore" class="location-link">Properties in Park View City</a>
         <a href="/properties.html?city=lahore" class="location-link">Properties in Johar Town</a>
         <a href="/properties.html?city=lahore" class="location-link">Properties in Model Town</a>
         <a href="/properties.html?city=lahore" class="location-link">Properties in Garden Town</a>
@@ -222,8 +281,10 @@
 
       <!-- Locations Grid - Karachi (Hidden by default) -->
       <div class="locations-grid" id="karachi-locations" style="display: none;">
-        <a href="/properties.html?city=karachi" class="location-link">Properties in DHA Karachi</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in DHA Defence</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in DHA City Karachi</a>
         <a href="/properties.html?city=karachi" class="location-link">Properties in Clifton</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Gadap Town</a>
         <a href="/properties.html?city=karachi" class="location-link">Properties in Gulshan-e-Iqbal</a>
         <a href="/properties.html?city=karachi" class="location-link">Properties in Bahria Town Karachi</a>
         <a href="/properties.html?city=karachi" class="location-link">Properties in Saddar</a>
@@ -233,11 +294,12 @@
         <a href="/properties.html?city=karachi" class="location-link">Properties in Tariq Road</a>
         <a href="/properties.html?city=karachi" class="location-link">Properties in Shahrah-e-Faisal</a>
         <a href="/properties.html?city=karachi" class="location-link">Properties in Malir</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Cantt</a>
         <a href="/properties.html?city=karachi" class="location-link">Properties in Scheme 33</a>
         <a href="/properties.html?city=karachi" class="location-link">Properties in Gulistan-e-Johar</a>
         <a href="/properties.html?city=karachi" class="location-link">Properties in FB Area</a>
         <a href="/properties.html?city=karachi" class="location-link">Properties in Liaquatabad</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Nazimabad</a>
+        <a href="/properties.html?city=karachi" class="location-link">Properties in Naya Nazimabad</a>
       </div>
     </div>
   </section>

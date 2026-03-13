@@ -34,7 +34,7 @@
 
 .nav-center {
   display: flex;
-  gap: 30px;
+  gap: 1.4vw;
   margin: 0 40px;
   flex-wrap: wrap;
   justify-content: center;
@@ -178,7 +178,7 @@
     padding: 15px 30px;
   }
   .nav-center {
-    gap: 25px;
+    gap: 10px;
     margin: 0 30px;
   }
   .nav-center a {
@@ -324,9 +324,6 @@
   }
   .navbar .logo {
     height: 40px;
-  }
-  .mobile-menu {
-    padding: 15px;
   }
   .mobile-nav-links a {
     padding: 12px 15px;

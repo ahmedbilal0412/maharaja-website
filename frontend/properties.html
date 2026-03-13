@@ -27,6 +27,17 @@
       <h3><i class="fas fa-filter"></i> Filter Properties</h3>
       <button class="reset-btn" id="reset-filters">Reset All Filters</button>
 
+      <!-- Search Bar -->
+      <div class="filter-group">
+        <label for="search-input"><i class="fas fa-search"></i> Search</label>
+        <div class="search-input-wrapper">
+          <input type="text" id="search-input" placeholder="Search by location, area, or property name...">
+          <button id="clear-search" class="clear-search-btn" style="display: none;">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
       <div class="filter-group">
         <label for="property-type">Property Type</label>
         <select id="property-type">

@@ -8,12 +8,174 @@ const cityFilterSelect = document.getElementById("city-filter");
 const priceFilterSelect = document.getElementById("price-filter");
 const listingFilters = document.querySelectorAll(".listing-filter");
 const bedroomFilters = document.querySelectorAll(".bedroom-filter");
+const searchInput = document.getElementById('search-input');
+const clearSearchBtn = document.getElementById('clear-search');
+const suggestionsContainer = document.createElement('div');
+suggestionsContainer.className = 'search-suggestions';
+searchInput.parentNode.appendChild(suggestionsContainer);
+
+let searchTerm = '';
+let showSuggestions = true;
 
 // State
 let allProperties = [];
 let filteredProperties = [];
 
 // ==================== HELPER FUNCTIONS ====================
+// ==================== AUTOCOMPLETE SUGGESTIONS ====================
+
+function getSuggestions(query) {
+  if (!query || query.length < 2) return [];
+
+  const term = query.toLowerCase();
+  const suggestions = new Set(); // Use Set to avoid duplicates
+  
+  // Common areas and cities to suggest
+  const commonTerms = [
+    // Cities
+    { text: 'Islamabad', type: 'city', filter: 'city', value: 'islamabad' },
+    { text: 'Lahore', type: 'city', filter: 'city', value: 'lahore' },
+    { text: 'Karachi', type: 'city', filter: 'city', value: 'karachi' },
+    { text: 'Rawalpindi', type: 'city', filter: 'city', value: 'rawalpindi' },
+    { text: 'Peshawar', type: 'city', filter: 'city', value: 'peshawar' },
+    { text: 'Multan', type: 'city', filter: 'city', value: 'multan' },
+    { text: 'Faisalabad', type: 'city', filter: 'city', value: 'faisalabad' },
+    { text: 'Quetta', type: 'city', filter: 'city', value: 'quetta' },
+    
+    // Areas
+    { text: 'DHA Islamabad', type: 'area', filter: 'area', value: 'DHA' },
+    { text: 'DHA Lahore', type: 'area', filter: 'area', value: 'DHA' },
+    { text: 'DHA Karachi', type: 'area', filter: 'area', value: 'DHA' },
+    { text: 'DHA Rawalpindi', type: 'area', filter: 'area', value: 'DHA' },
+    { text: 'Bahria Town Islamabad', type: 'area', filter: 'area', value: 'Bahria Town' },
+    { text: 'Bahria Town Lahore', type: 'area', filter: 'area', value: 'Bahria Town' },
+    { text: 'Bahria Town Karachi', type: 'area', filter: 'area', value: 'Bahria Town' },
+    { text: 'Bahria Town Rawalpindi', type: 'area', filter: 'area', value: 'Bahria Town' },
+    { text: 'Gulberg Lahore', type: 'area', filter: 'area', value: 'Gulberg' },
+    { text: 'Clifton Karachi', type: 'area', filter: 'area', value: 'Clifton' },
+    { text: 'F-6 Islamabad', type: 'area', filter: 'area', value: 'F-6' },
+    { text: 'F-7 Islamabad', type: 'area', filter: 'area', value: 'F-7' },
+    { text: 'G-9 Islamabad', type: 'area', filter: 'area', value: 'G-9' },
+    { text: 'E-11 Islamabad', type: 'area', filter: 'area', value: 'E-11' },
+  ];
+  
+  // Filter common terms based on query
+  commonTerms.forEach(term => {
+    if (term.text.toLowerCase().includes(query.toLowerCase())) {
+      suggestions.add(JSON.stringify({
+        text: term.text,
+        type: term.type,
+        filter: term.filter,
+        value: term.value
+      }));
+    }
+  });
+  
+  // Also suggest from actual properties in the database
+  allProperties.forEach(prop => {
+    // Suggest cities from properties
+    if (prop.city && prop.city.toLowerCase().includes(term)) {
+      suggestions.add(JSON.stringify({
+        text: prop.city,
+        type: 'city',
+        filter: 'city',
+        value: prop.city.toLowerCase()
+      }));
+    }
+    
+    // Suggest areas from properties
+    if (prop.area && prop.area.toLowerCase().includes(term)) {
+      suggestions.add(JSON.stringify({
+        text: prop.area + (prop.city ? `, ${prop.city}` : ''),
+        type: 'area',
+        filter: 'area',
+        value: prop.area
+      }));
+    }
+    
+    // Suggest locations
+    if (prop.location && prop.location.toLowerCase().includes(term)) {
+      // Only add if it's reasonably short
+      if (prop.location.length < 30) {
+        suggestions.add(JSON.stringify({
+          text: prop.location,
+          type: 'location',
+          filter: 'location',
+          value: prop.location
+        }));
+      }
+    }
+  });
+  
+  // Convert back from Set and limit to 8 suggestions
+  return Array.from(suggestions)
+    .map(s => JSON.parse(s))
+    .slice(0, 8);
+}
+
+function showSuggestionsDropdown(query) {
+  if (!showSuggestions) return;
+  
+  const suggestions = getSuggestions(query);
+  
+  if (suggestions.length === 0) {
+    suggestionsContainer.style.display = 'none';
+    return;
+  }
+  
+  suggestionsContainer.innerHTML = suggestions.map(s => `
+    <div class="suggestion-item" data-filter="${s.filter}" data-value="${s.value}" data-text="${s.text}">
+      <i class="fas fa-${s.type === 'city' ? 'city' : s.type === 'area' ? 'map-marker-alt' : 'map-pin'}"></i>
+      <span>${s.text}</span>
+      <small>${s.type}</small>
+    </div>
+  `).join('');
+  
+  suggestionsContainer.style.display = 'block';
+  
+  // Add click handlers to suggestions
+  suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
+    item.addEventListener('click', function() {
+      const filter = this.dataset.filter;
+      const value = this.dataset.value;
+      const text = this.dataset.text;
+      
+      // Apply the filter
+      if (filter === 'city' && cityFilterSelect) {
+        cityFilterSelect.value = value;
+      } else if (filter === 'area') {
+        // For area, we might want to also set city filter
+        // This is simplified - you could enhance this
+        searchInput.value = text;
+        searchTerm = text;
+      }
+      
+      // Clear suggestions
+      suggestionsContainer.style.display = 'none';
+      
+      // Trigger filter
+      filterProperties();
+    });
+  });
+}
+
+// ==================== SEARCH FUNCTION ====================
+
+function filterBySearch(property) {
+  if (!searchTerm) return true;
+  
+  const term = searchTerm.toLowerCase();
+  const searchableFields = [
+    property.title || '',
+    property.location || '',
+    property.city || '',
+    property.area || ''
+  ];
+  
+  return searchableFields.some(field => 
+    field.toLowerCase().includes(term)
+  );
+}
 
 function formatPrice(price, listingType) {
   if (listingType === "rent") return "PKR " + Number(price).toLocaleString() + "/month";
@@ -83,6 +245,8 @@ function filterProperties() {
     .map((cb) => cb.value);
 
   filteredProperties = allProperties.filter((property) => {
+    // search filter
+    if (!filterBySearch(property)) return false;
     // Property type filter
     if (propertyType && property.property_type !== propertyType) return false;
 
@@ -145,12 +309,18 @@ function resetFilters() {
   if (cityFilterSelect) cityFilterSelect.value = "";
   if (priceFilterSelect) priceFilterSelect.value = "";
   if (sortSelect) sortSelect.value = "newest";
+  if (searchInput) searchInput.value = "";
+  searchTerm = "";
   (listingFilters || []).forEach((cb) => (cb.checked = false));
   (bedroomFilters || []).forEach((cb) => (cb.checked = false));
 
   filteredProperties = [...allProperties];
   sortProperties();
   renderProperties();
+
+  if (clearSearchBtn) {
+    clearSearchBtn.style.display = 'none';
+  }
 }
 
 // ==================== URL PARAMETER HANDLING ====================
@@ -254,6 +424,61 @@ if (sortSelect) sortSelect.addEventListener("change", filterProperties);
 (listingFilters || []).forEach((cb) => cb.addEventListener("change", filterProperties));
 (bedroomFilters || []).forEach((cb) => cb.addEventListener("change", filterProperties));
 if (resetBtn) resetBtn.addEventListener("click", resetFilters);
+
+// ==================== SEARCH EVENT LISTENERS ====================
+
+if (searchInput) {
+  // Debounce search to avoid too many updates while typing
+  let searchTimeout;
+  
+  searchInput.addEventListener('input', function() {
+    const value = this.value.trim();
+    
+    // Show suggestions
+    if (value.length >= 2) {
+      showSuggestionsDropdown(value);
+    } else {
+      suggestionsContainer.style.display = 'none';
+    }
+    
+    // Debounce the actual search
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      searchTerm = value;
+      filterProperties();
+
+    }, 300);
+  });
+  
+  // Hide suggestions when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!searchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+      suggestionsContainer.style.display = 'none';
+    }
+  });
+  
+  // Handle keyboard navigation in suggestions
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const firstSuggestion = suggestionsContainer.querySelector('.suggestion-item');
+      if (firstSuggestion) firstSuggestion.focus();
+    } else if (e.key === 'Escape') {
+      suggestionsContainer.style.display = 'none';
+    }
+  });
+}
+
+if (clearSearchBtn) {
+  clearSearchBtn.addEventListener('click', function() {
+    if (searchInput) {
+      searchInput.value = '';
+      searchTerm = '';
+      suggestionsContainer.style.display = 'none';
+      filterProperties();
+    }
+  });
+}
 
 // ==================== INITIAL DATA LOAD ====================
 
