@@ -35,7 +35,6 @@ PROPERTY_STATUS_APPROVED = "approved"
 PROPERTY_STATUS_PENDING = "pending_approval"
 PROPERTY_STATUS_REJECTED = "rejected"
 
-
 class Property(db.Model):
     __tablename__ = "properties"
     id = db.Column(db.Integer, primary_key=True)
@@ -46,6 +45,16 @@ class Property(db.Model):
     area = db.Column(db.String(80), nullable=True)  # DHA, Bahria Town, Other
     price = db.Column(db.Integer, nullable=False)
     property_type = db.Column(db.String(40), nullable=False)  # house, apartment, villa
+    
+    # New fields
+    description = db.Column(db.Text, nullable=True)  # Detailed property description
+    parking = db.Column(db.Boolean, default=False)  # Whether parking is available
+    furnished = db.Column(db.String(20), nullable=True)  # 'unfurnished', 'semi-furnished', 'fully-furnished'
+    total_floors = db.Column(db.Integer, nullable=True)  # Total floors in building/property
+    electricity_backup = db.Column(db.Boolean, default=False)  # Whether backup generator/solar is available
+    year_built = db.Column(db.Integer, nullable=True)  # Year the property was built
+    
+    # Existing fields
     listing_type = db.Column(db.String(20), nullable=False)  # sale, rent
     bedrooms = db.Column(db.Integer, nullable=False)
     bathrooms = db.Column(db.Integer, nullable=False)
@@ -79,6 +88,12 @@ class Property(db.Model):
             "area": self.area,
             "price": self.price,
             "property_type": self.property_type,
+            "description": self.description,
+            "parking": self.parking,
+            "furnished": self.furnished,
+            "total_floors": self.total_floors,
+            "electricity_backup": self.electricity_backup,
+            "year_built": self.year_built,
             "listing_type": self.listing_type,
             "bedrooms": self.bedrooms,
             "bathrooms": self.bathrooms,
@@ -91,7 +106,6 @@ class Property(db.Model):
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
         }
-
 
 def seed_admin_if_needed():
     if User.query.filter_by(email="admin@maharajabuilders.pk").first():

@@ -3,33 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <title>Property Details - Maharaja Builders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
   <link rel="stylesheet" href="css/property-details.css" />
   <base href="/">
 </head>
 <body>
-  <div class="container">
-    <img id="mainImage" class="main-image" src="" alt="Main Property Image">
-    <div class="content">
-      <h1 id="title">Loading...</h1>
-      <p id="location" class="location"></p>
-      <p id="price" class="price"></p>
+  <div data-include="components/navbar.html"></div>
 
-      <div id="features" class="features"></div>
+  <div class="property-details-container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="properties.html">← Back to Properties</a>
+    </div>
 
-      <h3 style="color: var(--primary-green); margin-top: 40px;">Amenities</h3>
-      <div id="amenities" class="amenities"></div>
+    <div class="property-details-grid">
+      <!-- Left Column - Images -->
+      <div class="property-images">
+        <div class="main-image-container">
+          <img id="mainImage" class="main-image" src="" alt="Main Property Image">
+          <div class="property-badge" id="propertyBadge">For Sale</div>
+        </div>
+        <div class="thumbnail-grid" id="imagesGrid">
+          <!-- Thumbnails will be loaded here -->
+        </div>
+      </div>
 
-      <div id="imagesGrid" class="images-grid"></div>
+      <!-- Right Column - Details -->
+      <div class="property-info-panel">
+        <!-- Seller Info -->
+        <div class="seller-card">
+          <div class="seller-logo">MB</div>
+          <div class="seller-details">
+            <h3 id="sellerName">Maharaja Builders</h3>
+            <p class="verified-seller"><i class="fas fa-check-circle"></i> Verified Seller</p>
+            <div class="seller-rating" id="sellerRating" style="display: none;">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              <span>(128 reviews)</span>
+            </div>
+          </div>
+        </div>
 
-      <div class="actions">
-        <button class="btn btn-secondary" onclick="history.back()">← Go Back</button>
+        <!-- Contact Actions -->
+        <div class="contact-actions">
+          <button class="btn btn-call" id="callBtn" style="display: none;"><i class="fas fa-phone"></i> Call Seller</button>
+          <button class="btn btn-email" id="emailBtn" style="display: none;"><i class="fas fa-envelope"></i> Email Seller</button>
+        </div>
+
+        <!-- Property Title -->
+        <h1 id="title" class="property-title">Loading...</h1>
+        <p id="location" class="property-location"><i class="fas fa-map-marker-alt"></i> <span>Loading...</span></p>
+
+        <!-- Price -->
+        <div class="property-price">
+          <span id="price" class="price-amount">Loading...</span>
+        </div>
+
+        <!-- Key Features -->
+        <div class="key-features" id="features">
+          <!-- Features will be loaded here -->
+        </div>
+
+        <!-- Additional Details Row -->
+        <div class="additional-details" id="additionalDetails" style="display: none;">
+          <!-- Will show furnished status, year built, total floors -->
+        </div>
+
+        <!-- Parking Badge (if available) -->
+        <div class="parking-badge" id="parkingBadge" style="display: none;">
+          <i class="fas fa-car"></i> Parking Available
+        </div>
+        
+        <!-- Electricity Backup Badge (if available) -->
+        <div class="electricity-badge" id="electricityBadge" style="display: none;">
+          <i class="fas fa-bolt"></i> Electricity Backup
+        </div>
+
+        <!-- Tabs -->
+        <div class="property-tabs">
+          <button class="tab-btn active" data-tab="overview">Overview</button>
+          <button class="tab-btn" data-tab="details">Details</button>
+          <button class="tab-btn" data-tab="map">Map</button>
+          <button class="tab-btn" data-tab="nearby">Nearby</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+          <!-- Overview Tab -->
+          <div class="tab-pane active" id="overview-tab">
+            <h3>Description</h3>
+            <p id="description">No description provided.</p>
+            
+            <!-- Property Details Summary -->
+            <div class="property-specs" id="propertySpecs" style="margin-top: 20px;">
+              <!-- Will show year built, total floors, etc. -->
+            </div>
+          </div>
+
+          <!-- Details Tab -->
+          <div class="tab-pane" id="details-tab">
+            <h3>Amenities</h3>
+            <div id="amenities" class="amenities-grid">
+              <!-- Amenities will be loaded here -->
+            </div>
+          </div>
+
+          <!-- Map Tab (Placeholder) -->
+          <div class="tab-pane" id="map-tab">
+            <h3>Location Map</h3>
+            <div class="map-placeholder">
+              <i class="fas fa-map"></i>
+              <p>Map view coming soon</p>
+            </div>
+          </div>
+
+          <!-- Nearby Tab (Placeholder) -->
+          <div class="tab-pane" id="nearby-tab">
+            <h3>Nearby Places</h3>
+            <div class="nearby-places">
+              <p><i class="fas fa-school"></i> Schools nearby</p>
+              <p><i class="fas fa-hospital"></i> Hospitals nearby</p>
+              <p><i class="fas fa-shopping-cart"></i> Shopping centers</p>
+              <p><i class="fas fa-train"></i> Public transport</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Request Information Section -->
+  <section class="request-info-section">
+    <div class="container">
+      <h2>Request Information</h2>
+      <form id="requestForm" class="request-form">
+        <div class="form-row">
+          <input type="text" placeholder="Your Name" required>
+          <input type="email" placeholder="Your Email" required>
+        </div>
+        <div class="form-row">
+          <input type="tel" placeholder="Your Phone" required>
+          <input type="text" placeholder="Your Message" required>
+        </div>
+        <button type="submit" class="btn btn-submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <div data-include="components/footer.html"></div>
+
   <script src="js/config.js"></script>
+  <script src="js/load-components.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
   <script src="js/property-details.js"></script>
 </body>
 </html>

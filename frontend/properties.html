@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Properties - Maharaja Builders & Realtors</title>
+  <title>Properties for sale in Pakistan - Maharaja Builders & Realtors</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="css/variables.css" />
@@ -15,100 +15,132 @@
 <body>
   <div data-include="components/navbar.html"></div>
 
-  <!-- Hero -->
-  <section class="properties-hero">
-    <h1>Luxury Properties</h1>
-    <p>Explore our curated selection of premium real estate listings across Pakistan's most desirable cities.</p>
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="header-container">
+      <h1>Properties for Sale</h1>
+      <p>Explore our collection of premium real estate</p>
+    </div>
   </section>
 
-  <!-- Filter & Properties -->
+  <!-- Main Content -->
   <section class="properties-section">
-    <aside class="filter-sidebar">
-      <h3><i class="fas fa-filter"></i> Filter Properties</h3>
-      <button class="reset-btn" id="reset-filters">Reset All Filters</button>
-
-      <!-- Search Bar -->
-      <div class="filter-group">
-        <label for="search-input"><i class="fas fa-search"></i> Search</label>
-        <div class="search-input-wrapper">
-          <input type="text" id="search-input" placeholder="Search by location, area, or property name...">
-          <button id="clear-search" class="clear-search-btn" style="display: none;">
-            <i class="fas fa-times"></i>
-          </button>
+    <div class="container">
+      <!-- Top Bar with Tabs and Controls -->
+      <div class="properties-top-bar">
+        <p id="properties-count-header">0 properties found</p>
+        <div class="view-controls">
+          <div class="sort-dropdown">
+            <select id="sort-properties">
+              <option value="featured">Sort by: Featured</option>
+              <option value="newest">Newest First</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+            </select>
+          </div>
+          <div class="view-toggle">
+            <button class="view-btn grid-view active" id="grid-view-btn" title="Grid view">
+              <i class="fas fa-th-large"></i>
+            </button>
+            <button class="view-btn column-view" id="column-view-btn" title="Column view">
+              <i class="fas fa-list"></i>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="filter-group">
-        <label for="property-type">Property Type</label>
-        <select id="property-type">
-          <option value="">All Types</option>
-          <option value="house">House</option>
-          <option value="apartment">Apartment</option>
-          <option value="villa">Villa</option>
-          <option value="penthouse">Penthouse</option>
-          <option value="commercial">Commercial</option>
-          <option value="plot">Plot</option>
-        </select>
-      </div>
+      <!-- Filter and Results Grid -->
+      <div class="properties-layout">
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar">
+          <div class="filter-header">
+            <h3><i class="fas fa-sliders-h"></i> Filter</h3>
+            <button class="reset-link" id="reset-filters">X</button>
+          </div>
 
-      <div class="filter-group">
-        <label for="city-filter">City</label>
-        <select id="city-filter">
-          <option value="">All Cities</option>
-          <option value="islamabad">Islamabad</option>
-          <option value="rawalpindi">Rawalpindi</option>
-          <option value="karachi">Karachi</option>
-          <option value="lahore">Lahore</option>
-          <option value="peshawar">Peshawar</option>
-          <option value="faisalabad">Faisalabad</option>
-          <option value="multan">Multan</option>
-        </select>
-      </div>
+          <!-- Location Search -->
+          <div class="filter-section">
+            <h4>Selected Location</h4>
+            <div class="location-search">
+              <i class="fas fa-search location-search-icon"></i>
+              <input type="text" id="search-input" placeholder="Search for location">
+            </div>
+          </div>
 
-      <div class="filter-group">
-        <label>Listing Type</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" value="sale" class="listing-filter"> For Sale</label>
-          <label><input type="checkbox" value="rent" class="listing-filter"> For Rent</label>
+          <!-- Property Type Filter -->
+          <div class="filter-section">
+            <h4>Property type</h4>
+            <div class="filter-options">
+              <label class="filter-option">
+                <input type="checkbox" value="house" class="listing-filter"> Houses <span class="count"></span>
+              </label>
+              <label class="filter-option">
+                <input type="checkbox" value="apartment" class="listing-filter"> Apartments <span class="count"></span>
+              </label>
+              <label class="filter-option">
+                <input type="checkbox" value="villa" class="listing-filter"> Villas <span class="count"></span>
+              </label>
+              <label class="filter-option">
+                <input type="checkbox" value="commercial" class="listing-filter"> Commercial <span class="count"></span>
+              </label>
+              <label class="filter-option">
+                <input type="checkbox" value="plot" class="listing-filter"> Plot <span class="count"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Buy/Rent Filter -->
+          <div class="filter-section">
+            <h4>Listing Type</h4>
+            <div class="listing-type-options">
+              <label class="filter-option radio-option">
+                <input type="radio" name="listing-type" value="sale" checked> For Sale
+              </label>
+              <label class="filter-option radio-option">
+                <input type="radio" name="listing-type" value="rent"> For Rent
+              </label>
+            </div>
+          </div>
+
+          <!-- Price Range (hidden by default, shown when needed) -->
+          <div class="filter-section">
+            <h4>Price Range</h4>
+            <select id="price-filter" class="price-select">
+              <option value="">Any Price</option>
+              <option value="0-10000000">Under PKR 1 Crore</option>
+              <option value="10000000-25000000">PKR 1-2.5 Crore</option>
+              <option value="25000000-50000000">PKR 2.5-5 Crore</option>
+              <option value="50000000-100000000">PKR 5-10 Crore</option>
+              <option value="100000000+">Over PKR 10 Crore</option>
+            </select>
+          </div>
+
+          <!-- Beds & Baths (simplified) -->
+          <div class="filter-section">
+            <h4>Beds & Baths</h4>
+            <div class="beds-baths">
+              <select class="beds-select">
+                <option>Any beds</option>
+                <option>1+ beds</option>
+                <option>2+ beds</option>
+                <option>3+ beds</option>
+                <option>4+ beds</option>
+              </select>
+              <select class="baths-select">
+                <option>Any baths</option>
+                <option>1+ baths</option>
+                <option>2+ baths</option>
+                <option>3+ baths</option>
+                <option>4+ baths</option>
+              </select>
+            </div>
+          </div>
+        </aside>
+        <!-- Property Grid -->
+        <div class="properties-grid-container">
+          <div id="properties-grid" class="properties-grid">
+          </div>
         </div>
-      </div>
-
-      <div class="filter-group">
-        <label>Bedrooms</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" value="1" class="bedroom-filter"> 1 Bedroom</label>
-          <label><input type="checkbox" value="2" class="bedroom-filter"> 2 Bedrooms</label>
-          <label><input type="checkbox" value="3" class="bedroom-filter"> 3 Bedrooms</label>
-          <label><input type="checkbox" value="4" class="bedroom-filter"> 4+ Bedrooms</label>
-        </div>
-      </div>
-
-      <div class="filter-group">
-        <label>Price Range</label>
-        <select id="price-filter">
-          <option value="">Any Price</option>
-          <option value="0-10000000">Under PKR 1 Crore</option>
-          <option value="10000000-25000000">PKR 1-2.5 Crore</option>
-          <option value="25000000-50000000">PKR 2.5-5 Crore</option>
-          <option value="50000000-100000000">PKR 5-10 Crore</option>
-          <option value="100000000+">Over PKR 10 Crore</option>
-        </select>
-      </div>
-    </aside>
-
-    <div class="properties-right">
-      <div class="properties-top">
-        <p id="properties-count">Loading Properties...</p>
-        <select id="sort-properties">
-          <option value="newest">Newest First</option>
-          <option value="price-low">Price: Low to High</option>
-          <option value="price-high">Price: High to Low</option>
-          <option value="bedrooms">Most Bedrooms</option>
-        </select>
-      </div>
-
-      <div id="properties-grid" class="properties-grid">
-        <!-- Properties will be loaded here dynamically -->
       </div>
     </div>
   </section>
@@ -119,6 +151,7 @@
   <script src="js/load-components.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/navbar.js"></script>
+  <script src="js/home.js"></script>
   <script src="js/properties.js"></script>
 </body>
 </html>

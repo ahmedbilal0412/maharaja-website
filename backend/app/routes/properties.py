@@ -169,6 +169,7 @@ def create_property():
     data = request.get_json() or {}
     print("DEBUG: Received data:", data)  
 
+    # Basic required fields
     title = (data.get("title") or "").strip()
     location = (data.get("location") or "").strip()
     price = data.get("price")
@@ -178,9 +179,17 @@ def create_property():
     bathrooms = data.get("bathrooms")
     size_sqft = data.get("size_sqft") or data.get("size")
     amenities = data.get("amenities")
-    image_url = (data.get("image_url") or data.get("image") or "").strip()
     city = (data.get("city") or "").strip()
+    
+    # New optional fields
+    description = data.get("description", "").strip()
+    parking = data.get("parking", False)
+    furnished = data.get("furnished", "")
+    total_floors = data.get("total_floors")
+    electricity_backup = data.get("electricity_backup", False)
+    year_built = data.get("year_built")
 
+    # Validation
     if not title or not location or price is None:
         return jsonify({"message": "Title, location and price are required."}), 400
     if not property_type or not listing_type:
@@ -194,14 +203,31 @@ def create_property():
     else:
         status = PROPERTY_STATUS_PENDING
 
+    # Handle amenities (convert list to comma-separated string)
     if isinstance(amenities, list):
-        amenities = ",".join(str(a) for a in amenities)
+        amenities_str = ",".join(str(a) for a in amenities)
     elif amenities is None:
-        amenities = ""
+        amenities_str = ""
+    else:
+        amenities_str = str(amenities)
+
+    # Handle total_floors and year_built (convert to int if provided)
+    if total_floors is not None:
+        try:
+            total_floors = int(total_floors)
+        except (TypeError, ValueError):
+            total_floors = None
+    
+    if year_built is not None:
+        try:
+            year_built = int(year_built)
+        except (TypeError, ValueError):
+            year_built = None
 
     images = data.get("images", [])  # Array of image URLs
     primary_image_index = data.get("primary_image_index", 0)
 
+    # Create property with all fields
     prop = Property(
         seller_id=user_id,
         title=title,
@@ -214,8 +240,15 @@ def create_property():
         bedrooms=int(bedrooms),
         bathrooms=int(bathrooms),
         size_sqft=int(size_sqft),
-        amenities=amenities or None,
+        amenities=amenities_str or None,
         status=status,
+        # New fields
+        description=description or None,
+        parking=parking,
+        furnished=furnished if furnished else None,
+        total_floors=total_floors,
+        electricity_backup=electricity_backup,
+        year_built=year_built,
     )
     db.session.add(prop)
     db.session.flush()
@@ -233,7 +266,6 @@ def create_property():
     db.session.commit()
     print("DEBUG: Property images:", [img.to_dict() for img in prop.images])
     return jsonify({"message": "Property submitted.", "property": prop.to_dict()}), 201
-
 
 @properties_bp.route("/<int:prop_id>", methods=["DELETE"])
 @jwt_required()

@@ -53,10 +53,25 @@ if (form) {
     const image_urls = await uploadImages(files);
 
     function doSubmit() {
+      // Get amenities from checkboxes
       var amenities = [];
       form.querySelectorAll('.checkbox-group input[type="checkbox"]:checked').forEach(function (cb) {
         if (cb.value) amenities.push(cb.value);
       });
+
+      // Get parking checkbox
+      const parkingCheckbox = document.getElementById("parking");
+      const parking = parkingCheckbox ? parkingCheckbox.checked : false;
+
+      // Get electricity backup checkbox
+      const electricityCheckbox = document.getElementById("electricityBackup");
+      const electricity_backup = electricityCheckbox ? electricityCheckbox.checked : false;
+
+      // Get other fields
+      const description = document.getElementById("description") ? document.getElementById("description").value.trim() : "";
+      const furnished = document.getElementById("furnished") ? document.getElementById("furnished").value : "";
+      const totalFloors = document.getElementById("totalFloors") ? parseInt(document.getElementById("totalFloors").value, 10) || null : null;
+      const yearBuilt = document.getElementById("yearBuilt") ? parseInt(document.getElementById("yearBuilt").value, 10) || null : null;
 
       var payload = {
         title: (document.getElementById("title") && document.getElementById("title").value || "").trim(),
@@ -70,7 +85,15 @@ if (form) {
         size_sqft: parseInt((document.getElementById("size") && document.getElementById("size").value) || 0, 10),
         amenities: amenities,
         images: image_urls, 
-        primary_image_index: 0  // First image is primary
+        primary_image_index: 0,  // First image is primary
+        
+        // New fields
+        description: description || null,
+        parking: parking,
+        furnished: furnished || null,
+        total_floors: totalFloors,
+        electricity_backup: electricity_backup,
+        year_built: yearBuilt
       };
 
       if (!payload.title || !payload.location || !payload.price) {
@@ -101,6 +124,11 @@ if (form) {
             : "Property submitted for admin approval. You will see it in My Listings.";
           if (typeof showToast === "function") showToast(msg, "success");
           else alert(msg);
+          
+          // Redirect to my listings after successful submission
+          setTimeout(() => {
+            window.location.href = "my-listings.html";
+          }, 2000);
         })
         .catch(function (err) {
           console.error("Submit error:", err);

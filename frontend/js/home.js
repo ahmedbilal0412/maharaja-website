@@ -365,6 +365,54 @@
     });
   }
 
+  // ==================== POPULAR LOCATIONS TAB FUNCTIONALITY ====================
+
+// Property type tabs (Plots/Flats/Houses)
+document.querySelectorAll('.popular-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    // Update active tab
+    document.querySelectorAll('.popular-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    
+    // Get the type
+    const type = this.dataset.type;
+    
+    // Hide all grids
+    document.getElementById('plots-grid').style.display = 'none';
+    document.getElementById('flats-grid').style.display = 'none';
+    document.getElementById('houses-grid').style.display = 'none';
+    
+    // Show selected grid
+    document.getElementById(type + '-grid').style.display = 'grid';
+  });
+});
+
+// Sale/Rent toggle
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    
+    const listingType = this.dataset.listing; // 'sale' or 'rent'
+    const listingText = listingType === 'sale' ? 'sale' : 'rent';
+    
+    // Update all location links based on selection
+    document.querySelectorAll('.location-list a, .city-list a').forEach(link => {
+      const href = link.getAttribute('href');
+      const newHref = href.replace(/listing_type=\w+/, `listing_type=${listingType}`);
+      link.setAttribute('href', newHref);
+      
+      // Update the text inside the link (for display only)
+      const linkText = link.innerHTML;
+      if (listingType === 'sale') {
+        link.innerHTML = linkText.replace(/rent/g, 'sale');
+      } else {
+        link.innerHTML = linkText.replace(/sale/g, 'rent');
+      }
+    });
+  });
+});
+
   // ==================== INIT FUNCTION ====================
 
   function init() {

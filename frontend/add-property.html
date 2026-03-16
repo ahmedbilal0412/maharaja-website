@@ -40,30 +40,35 @@
 
       <section class="add-property-section">
         <form id="addPropertyForm">
+          <!-- Basic Information -->
+          <h3 class="section-title">Basic Information</h3>
+          
           <div class="form-group">
-            <label>Property Title</label>
-            <input type="text" id="title" placeholder="Luxury Villa in F-7" required>
+            <label>Property Title *</label>
+            <input type="text" id="title" placeholder="e.g., Luxury 5 Bedroom Villa in DHA" required>
           </div>
 
-          <div class="form-group">
-            <label>City</label>
-            <select id="city" required>
-              <option value="">Select City</option>
-              <option value="Islamabad">Islamabad</option>
-              <option value="Lahore">Lahore</option>
-              <option value="Karachi">Karachi</option>
-              <option value="Rawalpindi">Rawalpindi</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>City *</label>
+              <select id="city" required>
+                <option value="">Select City</option>
+                <option value="Islamabad">Islamabad</option>
+                <option value="Lahore">Lahore</option>
+                <option value="Karachi">Karachi</option>
+                <option value="Rawalpindi">Rawalpindi</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
 
-          <div class="form-group">
-            <label>Location</label>
-            <input type="text" id="location" placeholder="F-7 Markaz, Islamabad" required>
+            <div class="form-group">
+              <label>Location/Area *</label>
+              <input type="text" id="location" placeholder="e.g., DHA Phase 6, F-7 Markaz" required>
+            </div>
           </div>
 
           <div id="freeListingMsg" class="free-listing">
-            ✅ Listing is free for this location.
+            ✅ Listing is free for this location (DHA or Bahria Town).
           </div>
 
           <div id="paymentSection" class="payment-section">
@@ -78,62 +83,123 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label>Price (PKR)</label>
-            <input type="number" id="price" placeholder="125000000" required>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Price (PKR) *</label>
+              <input type="number" id="price" placeholder="125000000" required>
+            </div>
+
+            <div class="form-group">
+              <label>Year Built</label>
+              <input type="number" id="yearBuilt" placeholder="e.g., 2022" min="1900" max="2026">
+            </div>
           </div>
 
-          <div class="form-group">
-            <label>Property Type</label>
-            <select id="type" required>
-              <option value="">Select Type</option>
-              <option value="house">House</option>
-              <option value="apartment">Apartment</option>
-              <option value="villa">Villa</option>
-            </select>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Property Type *</label>
+              <select id="type" required>
+                <option value="">Select Type</option>
+                <option value="house">House</option>
+                <option value="apartment">Apartment</option>
+                <option value="villa">Villa</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Listing Type *</label>
+              <select id="listing" required>
+                <option value="">Select Listing</option>
+                <option value="sale">For Sale</option>
+                <option value="rent">For Rent</option>
+              </select>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label>Listing Type</label>
-            <select id="listing" required>
-              <option value="">Select Listing</option>
-              <option value="sale">For Sale</option>
-              <option value="rent">For Rent</option>
-            </select>
+          <!-- Property Details -->
+          <h3 class="section-title">Property Details</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Bedrooms *</label>
+              <input type="number" id="beds" placeholder="5" min="0" required>
+            </div>
+
+            <div class="form-group">
+              <label>Bathrooms *</label>
+              <input type="number" id="baths" placeholder="4" min="0" required>
+            </div>
+
+            <div class="form-group">
+              <label>Total Floors</label>
+              <input type="number" id="totalFloors" placeholder="e.g., 2" min="1">
+            </div>
           </div>
 
-          <div class="form-group">
-            <label>Bedrooms</label>
-            <input type="number" id="beds" placeholder="5" required>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Size (sq ft) *</label>
+              <input type="number" id="size" placeholder="5500" min="1" required>
+            </div>
+
+            <div class="form-group">
+              <label>Furnished Status</label>
+              <select id="furnished">
+                <option value="">Select Option</option>
+                <option value="unfurnished">Unfurnished</option>
+                <option value="semi-furnished">Semi-Furnished</option>
+                <option value="fully-furnished">Fully Furnished</option>
+              </select>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label>Bathrooms</label>
-            <input type="number" id="baths" placeholder="4" required>
-          </div>
+          <!-- Features -->
+          <h3 class="section-title">Features & Amenities</h3>
+          
+          <div class="form-row">
+            <div class="checkbox-single">
+              <input type="checkbox" id="parking" value="true">
+              <label for="parking">Parking Available</label>
+            </div>
 
-          <div class="form-group">
-            <label>Size (sqft)</label>
-            <input type="number" id="size" placeholder="5500" required>
-          </div>
-
-          <div class="form-group">
-            <label>Amenities</label>
-            <div class="checkbox-group">
-              <label><input type="checkbox" value="swimming_pool"> Pool</label>
-              <label><input type="checkbox" value="gym"> Gym</label>
-              <label><input type="checkbox" value="parking"> Parking</label>
-              <label><input type="checkbox" value="security"> Security</label>
-              <label><input type="checkbox" value="garden"> Garden</label>
+            <div class="checkbox-single">
+              <input type="checkbox" id="electricityBackup" value="true">
+              <label for="electricityBackup">Electricity Backup</label>
             </div>
           </div>
 
           <div class="form-group">
-              <label>Property Images (Max 5)</label>
-                 <input type="file" id="images" accept="image/*" multiple required>
-              <div id="image-preview" class="image-preview"></div>
+            <div class="checkbox-group">
+              <label><input type="checkbox" value="swimming_pool"> Swimming Pool</label>
+              <label><input type="checkbox" value="gym"> Gym/Fitness Center</label>
+              <label><input type="checkbox" value="security"> 24/7 Security</label>
+              <label><input type="checkbox" value="garden"> Garden/Lawn</label>
+              <label><input type="checkbox" value="central_ac"> Central AC</label>
+              <label><input type="checkbox" value="servant_quarters"> Servant Quarters</label>
+              <label><input type="checkbox" value="study_room"> Study Room</label>
+              <label><input type="checkbox" value="prayer_room"> Prayer Room</label>
+            </div>
           </div>
 
+          <!-- Description -->
+          <h3 class="section-title">Description</h3>
+          
+          <div class="form-group">
+            <label>Property Description</label>
+            <textarea id="description" rows="6" placeholder="Describe your property in detail... Include information about the location, nearby amenities, unique features, etc."></textarea>
+          </div>
+
+          <!-- Images -->
+          <h3 class="section-title">Property Images</h3>
+          
+          <div class="form-group">
+            <label>Property Images (Max 5) *</label>
+            <input type="file" id="images" accept="image/*" multiple required>
+            <small style="color: var(--text-light); display: block; margin-top: 5px;">You can select up to 5 images. First image will be the main/primary image.</small>
+            <div id="image-preview" class="image-preview"></div>
+          </div>
+
+          <!-- Submit Button -->
           <button type="submit" class="submit-btn">Submit for Approval</button>
         </form>
       </section>

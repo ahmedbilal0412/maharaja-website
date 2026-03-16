@@ -169,7 +169,7 @@
             </a>
             
             <!-- Karachi -->
-            <a href="properties.html?city=karachi" class="city-marker" id="karachi-marker" style="top: 100%; left: 40%;">
+            <a href="properties.html?city=karachi" class="city-marker" id="karachi-marker" style="top: 95%; left: 40%;">
               <span class="marker-dot"></span>
               <span class="marker-label">Karachi</span>
             </a>
@@ -186,123 +186,183 @@
       </div>
     </section>
 
-    <!-- Explore More Section -->
-  <section class="explore-more">
-    <div class="explore-container">
-      <div class="section-header">
-        <h2>Explore More</h2>
-      </div>
-      <div class="explore-tabs">
-        <div class="explore-tab active" data-explore="rent">Rent</div>
-        <div class="explore-tab" data-explore="buy">Buy</div>
-      </div>
+    <!-- Popular Locations Section -->
+    <section class="popular-locations">
+      <div class="container">
+        <div class="section-header">
+          <h2>Popular Locations</h2>
+        </div>
 
-      <!-- City Pills -->
-      <div class="city-grid">
-        <span class="city-pill active" data-city="islamabad">Islamabad</span>
-        <span class="city-pill" data-city="lahore">Lahore</span>
-        <span class="city-pill" data-city="rawalpindi">Rawalpindi</span>
-        <span class="city-pill" data-city="karachi">Karachi</span>
-      </div>
+        <!-- For Sale | To Rent Toggle -->
+        <div class="listing-toggle">
+          <button class="toggle-btn active" data-listing="sale">For Sale</button>
+          <button class="toggle-btn" data-listing="rent">To Rent</button>
+        </div>
 
-      <!-- Locations Grid - Islamabad (Default) -->
-      <div class="locations-grid" id="islamabad-locations">
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in B-17, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in D-12</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in F-6, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in F-7, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in F-8, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in F-10, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in E-7, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in E-11, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-6, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-7, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-8, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-9, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-10, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in G-11, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in I-8, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in I-9, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in I-10, Islamabad</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in Bahria Town</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in DHA Defense</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in Bani Gala</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in Gulberg Greens</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in Faisal Hills</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in Top CIty 1</a>
-        <a href="/properties.html?city=islamabad" class="location-link">Properties in Faisal Town F-18</a>
-      </div>
+        <!-- Most Popular Locations for Plots -->
+        <h3>Most Popular Locations for Plots</h3>
+        <div class="popular-grid active" id="plots-grid">
+          <div class="location-column">
+            <h3>Lahore</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in DHA Defence</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Raiwind Road</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Park View City</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Bahria Town</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Bahria Orchard</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in LDA Road</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in LDA Avenue</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in DHA 11 Rahbar</a></li>
+            </ul>
+          </div>
+          <div class="location-column">
+            <h3>Karachi</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in DHA Defence</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Scheme 33</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Gadap Town</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in DHA City Karachi</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Bahria Town Karachi</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Naya Nazimabad</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Cantt</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Malir</a></li>
+            </ul>
+          </div>
+          <div class="location-column">
+            <h3>Islamabad</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in DHA Defence</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Gulberg</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in B-17</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Bahria Town</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Faisal Hills</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Top City 1</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in Faisal Town - F-18</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=plot" class="location-link"><span class="check">☑</span> Plots for sale in D-12</a></li>
+            </ul>
+          </div>
+        </div>
 
-      <!-- Locations Grid - Lahore (Hidden by default) -->
-      <div class="locations-grid" id="lahore-locations" style="display: none;">
-        <a href="/properties.html?city=lahore" class="location-link">Properties in DHA Lahore</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Bahria Town Lahore</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Bahria Orchard</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in LDA Road</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in LDA Avenue</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Central Park Housing</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Main Canal Bank Road</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in GT Road</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Gulberg</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Raiwind Road</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Park View City</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Johar Town</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Model Town</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Garden Town</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Askari</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Lake City</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Valencia Town</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Wapda Town</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Cavalry Ground</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in MM Alam Road</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Liberty</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Cantt</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Township</a>
-        <a href="/properties.html?city=lahore" class="location-link">Properties in Thokar Niaz Baig</a>
-      </div>
+        <!-- Most Popular Locations for Flats -->
+        <h3>Most Popular Locations for Flats</h3>
+        <div class="popular-grid" id="flats-grid">
+          <div class="location-column">
+            <h3>Lahore</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Askari</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Gulberg</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Bahria Town</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Raiwind Road</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in DHA Defence</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Bahria Orchard</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Main Canal Bank Road</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Johar Town</a></li>
+            </ul>
+          </div>
+          <div class="location-column">
+            <h3>Karachi</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in DHA Defence</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Scheme 33</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Gulistan-e-Johar</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Gulshan-e-Iqbal</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Clifton</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Cantt</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in North Nazimabad</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Gadap Town</a></li>
+            </ul>
+          </div>
+          <div class="location-column">
+            <h3>Islamabad</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in DHA Defence</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in B-17</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Gulberg</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in E-11</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in G-11</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Bahria Town</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in G-15</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Top City 1</a></li>
+            </ul>
+          </div>
+        </div>
 
-      <!-- Locations Grid - Rawalpindi (Hidden by default) -->
-      <div class="locations-grid" id="rawalpindi-locations" style="display: none;">
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Bahria Town Rawalpindi</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in DHA Rawalpindi</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Gulraiz</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Askari</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Westridge</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Chaklala</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Saddar</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Satellite Town</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Commercial Market</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in 6th Road</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Peshawar Road</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Murree Road</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Adiala Road</a>
-        <a href="/properties.html?city=rawalpindi" class="location-link">Properties in Khayaban-e-Sir Syed</a>
-      </div>
+        <!-- Most Popular Locations for Houses -->
+        <h3>Most Popular Locations for Houses</h3>
+        <div class="popular-grid" id="houses-grid">
+          <div class="location-column">
+            <h3>Lahore</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in DHA Defence</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Bahria Town</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Park View City</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Raiwind Road</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Johar Town</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Central Park Housing</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in GT Road</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Bahria Orchard</a></li>
+            </ul>
+          </div>
+          <div class="location-column">
+            <h3>Karachi</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in DHA Defence</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Scheme 33</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Bahria Town Karachi</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Cantt</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Gulshan-e-Iqbal</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Gulistan-e-Johar</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Malir</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Gadap Town</a></li>
+            </ul>
+          </div>
+          <div class="location-column">
+            <h3>Islamabad</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in DHA Defence</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in B-17</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Bahria Town</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Bani Gala</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in G-13</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in D-12</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Top City 1</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in F-10</a></li>
+            </ul>
+          </div>
+        </div>
+          <!-- Popular Cities to Buy Properties -->
+        <h3>Popular Cities to Buy Properties</h3>
+        <div class="popular-grid" id="houses-grid">
+          <div class="location-column">
+            <h3>Houses</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Lahore (24,984)</a></li>
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Karachi (12,493)</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Islamabad (9,776)</a></li>
+              <li><a href="/properties.html?city=rawalpindi&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Rawalpindi (4,093)</a></li>
+              <li><a href="/properties.html?city=multan&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Multan (1,801)</a></li>
+              <li><a href="/properties.html?city=gujranwala&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Gujranwala (1,517)</a></li>
+              <li><a href="/properties.html?city=faisalabad&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Faisalabad (1,153)</a></li>
+              <li><a href="/properties.html?city=peshawar&listing_type=sale&property_type=house" class="location-link"><span class="check">☑</span> Houses for sale in Peshawar (648)</a></li>
+            </ul>
+          </div>
+          <div class="location-column">
+            <h3>Flats</h3>
+            <ul class="location-list">
+              <li><a href="/properties.html?city=karachi&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Karachi (12,936)</a></li>
+              <li><a href="/properties.html?city=islamabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Islamabad (4,258)</a></li>
+              <li><a href="/properties.html?city=lahore&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Lahore (3,292)</a></li>
+              <li><a href="/properties.html?city=rawalpindi&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Rawalpindi (578)</a></li>
+              <li><a href="/properties.html?city=peshawar&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Peshawar (345)</a></li>
+              <li><a href="/properties.html?city=hyderabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Hyderabad (103)</a></li>
+              <li><a href="/properties.html?city=faisalabad&listing_type=sale&property_type=apartment" class="location-link"><span class="check">☑</span> Flats for sale in Faisalabad (13)</a></li>
+            </ul>
+          </div>
 
-      <!-- Locations Grid - Karachi (Hidden by default) -->
-      <div class="locations-grid" id="karachi-locations" style="display: none;">
-        <a href="/properties.html?city=karachi" class="location-link">Properties in DHA Defence</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in DHA City Karachi</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Clifton</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Gadap Town</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Gulshan-e-Iqbal</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Bahria Town Karachi</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Saddar</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Korangi</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in North Nazimabad</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in PECHS</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Tariq Road</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Shahrah-e-Faisal</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Malir</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Cantt</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Scheme 33</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Gulistan-e-Johar</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in FB Area</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Liaquatabad</a>
-        <a href="/properties.html?city=karachi" class="location-link">Properties in Naya Nazimabad</a>
+        </div>
+
       </div>
-    </div>
-  </section>
+    </section>
 
   <div data-include="components/footer.html"></div>
 
