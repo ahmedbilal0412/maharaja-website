@@ -161,9 +161,9 @@
 
 .notification-text {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 2.2;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.8;
 }
 
 .highlight {
@@ -958,7 +958,6 @@ header.hero::before {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 600px;
 }
 
 .hero-modern::before {
@@ -1978,4 +1977,31 @@ header.hero::before {
 .map-title {
   font-size: 2rem;
   color: var(--primary-green);
+}
+
+/* City Select Dropdown */
+.city-select {
+  width: 100%;
+  padding: 15px 15px 15px 45px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+}
+
+.city-select:hover {
+  border-color: var(--primary-green);
+}
+
+.city-select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }

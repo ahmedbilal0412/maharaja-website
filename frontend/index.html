@@ -27,7 +27,7 @@
     </div>
   </div>
 
-    <!-- Modern Hero Section -->
+  <!-- Modern Hero Section -->
   <section class="hero-modern">
     <video autoplay muted loop id="#hero-video" style="position: absolute;width: 100vw;min-width: 1070px;">
       <source src="img/hero-video.mp4" type="video/mp4">
@@ -47,8 +47,14 @@
       <!-- Search Bar -->
       <div class="search-bar-modern">
         <div class="search-input-group">
-          <i class="fas fa-search"></i>
-          <input type="text" id="location-search" placeholder="City, community or building" value="Islamabad">
+          <i class="fas fa-map-marker-alt"></i>
+          <select id="location-search" class="city-select">
+            <option value="">Select City</option>
+            <option value="islamabad">Islamabad</option>
+            <option value="rawalpindi">Rawalpindi</option>
+            <option value="lahore">Lahore</option>
+            <option value="karachi">Karachi</option>
+          </select>
         </div>
         <div class="search-input-group">
           <i class="fas fa-building"></i>

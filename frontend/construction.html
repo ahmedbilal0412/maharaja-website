@@ -1,39 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Construction - Maharaja Builders</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Under Construction</title>
+<link rel="stylesheet" href="css/variables.css" />
+<link rel="stylesheet" href="css/common.css" />
+<link rel="stylesheet" href="css/navbar.css" />
+<link rel="stylesheet" href="css/footer.css" />
+<link href="css/construction.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="css/variables.css" />
-  <link rel="stylesheet" href="css/common.css" />
-  <link rel="stylesheet" href="css/navbar.css" />
-  <link rel="stylesheet" href="css/footer.css" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+
 </head>
-  <style>
-    .construction-body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 600px;
-    }
-  </style>
-  <body>
-    <div data-include="components/navbar.html"></div>
+
+<body>
+
+  <div data-include="components/navbar.html"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>CONSTRUCTION</h1>
+  <p>Building Your Future Projects</p>
+</div>
+
+<!-- SERVICES SECTION -->
+<div class="section services">
+
+  <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd" alt="construction">
+
+  <div class="section-content">
+    <h2>Our Services</h2>
+    <p>We provide high-quality construction solutions for residential and commercial projects with modern and sustainable techniques.</p>
+
+    <ul>
+      <li>Residential & Commercial Construction</li>
+      <li>Custom Design & Planning</li>
+      <li>Renovations & Remodeling</li>
+    </ul>
+
     
-    <div class="construction-body">
-      <div class="construction-heading-container">
-        <h1>
-          Coming Soon!
-        </h1>
+  </div>
+
+</div>
+
+<!-- PARTNERS SECTION -->
+<div class="section partners-section">
+
+  <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80" alt="construction workers">
+  <div class="section-content">
+    <h2>Our Partners</h2>
+    <p>Choose from our trusted partners to collaborate and bring your construction project to life.</p>
+
+    <div class="partner-grid">
+
+      <div class="partner-card">
+        <div class="icon">🏗️</div>
+        BuildPro
       </div>
+
+      <div class="partner-card">
+        <div class="icon">🌿</div>
+        GreenWorks
+      </div>
+
+      <div class="partner-card">
+        <div class="icon">🏢</div>
+        EcoStructures
+      </div>
+
+      <div class="partner-card">
+        <div class="icon">🧱</div>
+        UrbanBuild
+      </div>
+
     </div>
 
-    <div data-include="components/footer.html"></div>
+    <a href="#" class="btn">View All Partners</a>
+  </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/load-components.js"></script>
-    <script src="js/navbar.js"></script>
-  </body>
+</div>
+
+<div data-include="components/footer.html"></div>
+
+<style>
+.icon{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.partner-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  padding:25px;
+  border-radius:15px;
+  width:150px;
+  text-align:center;
+  font-weight:600;
+  box-shadow:0 12px 25px rgba(0,0,0,0.12);
+  transition:0.3s;
+  border:2px solid transparent;
+}
+
+.partner-card:hover{
+  transform:translateY(-10px) scale(1.05);
+  border:2px solid #2e7d32;
+  background:linear-gradient(145deg,#ffffff,#e8f5e9);
+}
+</style>
+
+  <script src="js/config.js"></script>
+  <script src="js/load-components.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
+
+
+</body>
 </html>

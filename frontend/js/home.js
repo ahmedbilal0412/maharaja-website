@@ -281,7 +281,7 @@
         else if (activeFilter === 'buy') listingType = 'sale';
         
         const params = new URLSearchParams();
-        if (location && location !== 'City, community or building') params.append('city', location.toLowerCase());
+        if (location) params.append('city', location.toLowerCase());
         if (propertyType) params.append('property_type', propertyType);
         params.append('listing_type', listingType);
         
