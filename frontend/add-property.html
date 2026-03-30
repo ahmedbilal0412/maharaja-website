@@ -72,7 +72,7 @@
           </div>
 
           <div id="paymentSection" class="payment-section">
-            <label>Payment Required: Rs. 500</label>
+            <label>Payment Required: Rs. <span id="basePaymentAmount">500</span></label>
             <div class="payment-methods">
               <label><input type="radio" name="payment" value="easypaisa"> Easypaisa</label>
               <label><input type="radio" name="payment" value="jazzcash"> JazzCash</label>
@@ -103,6 +103,7 @@
                 <option value="house">House</option>
                 <option value="apartment">Apartment</option>
                 <option value="villa">Villa</option>
+                <option value="plot">Plot</option>
               </select>
             </div>
 
@@ -113,6 +114,17 @@
                 <option value="sale">For Sale</option>
                 <option value="rent">For Rent</option>
               </select>
+            </div>
+          </div>
+
+          <!-- Premium Listing Option -->
+          <div class="premium-section">
+            <div class="checkbox-single premium-checkbox">
+              <input type="checkbox" id="isPremium" value="true">
+              <label for="isPremium">
+                <i class="fas fa-crown" style="color: var(--accent-gold);"></i> 
+                Premium Listing <span style="font-size: 0.85rem; color: var(--text-light);">(Additional PKR 500/month - gets priority placement in search results)</span>
+              </label>
             </div>
           </div>
 

@@ -12,6 +12,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # routes
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads", "properties")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
+# Premium pricing
+PREMIUM_PRICE = 500  # PKR per month
+
 def delete_property_images(property_obj):
     """Delete all image files for a property."""
     try:
@@ -66,18 +69,28 @@ def _infer_area(location):
 
 def _needs_reapproval(prop: Property, now=None) -> bool:
     """
-    Non-free properties (areas other than DHA/Bahria Town) should go back to
-    admin approval after 30 days, even if previously approved.
+    Properties need reapproval if:
+    1. They are in non-free areas (other than DHA/Bahria Town) AND created more than 30 days ago, OR
+    2. Premium has expired (for both free and non-free areas)
     """
-    if prop.area in ("DHA", "Bahria Town"):
-        return False
-    if prop.status != PROPERTY_STATUS_APPROVED:
-        return False
-    if not prop.created_at:
-        return False
     if now is None:
         now = datetime.utcnow()
-    return now - prop.created_at > timedelta(days=30)
+    
+    if prop.status != PROPERTY_STATUS_APPROVED:
+        return False
+    
+    # Check if premium has expired
+    if prop.is_premium and prop.premium_expiry:
+        if prop.premium_expiry < now:
+            return True  # Premium expired, needs reapproval
+    
+    # Check area-based expiry (only for non-DHA/Bahria)
+    if prop.area not in ("DHA", "Bahria Town"):
+        if prop.created_at and now - prop.created_at > timedelta(days=30):
+            return True  # Non-free area older than 30 days
+    
+    return False
+
 
 @properties_bp.route("", methods=["GET"])
 def list_properties():
@@ -86,13 +99,16 @@ def list_properties():
     city = request.args.get("city", "").strip()
     area = request.args.get("area", "").strip()
     listing_type = request.args.get("listing_type", "").strip()
+    
     if city:
         query = query.filter(Property.city.ilike(f"%{city}%"))
     if area:
         query = query.filter(Property.area.ilike(f"%{area}%"))
     if listing_type:
         query = query.filter(Property.listing_type == listing_type)
-    props = query.order_by(Property.created_at.desc()).all()
+    
+    # Get all properties first
+    props = query.all()
 
     # Auto-expire non-free properties after 30 days by moving them back to pending.
     now = datetime.utcnow()
@@ -103,7 +119,22 @@ def list_properties():
             changed = True
     if changed:
         db.session.commit()
+        # Refresh the list after changes
         props = [p for p in props if p.status == PROPERTY_STATUS_APPROVED]
+    
+    # Sort: premium active properties first, then by created date
+    def sort_key(prop):
+        # Check if premium is active (paid and not expired)
+        is_premium_active = prop.is_premium and prop.premium_payment_status == "paid"
+        if is_premium_active and prop.premium_expiry and prop.premium_expiry > now:
+            premium_score = 0  # Premium properties come first
+        else:
+            premium_score = 1  # Non-premium come after
+        # Then sort by created date (newest first)
+        date_score = -prop.created_at.timestamp() if prop.created_at else 0
+        return (premium_score, date_score)
+    
+    props.sort(key=sort_key)
 
     return jsonify({"properties": [p.to_dict() for p in props]}), 200
 
@@ -136,6 +167,7 @@ def get_property(prop_id):
         return jsonify({"message": "Property not found."}), 404
     
     return jsonify(prop.to_dict()), 200
+
 
 def _can_access_property(prop, user_id):
     """Check if user can access property."""
@@ -188,6 +220,9 @@ def create_property():
     total_floors = data.get("total_floors")
     electricity_backup = data.get("electricity_backup", False)
     year_built = data.get("year_built")
+    
+    # Premium field
+    is_premium = data.get("is_premium", False)
 
     # Validation
     if not title or not location or price is None:
@@ -198,7 +233,9 @@ def create_property():
         return jsonify({"message": "Bedrooms, bathrooms and size are required."}), 400
 
     area = _infer_area(location)
-    if _location_is_free_listing(location):
+    if is_premium:
+        status = PROPERTY_STATUS_PENDING
+    elif _location_is_free_listing(location):
         status = PROPERTY_STATUS_APPROVED
     else:
         status = PROPERTY_STATUS_PENDING
@@ -249,7 +286,11 @@ def create_property():
         total_floors=total_floors,
         electricity_backup=electricity_backup,
         year_built=year_built,
+        # Premium fields
+        is_premium=is_premium,
+        premium_payment_status="unpaid"  # Default to unpaid, payment required to activate
     )
+    
     db.session.add(prop)
     db.session.flush()
 
@@ -267,6 +308,7 @@ def create_property():
     print("DEBUG: Property images:", [img.to_dict() for img in prop.images])
     return jsonify({"message": "Property submitted.", "property": prop.to_dict()}), 201
 
+
 @properties_bp.route("/<int:prop_id>", methods=["DELETE"])
 @jwt_required()
 def delete_property(prop_id):
@@ -283,6 +325,7 @@ def delete_property(prop_id):
     db.session.delete(prop)
     db.session.commit()
     return jsonify({"message": "Property deleted.", "deleted_images": len(deleted_files)}), 200
+
 
 @properties_bp.route("/upload", methods=["POST"])
 @jwt_required()
@@ -314,6 +357,7 @@ def upload_images():
             return jsonify({"message": f"File {file.filename} has invalid extension"}), 400
     
     return jsonify({"image_urls": image_urls}), 200
+
 
 @properties_bp.route("/uploads/<path:filename>", methods=["GET"])
 def serve_uploaded_image(filename):

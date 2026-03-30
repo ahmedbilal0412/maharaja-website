@@ -12,6 +12,8 @@ class User(db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    reset_token = db.Column(db.String(200), nullable=True)
+    reset_token_expiry = db.Column(db.DateTime, nullable=True)
 
     def set_password(self, password):
         self.password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
@@ -35,6 +37,7 @@ PROPERTY_STATUS_APPROVED = "approved"
 PROPERTY_STATUS_PENDING = "pending_approval"
 PROPERTY_STATUS_REJECTED = "rejected"
 
+
 class Property(db.Model):
     __tablename__ = "properties"
     id = db.Column(db.Integer, primary_key=True)
@@ -44,7 +47,7 @@ class Property(db.Model):
     city = db.Column(db.String(80), nullable=True)
     area = db.Column(db.String(80), nullable=True)  # DHA, Bahria Town, Other
     price = db.Column(db.Integer, nullable=False)
-    property_type = db.Column(db.String(40), nullable=False)  # house, apartment, villa
+    property_type = db.Column(db.String(40), nullable=False)  # house, apartment, villa, plot
     
     # New fields
     description = db.Column(db.Text, nullable=True)  # Detailed property description
@@ -53,6 +56,11 @@ class Property(db.Model):
     total_floors = db.Column(db.Integer, nullable=True)  # Total floors in building/property
     electricity_backup = db.Column(db.Boolean, default=False)  # Whether backup generator/solar is available
     year_built = db.Column(db.Integer, nullable=True)  # Year the property was built
+    
+    # Premium fields
+    is_premium = db.Column(db.Boolean, default=False)  # Whether property is premium
+    premium_expiry = db.Column(db.DateTime, nullable=True)  # When premium subscription expires
+    premium_payment_status = db.Column(db.String(30), default="unpaid")  # unpaid, paid, expired
     
     # Existing fields
     listing_type = db.Column(db.String(20), nullable=False)  # sale, rent
@@ -74,6 +82,16 @@ class Property(db.Model):
                 return primary.image_url
             return self.images[0].image_url 
         return None
+
+    def is_premium_active(self):
+        """Check if premium subscription is currently active."""
+        if not self.is_premium:
+            return False
+        if self.premium_payment_status != "paid":
+            return False
+        if self.premium_expiry and self.premium_expiry < datetime.utcnow():
+            return False
+        return True
 
     def to_dict(self):
         return {
@@ -103,9 +121,14 @@ class Property(db.Model):
             "images": [img.to_dict() for img in self.images],
             "primary_image": self.primary_image(),
             "status": self.status,
+            "is_premium": self.is_premium,
+            "is_premium_active": self.is_premium_active(),
+            "premium_expiry": self.premium_expiry.isoformat() if self.premium_expiry else None,
+            "premium_payment_status": self.premium_payment_status,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
         }
+
 
 def seed_admin_if_needed():
     if User.query.filter_by(email="admin@maharajabuilders.pk").first():
@@ -119,6 +142,7 @@ def seed_admin_if_needed():
     admin.set_password("admin123")
     db.session.add(admin)
     db.session.commit()
+
 
 class PropertyImage(db.Model):
     __tablename__ = "property_images"
@@ -136,6 +160,7 @@ class PropertyImage(db.Model):
             "image_url": self.image_url,
             "is_primary": self.is_primary
         }
+
 
 class Ad(db.Model):
     __tablename__ = "ads"

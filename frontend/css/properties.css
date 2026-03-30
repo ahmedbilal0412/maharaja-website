@@ -805,3 +805,16 @@ body {
     gap: 15px;
   }
 }
+
+/* Premium Badge */
+.property-tag.premium-badge {
+  background: linear-gradient(135deg, #d4af37 0%, #f9ab00 100%);
+  color: #0b3d2e;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+}
+
+.property-tag.premium-badge i {
+  margin-right: 4px;
+}

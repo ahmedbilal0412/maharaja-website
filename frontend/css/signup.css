@@ -150,3 +150,18 @@ button[type="submit"]:disabled {
 button[type="submit"] span.spinner + span {
   margin-left: 5px;
 }
+
+.forgot-password {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.forgot-password a {
+  color: var(--primary-green);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}

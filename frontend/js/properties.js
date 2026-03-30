@@ -330,6 +330,13 @@ function sortProperties() {
     case "featured":
     default:
       filteredProperties.sort((a, b) => {
+        // Premium properties come first (if active and paid)
+        const aPremium = a.is_premium && a.is_premium_active === true ? 0 : 1;
+        const bPremium = b.is_premium && b.is_premium_active === true ? 0 : 1;
+        if (aPremium !== bPremium) {
+          return aPremium - bPremium;
+        }
+        // Then sort by created date (newest first)
         const da = a.created_at ? new Date(a.created_at).getTime() : 0;
         const db = b.created_at ? new Date(b.created_at).getTime() : 0;
         return db - da;
@@ -447,9 +454,15 @@ function renderProperties() {
     let tagClass = 'property-tag';
     let tagText = property.listing_type === 'rent' ? 'FOR RENT' : 'FOR SALE';
     
-    if (property.area === 'DHA' || property.area === 'Bahria Town') {
+    // Check if property is premium and active
+    const isPremiumActive = property.is_premium && property.is_premium_active === true;
+    
+    if (isPremiumActive) {
+      tagClass += ' premium premium-badge';
+      tagText = '⭐ PREMIUM';
+    } else if (property.area === 'DHA' || property.area === 'Bahria Town') {
       tagClass += ' premium';
-      tagText = 'PREMIUM';
+      tagText = 'PREMIUM AREA';
     }
 
     const imgSrc = resolveImageUrl(property.image_url) ||

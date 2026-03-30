@@ -112,6 +112,7 @@ def approve(prop_id):
     if prop.status != PROPERTY_STATUS_PENDING:
         return jsonify({"message": "Property is not pending approval."}), 400
     prop.status = PROPERTY_STATUS_APPROVED
+    prop.premium_payment_status="paid"
     db.session.commit()
     return jsonify({"message": "Property approved.", "property": prop.to_dict()}), 200
 
