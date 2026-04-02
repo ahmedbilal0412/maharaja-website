@@ -145,52 +145,73 @@
     </div>
   </section>
 
-  <!-- Pakistan Map Section with Visible Hotspots -->
-    <section class="map-section">
-      <div class="container">
-        <h2 class="map-title">Explore Properties by City</h2>
-        <p class="section-subtitle">Click on any city marker to see available properties</p>
-        
-        <div class="map-container">
-          <img src="img/pakistan-map-outline.png" alt="Pakistan Map" class="pakistan-map" usemap="#cityMap">
-          
-          <!-- Visible city markers overlay -->
-          <div class="city-markers">
-            <!-- Islamabad -->
-            <a href="properties.html?city=islamabad" class="city-marker" style="top: 33%; left: 68%;">
-              <span class="marker-dot"></span>
-              <span class="marker-label">Islamabad</span>
-            </a>
-            
-            <!-- Rawalpindi -->
-            <a href="properties.html?city=rawalpindi" class="city-marker" style="top: 36%; left: 65%;">
-              <span class="marker-dot"></span>
-              <span class="marker-label">Rawalpindi</span>
-            </a>
-            
-            <!-- Lahore -->
-            <a href="properties.html?city=lahore" class="city-marker" style="top: 50%; left: 69%;">
-              <span class="marker-dot"></span>
-              <span class="marker-label">Lahore</span>
-            </a>
-            
-            <!-- Karachi -->
-            <a href="properties.html?city=karachi" class="city-marker" id="karachi-marker" style="top: 95%; left: 40%;">
-              <span class="marker-dot"></span>
-              <span class="marker-label">Karachi</span>
-            </a>
+  <!-- Why Maharaja Builders Section -->
+  <section class="why-maharaja">
+    <div class="container">
+      <div class="why-wrapper">
+        <!-- Left Column - Text Content -->
+        <div class="why-content">
+          <p class="why-subtitle">WHY MAHARAJA BUILDERS</p>
+          <h2>Pakistan's Most Trusted Real Estate Platform</h2>
+          <p class="why-description">We connect serious buyers, renters, and investors with verified sellers across Pakistan — no middlemen, no hidden fees, no stress.</p>
+
+          <div class="features-list">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="feature-text">
+                <h3>All Listings Verified</h3>
+                <p>Every property is manually reviewed. Sellers are identity-verified before going live.</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-hand-holding-usd"></i>
+              </div>
+              <div class="feature-text">
+                <h3>Zero Brokerage in DHA & Bahria</h3>
+                <p>Post and browse properties in Pakistan's top gated communities for free — always.</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="feature-text">
+                <h3>Free Property Valuation</h3>
+                <p>Get a market-accurate valuation report before you buy, sell, or invest.</p>
+              </div>
+            </div>
           </div>
-          
-          <!-- Keep the image map for actual clicking (optional but ensures clicking works) -->
-          <map name="cityMap">
-            <area shape="circle" coords="300,150,20" alt="Islamabad" href="properties.html?city=islamabad">
-            <area shape="circle" coords="290,170,20" alt="Rawalpindi" href="properties.html?city=rawalpindi">
-            <area shape="circle" coords="340,200,20" alt="Lahore" href="properties.html?city=lahore">
-            <area shape="circle" coords="220,340,20" alt="Karachi" href="properties.html?city=karachi">
-          </map>
+        </div>
+
+        <!-- Right Column - Stats Cards -->
+        <div class="why-stats">
+          <div class="stack-row">
+            <div class="stats-card">
+              <div class="stat-number">50K+</div>
+              <div class="stat-label">ACTIVE LISTINGS</div>
+            </div>
+            <div class="stats-card">
+              <div class="stat-number">12+</div>
+              <div class="stat-label">YEARS OF TRUST</div>
+            </div>
+          </div>
+          <div class="stats-card">
+            <div class="stat-number">4.8★</div>
+            <div class="stat-label">CUSTOMER RATING</div>
+          </div>
+          <div class="stats-card" id="commission">
+            <div class="stat-number">0% Commission - DHA & Bahria Town</div>
+            <div class="stat-label">CUSTOMER RATING</div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
     <!-- Popular Locations Section -->
     <section class="popular-locations">

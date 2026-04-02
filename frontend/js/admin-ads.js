@@ -28,7 +28,28 @@
 
   function formatDate(dateStr) {
     if (!dateStr) return 'Not set';
-    return new Date(dateStr).toLocaleDateString();
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-PK', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+
+  function formatDuration(ad) {
+    if (ad.start_date && ad.end_date) {
+      const start = new Date(ad.start_date);
+      const end = new Date(ad.end_date);
+      const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+      
+      if (days === 7) return '1 Week';
+      if (days === 14) return '2 Weeks';
+      if (days === 30) return '1 Month';
+      return `${days} Days`;
+    }
+    return ad.duration === '1week' ? '1 Week' : 
+           ad.duration === '2weeks' ? '2 Weeks' : 
+           ad.duration === '1month' ? '1 Month' : 'Custom';
   }
 
   function formatPrice(price) {
@@ -78,7 +99,9 @@
     adsGrid.innerHTML = ads.map(ad => {
       const isActive = ad.status === 'approved' && 
                       ad.payment_status === 'paid' &&
-                      new Date(ad.end_date) > new Date();
+                      ad.end_date && new Date(ad.end_date) > new Date();
+      
+      const durationText = formatDuration(ad);
       
       return `
         <div class="ad-card" data-ad-id="${ad.id}">
@@ -90,8 +113,7 @@
             <div class="ad-header">
               <span class="ad-id">Ad #${ad.id}</span>
               <span class="ad-duration">
-                ${ad.duration === '1week' ? '1 Week' : 
-                  ad.duration === '2weeks' ? '2 Weeks' : '1 Month'}
+                ${durationText}
                 <span class="payment-badge ${ad.payment_status === 'unpaid' ? 'unpaid' : ''}">
                   ${ad.payment_status === 'paid' ? '✓ Paid' : '⏳ Unpaid'}
                 </span>
@@ -197,7 +219,7 @@
 
   // Approve handler
   window.handleApprove = function(adId) {
-    showConfirm('Approve this advertisement? It will become active immediately.', function() {
+    showConfirm('Approve this advertisement? It will become active on the selected start date.', function() {
       fetch(`${API_BASE}/admin/ads/${adId}/approve`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }

@@ -62,31 +62,87 @@ def upload_ad_image():
 @ads_bp.route("/register", methods=["POST"])
 @jwt_required()
 def register_ad():
-    """Submit ad for approval."""
+    """Submit ad for approval with custom dates."""
     from app import db
     from app.models import Ad
+    from datetime import datetime
     
     user_id = get_jwt_identity()
     data = request.get_json() or {}
     
     image_url = data.get("image_url", "").strip()
     link_url = data.get("link_url", "").strip()
+    start_date_str = data.get("start_date", "").strip()
+    end_date_str = data.get("end_date", "").strip()
     duration = data.get("duration", "").strip()
+    price = data.get("price", 0)
     
     if not image_url:
         return jsonify({"message": "Ad image is required."}), 400
     
-    if duration not in DURATION_PRICES:
-        return jsonify({"message": "Invalid duration. Choose: 1week, 2weeks, 1month"}), 400
+    # Parse dates
+    try:
+        start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+    except ValueError:
+        return jsonify({"message": "Invalid date format. Use YYYY-MM-DD."}), 400
     
-    price = DURATION_PRICES[duration]
+    # Validate dates
+    now = datetime.utcnow()
+    if start_date.date() < now.date():
+        return jsonify({"message": "Start date cannot be in the past."}), 400
+    
+    if end_date <= start_date:
+        return jsonify({"message": "End date must be after start date."}), 400
+    
+    # Calculate duration in days
+    duration_days = (end_date - start_date).days
+    
+    if duration_days < 7:
+        return jsonify({"message": "Minimum duration is 7 days (1 week)."}), 400
+    
+    # Check for date conflicts with existing approved ads
+    overlapping = Ad.query.filter(
+        Ad.status == "approved",
+        Ad.payment_status == "paid",
+        Ad.start_date <= end_date,
+        Ad.end_date >= start_date
+    ).first()
+    
+    if overlapping:
+        return jsonify({
+            "message": f"Date conflict! There is already an ad scheduled from {overlapping.start_date.strftime('%b %d, %Y')} to {overlapping.end_date.strftime('%b %d, %Y')}. Please choose different dates."
+        }), 400
+    
+    # Use provided price or calculate from duration
+    if price <= 0:
+        if duration_days == 7:
+            price = 8000
+        elif duration_days == 14:
+            price = 15000
+        elif duration_days == 30:
+            price = 28000
+        else:
+            price = int(round((8000 / 7) * duration_days))
+    
+    # Store duration string for compatibility
+    if duration_days == 7:
+        duration_str = "1week"
+    elif duration_days == 14:
+        duration_str = "2weeks"
+    elif duration_days == 30:
+        duration_str = "1month"
+    else:
+        duration_str = f"{duration_days}days"
     
     ad = Ad(
         user_id=user_id,
         image_url=image_url,
         link_url=link_url or None,
-        duration=duration,
+        duration=duration_str,
         price=price,
+        start_date=start_date,
+        end_date=end_date,
         status="pending",
         payment_status="unpaid"
     )
@@ -156,3 +212,40 @@ def serve_ad_image(filename):
     from flask import send_from_directory
     uploads_dir = os.path.join(BASE_DIR, "uploads", "ads")
     return send_from_directory(uploads_dir, filename)
+
+@ads_bp.route("/check-availability", methods=["POST"])
+@jwt_required()
+def check_ad_availability():
+    """Check if the selected date range conflicts with existing ads."""
+    from app import db
+    from app.models import Ad
+    from datetime import datetime
+    
+    data = request.get_json() or {}
+    start_date_str = data.get("start_date", "").strip()
+    end_date_str = data.get("end_date", "").strip()
+    
+    if not start_date_str or not end_date_str:
+        return jsonify({"available": True, "message": "No dates provided"}), 200
+    
+    try:
+        start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+    except ValueError:
+        return jsonify({"available": False, "message": "Invalid date format"}), 400
+    
+    # Check for overlapping approved and paid ads
+    overlapping = Ad.query.filter(
+        Ad.status == "approved",
+        Ad.payment_status == "paid",
+        Ad.start_date <= end_date,
+        Ad.end_date >= start_date
+    ).first()
+    
+    if overlapping:
+        return jsonify({
+            "available": False,
+            "message": f"There is already an ad scheduled from {overlapping.start_date.strftime('%b %d, %Y')} to {overlapping.end_date.strftime('%b %d, %Y')}"
+        }), 200
+    
+    return jsonify({"available": True, "message": "Dates are available"}), 200

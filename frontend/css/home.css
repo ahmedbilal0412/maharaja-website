@@ -1840,143 +1840,11 @@ header.hero::before {
   }
 }
 
-/* Map Container */
-.map-container {
-  position: relative;
-  display: inline-block;
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-  max-height: 600px;
-}
-
-.pakistan-map {
-  width: 100%;
-  max-height: 600px;
-  display: block;
-}
-
-/* City Markers Overlay */
-.city-markers {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none; /* Allows clicks to pass through to the map */
-}
-
-.city-marker {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  pointer-events: auto; /* Make the marker itself clickable */
-  cursor: pointer;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-}
-
-.marker-dot {
-  width: 24px;
-  height: 24px;
-  background: var(--primary-green);
-  border: 3px solid var(--accent-gold);
-  border-radius: 50%;
-  display: block;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
-  animation: pulse 2s infinite;
-}
-
-.city-marker:hover .marker-dot {
-  transform: scale(1.3);
-  background: var(--accent-gold);
-  border-color: var(--primary-green);
-  box-shadow: 0 6px 15px rgba(212, 175, 55, 0.5);
-}
-
-.marker-label {
-  background: var(--primary-green);
-  color: white;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-top: 5px;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  opacity: 0.9;
-  transition: all 0.3s ease;
-  border: 1px solid var(--accent-gold);
-}
-
-.city-marker:hover .marker-label {
-  opacity: 1;
-  transform: translateY(-2px);
-  background: var(--accent-gold);
-  color: var(--primary-green);
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
-  }
-}
-
-.map-note {
-  text-align: center;
-  margin-top: 20px;
-  color: var(--primary-green);
-  font-weight: 500;
-}
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  .marker-dot {
-    width: 18px;
-    height: 18px;
-    border-width: 2px;
-  }
-  
-  .marker-label {
-    font-size: 0.7rem;
-    padding: 2px 6px;
-  }
-
-  #karachi-marker {
-    top: 92% !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .marker-label {
-    display: none; /* Hide labels on very small screens */
-  }
-  
-  .marker-dot {
-    width: 22px;
-    height: 22px;
-  }
-}
-
 @media (max-width: 560px) {
   .locations-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     font-size: 0.9rem;
   }
-}
-
-.map-title {
-  font-size: 2rem;
-  color: var(--primary-green);
 }
 
 /* City Select Dropdown */
@@ -2004,4 +1872,286 @@ header.hero::before {
   outline: none;
   border-color: var(--accent-gold);
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+/* Why Maharaja Builders Section */
+.why-maharaja {
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.why-maharaja .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Two-column layout */
+.why-wrapper {
+  display: flex;
+  gap: 60px;
+}
+
+/* Left Column - Text Content */
+.why-content {
+  flex: 1.5;
+}
+
+.why-content h2 {
+  font-size: 2.2rem;
+  color: var(--primary-green);
+  margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.why-subtitle {
+  font-size: 1.3rem;
+  color: var(--text-dark);
+  font-weight: 600;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.why-description {
+  font-size: 1rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+/* Features List */
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.feature-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.feature-icon {
+  width: 50px;
+  height: 50px;
+  transform: translate(0, 15px);
+  background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.feature-icon i {
+  font-size: 1.5rem;
+  color: var(--accent-gold);
+}
+
+.feature-item:hover .feature-icon {
+  box-shadow: 0 5px 15px rgba(11, 61, 46, 0.2);
+}
+
+.feature-text h3 {
+  font-size: 1.1rem;
+  color: var(--primary-green);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.feature-text p {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Right Column - Stats Cards */
+.why-stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+  gap: 20px;
+}
+
+.stats-card {
+  background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+  border-radius: 16px;
+  padding: 35px 25px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(11, 61, 46, 0.1);
+}
+
+#commission {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #ffd700 100%);
+}
+
+#commission .stat-number, #commission .stat-label {
+  color: var(--primary-green);
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 35px rgba(11, 61, 46, 0.15);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.stack-row {
+  display: flex;
+  justify-content: left;
+  gap: 20px;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .why-wrapper {
+    flex-direction: column;
+    gap: 50px;
+  }
+  
+  .why-content {
+    flex: 1;
+  }
+  
+  .why-stats {
+    flex: 1;
+    width: 100%;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .stats-card {
+    flex: 1;
+    padding: 30px 20px;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .why-maharaja {
+    padding: 60px 15px;
+  }
+  
+  .why-content h2 {
+    font-size: 1.8rem;
+  }
+  
+  .why-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .why-description {
+    font-size: 0.95rem;
+  }
+  
+  .features-list {
+    gap: 25px;
+  }
+  
+  .feature-item {
+    gap: 15px;
+  }
+  
+  .feature-icon {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .feature-icon i {
+    font-size: 1.3rem;
+  }
+  
+  .feature-text h3 {
+    font-size: 1rem;
+  }
+  
+  .feature-text p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .why-stats {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .stats-card {
+    padding: 25px 20px;
+  }
+  
+  .stat-number {
+    font-size: 1.8rem;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .why-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .why-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .feature-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .feature-text h3 {
+    text-align: center;
+  }
+  
+  .feature-text p {
+    text-align: center;
+  }
+}
+
+/* Premium Badge for Projects */
+.project-badge.premium-badge {
+  background: linear-gradient(135deg, #d4af37 0%, #f9ab00 100%);
+  color: #0b3d2e;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+  animation: premiumGlow 2s infinite;
+}
+
+@keyframes premiumGlow {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(212, 175, 55, 0.7);
+  }
 }

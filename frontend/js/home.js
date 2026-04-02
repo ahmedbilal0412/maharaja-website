@@ -127,16 +127,31 @@
     const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
 
     // Build URL with city filter if provided
-    let url = `${API_BASE}/properties?listing_type=sale&limit=6`;
+    let url = `${API_BASE}/properties?listing_type=sale&limit=10`;
     if (currentCity) {
-      url = `${API_BASE}/properties?listing_type=sale&city=${currentCity}&limit=6`;
+      url = `${API_BASE}/properties?listing_type=sale&city=${currentCity}&limit=10`;
     }
 
     // Fetch latest approved properties
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        const properties = data.properties || [];
+        let properties = data.properties || [];
+        
+        // Sort properties: premium active first, then by creation date
+        properties.sort((a, b) => {
+          // Check if premium is active
+          const aIsPremium = a.is_premium === true && a.is_premium_active === true;
+          const bIsPremium = b.is_premium === true && b.is_premium_active === true;
+          
+          if (aIsPremium && !bIsPremium) return -1;  // a premium comes first
+          if (!aIsPremium && bIsPremium) return 1;   // b premium comes first
+          
+          // If both premium or both non-premium, sort by created date (newest first)
+          const aDate = a.created_at ? new Date(a.created_at).getTime() : 0;
+          const bDate = b.created_at ? new Date(b.created_at).getTime() : 0;
+          return bDate - aDate;
+        });
         
         if (properties.length === 0) {
           projectGrid.innerHTML = `
@@ -148,13 +163,21 @@
           return;
         }
 
-        // Display up to 3 properties
+        // Display up to 3 properties (premium ones will appear first due to sorting)
         projectGrid.innerHTML = properties.slice(0, 3).map(property => {
-          // Determine property type badge
+          // Determine property type badge with premium styling
           const propertyType = property.property_type || 'property';
-          const badgeText = propertyType === 'apartment' ? 'Apartment' : 
-                           propertyType === 'house' ? 'House' : 
-                           propertyType === 'villa' ? 'Villa' : 'Property';
+          const isPremium = property.is_premium === true && property.is_premium_active === true;
+          
+          let badgeText = propertyType === 'apartment' ? 'Apartment' : 
+                         propertyType === 'house' ? 'House' : 
+                         propertyType === 'villa' ? 'Villa' : 'Property';
+          
+          let badgeClass = 'project-badge';
+          if (isPremium) {
+            badgeClass += ' premium-badge';
+            badgeText = '⭐ PREMIUM';
+          }
           
           // Format beds display
           const bedsText = property.bedrooms ? 
@@ -173,7 +196,7 @@
           return `
             <div class="project-card" onclick="window.location.href='property-details.html?id=${property.id}'">
               <div class="project-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;">
-                <span class="project-badge">${badgeText}</span>
+                <span class="${badgeClass}">${badgeText}</span>
               </div>
               <div class="project-content">
                 <h3>${property.title || 'New Property'}</h3>

@@ -13,6 +13,18 @@ def _require_admin():
         return jsonify({"message": "Admin access required."}), 403
     return None
 
+def calculate_ad_price(duration_days):
+    """Calculate ad price based on duration days."""
+    if duration_days == 7:
+        return 8000
+    elif duration_days == 14:
+        return 15000
+    elif duration_days == 30:
+        return 28000
+    else:
+        # Daily rate: 8000/7 ≈ 1142.86 PKR per day
+        return int(round((8000 / 7) * duration_days))
+
 def delete_property_images(property_obj):
     """Delete all image files for a property."""
     try:
@@ -170,22 +182,37 @@ def approve_ad(ad_id):
     
     if ad.status != "pending":
         return jsonify({"message": "Ad is not pending approval."}), 400
+
+    # Validate that start_date and end_date are already set
+    if not ad.start_date or not ad.end_date:
+        return jsonify({"message": "Ad does not have valid start/end dates."}), 400
     
     # Set start and end dates based on duration
     now = datetime.utcnow()
     ad.start_date = now
     
-    if ad.duration == "1week":
-        ad.end_date = now + timedelta(days=7)
-    elif ad.duration == "2weeks":
-        ad.end_date = now + timedelta(days=14)
-    elif ad.duration == "1month":
-        ad.end_date = now + timedelta(days=30)
+        # Ensure end_date is after start_date
+    if ad.end_date <= ad.start_date:
+        return jsonify({"message": "End date must be after start date."}), 400
+    
+    # Check minimum duration (7 days)
+    duration_days = (ad.end_date - ad.start_date).days
+    if duration_days < 7:
+        return jsonify({"message": "Minimum duration is 7 days."}), 400
+    
+    # Verify price matches the duration
+    expected_price = calculate_ad_price(duration_days)
+    if ad.price != expected_price:
+        # Optionally update price to match
+        ad.price = expected_price
     
     ad.status = "approved"
     db.session.commit()
     
-    return jsonify({"message": "Ad approved.", "ad": ad.to_dict()}), 200
+    return jsonify({
+        "message": "Ad approved.",
+        "ad": ad.to_dict()
+    }), 200
 
 @admin_bp.route("/ads/<int:ad_id>/reject", methods=["POST"])
 @jwt_required()
