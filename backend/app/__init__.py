@@ -39,11 +39,13 @@ def create_app(config_class=Config):
     from app.routes.auth import auth_bp
     from app.routes.properties import properties_bp
     from app.routes.admin import admin_bp
+    from app.routes.tokens import tokens_bp
 
     app.register_blueprint(auth_bp, url_prefix="/api/users")
     app.register_blueprint(properties_bp, url_prefix="/api/properties")
     app.register_blueprint(admin_bp, url_prefix="/api/admin")
     app.register_blueprint(ads_bp, url_prefix="/api/ads")
+    app.register_blueprint(tokens_bp, url_prefix="/api/tokens")
 
     with app.app_context():
         db.create_all()

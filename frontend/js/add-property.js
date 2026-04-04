@@ -5,45 +5,29 @@ if (window.getToken && !window.getToken()) {
 const locationInput = document.getElementById("location");
 const freeMsg = document.getElementById("freeListingMsg");
 const paymentSection = document.getElementById("paymentSection");
-const premiumCheckbox = document.getElementById("isPremium");
 const basePaymentSpan = document.getElementById("basePaymentAmount");
+let uploadedReceiptUrl = null;
 
-// Function to update payment amount based on location and premium selection
+// Function to update payment amount based on location
 function updatePaymentAmount() {
   if (!paymentSection || paymentSection.style.display === "none") return;
   
   const value = (locationInput?.value || "").toLowerCase();
   const isFreeLocation = value.includes("dha") || value.includes("bahria town") || value.includes("bahria");
-  const isPremium = premiumCheckbox ? premiumCheckbox.checked : false;
   
-  let baseAmount = 500;
-  if (isFreeLocation && !isPremium) {
-    baseAmount = 0;
-  } else if (isFreeLocation && isPremium) {
-    baseAmount = 500; // Premium only
-  } else if (!isFreeLocation && !isPremium) {
-    baseAmount = 500; // Location fee only
-  } else {
-    baseAmount = 1000; // Both location fee + premium
-  }
-  
-  const totalAmount = baseAmount;
+  let baseAmount = isFreeLocation ? 0 : 500;
   
   if (basePaymentSpan) {
-    basePaymentSpan.textContent = totalAmount;
+    basePaymentSpan.textContent = baseAmount;
   }
   
-  // Update payment message based on what's being paid for
+  // Update payment message
   const paymentInfo = paymentSection.querySelector('.payment-info');
   if (paymentInfo) {
     let message = "Send payment to: <strong>0300-1234567</strong><br>Once paid, click \"Submit for Approval\".";
     
-    if (isFreeLocation && isPremium) {
-      message += "<br><strong>Note: Premium listing fee (PKR 500) only.</strong>";
-    } else if (!isFreeLocation && !isPremium) {
+    if (!isFreeLocation) {
       message += "<br><strong>Note: Standard listing fee (PKR 500).</strong>";
-    } else if (!isFreeLocation && isPremium) {
-      message += "<br><strong>Note: Standard listing fee + Premium listing fee (PKR 1,000 total).</strong>";
     }
     
     paymentInfo.innerHTML = message;
@@ -53,38 +37,62 @@ function updatePaymentAmount() {
 if (locationInput) {
   locationInput.addEventListener("input", () => {
     const value = (locationInput.value || "").toLowerCase();
-    const isPremium = premiumCheckbox ? premiumCheckbox.checked : false;
     const isFreeLocation = value.includes("dha") || value.includes("bahria town") || value.includes("bahria");
     
-    // Show payment if:
-    // 1. Premium is selected (regardless of location), OR
-    // 2. Location is not free
-    if (isPremium || !isFreeLocation) {
+    if (isFreeLocation) {
+      freeMsg.style.display = "block";
+      paymentSection.style.display = "none";
+    } else {
       freeMsg.style.display = "none";
       paymentSection.style.display = "block";
       updatePaymentAmount();
-    } else {
-      freeMsg.style.display = "block";
-      paymentSection.style.display = "none";
     }
   });
 }
 
-// Listen for premium checkbox change
-if (premiumCheckbox) {
-  premiumCheckbox.addEventListener("change", () => {
-    const value = (locationInput?.value || "").toLowerCase();
-    const isFreeLocation = value.includes("dha") || value.includes("bahria town") || value.includes("bahria");
-    const isPremium = premiumCheckbox.checked;
-    
-    // Show payment if premium is selected OR location is not free
-    if (isPremium || !isFreeLocation) {
-      freeMsg.style.display = "none";
-      paymentSection.style.display = "block";
-      updatePaymentAmount();
-    } else {
-      freeMsg.style.display = "block";
-      paymentSection.style.display = "none";
+// Receipt image upload
+const receiptInput = document.getElementById('receiptImage');
+if (receiptInput) {
+  receiptInput.addEventListener('change', async function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Preview
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const preview = document.getElementById('receiptPreviewImg');
+      const previewContainer = document.getElementById('receipt-preview');
+      if (preview && previewContainer) {
+        preview.src = e.target.result;
+        previewContainer.style.display = 'block';
+      }
+    };
+    reader.readAsDataURL(file);
+
+    // Upload
+    const formData = new FormData();
+    formData.append('receipt', file);
+
+    try {
+      const response = await fetch(`${API_BASE}/properties/upload-receipt`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${getToken()}` },
+        body: formData
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        uploadedReceiptUrl = data.receipt_url;
+        if (typeof showToast === "function") showToast('Receipt uploaded successfully!', 'success');
+        else alert('Receipt uploaded successfully!');
+      } else {
+        if (typeof showToast === "function") showToast('Receipt upload failed: ' + (data.message || 'Unknown error'), 'error');
+        else alert('Receipt upload failed: ' + (data.message || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Receipt upload error:', error);
+      if (typeof showToast === "function") showToast('Receipt upload failed. Please try again.', 'error');
+      else alert('Receipt upload failed. Please try again.');
     }
   });
 }
@@ -106,28 +114,16 @@ if (form) {
       location.toLowerCase().indexOf("bahria town") >= 0 ||
       location.toLowerCase().indexOf("bahria") >= 0);
     
-    const isPremium = premiumCheckbox ? premiumCheckbox.checked : false;
-    
-    // Calculate payment message based on scenario
+    // Calculate payment message based on location
     let paymentMsg = "";
     let totalAmount = 0;
     
-    if (isFreeLocation && !isPremium) {
-      // Free location, no premium - NO PAYMENT
+    if (isFreeLocation) {
       totalAmount = 0;
       paymentMsg = ""; // No payment needed
-    } else if (isFreeLocation && isPremium) {
-      // Free location, premium only
-      totalAmount = 500;
-      paymentMsg = `Premium listing fee: Rs. 500 (JazzCash/EasyPaisa: 0300-1234567).\n\nThis will give your property priority placement in search results.\n\nHave you made the payment?`;
-    } else if (!isFreeLocation && !isPremium) {
-      // Non-free location, no premium
+    } else {
       totalAmount = 500;
       paymentMsg = `Standard listing fee: Rs. 500 (JazzCash/EasyPaisa: 0300-1234567).\n\nHave you made the payment?`;
-    } else {
-      // Non-free location, premium
-      totalAmount = 1000;
-      paymentMsg = `Total payment required: Rs. 1000\n\n- Standard listing fee: Rs. 500\n- Premium listing fee: Rs. 500\n\nSend payment to: 0300-1234567 (JazzCash/EasyPaisa)\n\nYour property will get priority placement in search results!\n\nHave you made the payment?`;
     }
 
     const filesEl = document.getElementById("images");
@@ -179,6 +175,7 @@ if (form) {
         amenities: amenities,
         images: image_urls, 
         primary_image_index: 0,  // First image is primary
+        receipt_image_url: uploadedReceiptUrl,
         
         // New fields
         description: description || null,
@@ -187,9 +184,6 @@ if (form) {
         total_floors: totalFloors,
         electricity_backup: electricity_backup,
         year_built: yearBuilt,
-        
-        // Premium field
-        is_premium: isPremium
       };
 
       if (!payload.title || !payload.location || !payload.price) {
@@ -216,16 +210,9 @@ if (form) {
             return;
           }
           
-          let successMsg = "";
-          if (isFreeLocation && !isPremium) {
-            successMsg = "Property listed successfully!";
-          } else if (isFreeLocation && isPremium) {
-            successMsg = "Property submitted for admin approval. Your premium listing is pending approval.";
-          } else if (!isFreeLocation && !isPremium) {
-            successMsg = "Property submitted for admin approval. You will see it in My Listings.";
-          } else {
-            successMsg = "Property submitted for admin approval. Your premium listing is pending approval and will appear at the top once approved!";
-          }
+          let successMsg = isFreeLocation
+            ? "Property listed successfully!"
+            : "Property submitted for admin approval. You will see it in My Listings.";
           
           if (typeof showToast === "function") showToast(successMsg, "success");
           else alert(successMsg);

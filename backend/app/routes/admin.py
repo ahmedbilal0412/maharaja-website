@@ -249,3 +249,92 @@ def reject_ad(ad_id):
     db.session.commit()
     
     return jsonify({"message": "Ad rejected."}), 200
+
+@admin_bp.route("/token-purchases", methods=["GET"])
+@jwt_required()
+def list_token_purchases():
+    """Admin: List all token purchases with optional status filter."""
+    from app.models import TokenPurchase
+    
+    err = _require_admin()
+    if err:
+        return err
+    
+    status = request.args.get("status", "").strip().lower()
+    query = TokenPurchase.query.order_by(TokenPurchase.created_at.desc())
+    
+    if status in ["pending", "approved", "rejected"]:
+        query = query.filter_by(status=status)
+    
+    purchases = query.all()
+    return jsonify({"purchases": [p.to_dict() for p in purchases]}), 200
+
+@admin_bp.route("/token-purchases/<int:purchase_id>/approve", methods=["POST"])
+@jwt_required()
+def approve_token_purchase(purchase_id):
+    """Admin: Approve token purchase and add tokens to user."""
+    from app.models import TokenPurchase
+    from datetime import datetime
+    
+    err = _require_admin()
+    if err:
+        return err
+    
+    purchase = TokenPurchase.query.get_or_404(purchase_id)
+    
+    if purchase.status != "pending":
+        return jsonify({"message": "Purchase is not pending approval."}), 400
+    
+    # Add tokens to user
+    user = User.query.get(purchase.user_id)
+    if not user:
+        return jsonify({"message": "User not found."}), 404
+    
+    user.premium_tokens += purchase.token_count
+    
+    # Update purchase status
+    purchase.status = "approved"
+    purchase.approved_at = datetime.utcnow()
+    
+    db.session.commit()
+    
+    return jsonify({
+        "message": f"Token purchase approved. {purchase.token_count} tokens added to user's account.",
+        "purchase": purchase.to_dict(),
+        "user_tokens": user.premium_tokens
+    }), 200
+
+@admin_bp.route("/token-purchases/<int:purchase_id>/reject", methods=["POST"])
+@jwt_required()
+def reject_token_purchase(purchase_id):
+    """Admin: Reject token purchase."""
+    from app.models import TokenPurchase
+    import os
+    from pathlib import Path
+    
+    err = _require_admin()
+    if err:
+        return err
+    
+    purchase = TokenPurchase.query.get_or_404(purchase_id)
+    
+    if purchase.status != "pending":
+        return jsonify({"message": "Purchase is not pending approval."}), 400
+    
+    # Delete receipt image file
+    try:
+        current_file = Path(__file__).resolve()
+        backend_dir = current_file.parent.parent
+        uploads_dir = backend_dir / "uploads" / "token_receipts"
+        
+        filename = purchase.receipt_image_url.split("/")[-1]
+        file_path = uploads_dir / filename
+        if file_path.exists():
+            os.remove(file_path)
+    except Exception as e:
+        print(f"Error deleting receipt: {str(e)}")
+    
+    purchase.status = "rejected"
+    db.session.commit()
+    
+    return jsonify({"message": "Token purchase rejected."}), 200

@@ -72,6 +72,7 @@ def register_ad():
     
     image_url = data.get("image_url", "").strip()
     link_url = data.get("link_url", "").strip()
+    receipt_image_url = data.get("receipt_image_url", "").strip()  
     start_date_str = data.get("start_date", "").strip()
     end_date_str = data.get("end_date", "").strip()
     duration = data.get("duration", "").strip()
@@ -79,6 +80,9 @@ def register_ad():
     
     if not image_url:
         return jsonify({"message": "Ad image is required."}), 400
+
+    if not receipt_image_url:  # ADD THIS VALIDATION
+        return jsonify({"message": "Payment receipt is required."}), 400
     
     # Parse dates
     try:
@@ -139,6 +143,7 @@ def register_ad():
         user_id=user_id,
         image_url=image_url,
         link_url=link_url or None,
+        receipt_image_url=receipt_image_url,  
         duration=duration_str,
         price=price,
         start_date=start_date,
@@ -249,3 +254,47 @@ def check_ad_availability():
         }), 200
     
     return jsonify({"available": True, "message": "Dates are available"}), 200
+
+
+@ads_bp.route("/upload-receipt", methods=["POST"])
+@jwt_required()
+def upload_receipt():
+    """Upload payment receipt image."""
+    if 'receipt' not in request.files:
+        return jsonify({"message": "No receipt image provided"}), 400
+    
+    file = request.files['receipt']
+    if file.filename == '':
+        return jsonify({"message": "No selected file"}), 400
+    
+    # Use same allowed extensions
+    allowed_extensions = {"png", "jpg", "jpeg", "gif", "pdf"}
+    if '.' not in file.filename or file.filename.rsplit('.', 1)[1].lower() not in allowed_extensions:
+        return jsonify({"message": f"File type not allowed. Allowed: {allowed_extensions}"}), 400
+    
+    # Create receipts directory
+    receipt_folder = os.path.join(BASE_DIR, "uploads", "receipts")
+    os.makedirs(receipt_folder, exist_ok=True)
+    
+    # Generate unique filename
+    timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S_%f')
+    original_name = secure_filename(file.filename)
+    unique_filename = f"receipt_{timestamp}_{original_name}"
+    filepath = os.path.join(receipt_folder, unique_filename)
+    
+    file.save(filepath)
+    
+    # Return URL path
+    receipt_url = f"/api/ads/uploads/receipts/{unique_filename}"
+    
+    return jsonify({"receipt_url": receipt_url}), 200
+
+@ads_bp.route("/uploads/receipts/<path:filename>", methods=["GET"])
+def serve_receipt(filename):
+    """Serve uploaded receipt images."""
+    from flask import send_from_directory
+    import os
+    
+    receipt_folder = os.path.join(BASE_DIR, "uploads", "receipts")
+    
+    return send_from_directory(receipt_folder, filename)

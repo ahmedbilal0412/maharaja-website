@@ -14,6 +14,9 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     reset_token = db.Column(db.String(200), nullable=True)
     reset_token_expiry = db.Column(db.DateTime, nullable=True)
+    
+    # Premium tokens balance
+    premium_tokens = db.Column(db.Integer, default=0, nullable=False)
 
     def set_password(self, password):
         self.password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
@@ -29,6 +32,7 @@ class User(db.Model):
             "phone": self.phone,
             "is_admin": self.is_admin,
             "created_at": self.created_at.isoformat() if self.created_at else None,
+            "premium_tokens": self.premium_tokens,
         }
 
 
@@ -60,7 +64,6 @@ class Property(db.Model):
     # Premium fields
     is_premium = db.Column(db.Boolean, default=False)  # Whether property is premium
     premium_expiry = db.Column(db.DateTime, nullable=True)  # When premium subscription expires
-    premium_payment_status = db.Column(db.String(30), default="unpaid")  # unpaid, paid, expired
     
     # Existing fields
     listing_type = db.Column(db.String(20), nullable=False)  # sale, rent
@@ -71,6 +74,7 @@ class Property(db.Model):
     status = db.Column(db.String(30), default=PROPERTY_STATUS_PENDING, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    receipt_image_url = db.Column(db.String(500), nullable=True)  # Payment receipt image
 
     seller = db.relationship("User", backref=db.backref("properties", lazy="dynamic"))
 
@@ -86,8 +90,6 @@ class Property(db.Model):
     def is_premium_active(self):
         """Check if premium subscription is currently active."""
         if not self.is_premium:
-            return False
-        if self.premium_payment_status != "paid":
             return False
         if self.premium_expiry and self.premium_expiry < datetime.utcnow():
             return False
@@ -124,9 +126,9 @@ class Property(db.Model):
             "is_premium": self.is_premium,
             "is_premium_active": self.is_premium_active(),
             "premium_expiry": self.premium_expiry.isoformat() if self.premium_expiry else None,
-            "premium_payment_status": self.premium_payment_status,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+            "receipt_image_url": self.receipt_image_url,
         }
 
 
@@ -138,6 +140,7 @@ def seed_admin_if_needed():
         email="admin@maharajabuilders.pk",
         phone="0300-0000000",
         is_admin=True,
+        premium_tokens=0,
     )
     admin.set_password("admin123")
     db.session.add(admin)
@@ -175,6 +178,7 @@ class Ad(db.Model):
     start_date = db.Column(db.DateTime, nullable=True)
     end_date = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    receipt_image_url = db.Column(db.String(500), nullable=True)  # Payment receipt image
     
     user = db.relationship("User", backref=db.backref("ads", lazy="dynamic"))
     
@@ -192,4 +196,35 @@ class Ad(db.Model):
             "start_date": self.start_date.isoformat() if self.start_date else None,
             "end_date": self.end_date.isoformat() if self.end_date else None,
             "created_at": self.created_at.isoformat() if self.created_at else None,
+            "receipt_image_url": self.receipt_image_url,
+        }
+
+
+class TokenPurchase(db.Model):
+    __tablename__ = "token_purchases"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    token_count = db.Column(db.Integer, nullable=False)  # Number of tokens purchased
+    price_per_token = db.Column(db.Integer, nullable=False)  # Price per token in PKR
+    total_price = db.Column(db.Integer, nullable=False)  # Total price in PKR
+    receipt_image_url = db.Column(db.String(500), nullable=False)  # Payment receipt image
+    status = db.Column(db.String(30), default="pending", nullable=False)  # pending, approved, rejected
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    approved_at = db.Column(db.DateTime, nullable=True)
+    
+    user = db.relationship("User", foreign_keys=[user_id], backref=db.backref("token_purchases", lazy="dynamic"))
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "user_name": self.user.full_name if self.user else None,
+            "user_email": self.user.email if self.user else None,
+            "token_count": self.token_count,
+            "price_per_token": self.price_per_token,
+            "total_price": self.total_price,
+            "receipt_image_url": self.receipt_image_url,
+            "status": self.status,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "approved_at": self.approved_at.isoformat() if self.approved_at else None,
         }

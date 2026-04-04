@@ -125,34 +125,3 @@
     gap: 15px;
   }
 }
-
-/* Premium Section */
-.premium-section {
-  margin: 20px 0;
-  padding: 15px;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(11, 61, 46, 0.05) 100%);
-  border-radius: 12px;
-  border: 1px solid rgba(212, 175, 55, 0.3);
-}
-
-.premium-checkbox {
-  margin: 0;
-}
-
-.premium-checkbox label {
-  font-weight: 600;
-  color: var(--primary-green);
-  cursor: pointer;
-}
-
-.premium-checkbox input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  accent-color: var(--accent-gold);
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.premium-checkbox i {
-  margin-right: 5px;
-}

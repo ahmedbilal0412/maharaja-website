@@ -207,7 +207,8 @@
 }
 
 .btn-approve,
-.btn-reject {
+.btn-reject,
+.view-receipt-btn {
     flex: 1;
     padding: 10px;
     border: none;

@@ -23,6 +23,7 @@
         <a href="#" class="active">Dashboard</a>
         <a href="my-listings.html">My Listings</a>
         <a href="add-property.html">Add Property</a>
+        <a href="premium-properties.html">Premium Properties</a>
         <a href="register-ad.html">Promote Business</a> 
         <a href="my-ads.html">My Ads</a>
         
@@ -36,7 +37,13 @@
     <!-- Main Content -->
     <main class="main-content">
       <header class="dashboard-header">
-        <h1>Dashboard</h1>
+        <div>
+          <h1>Dashboard</h1>
+          <div class="token-balance" id="tokenBalanceDisplay">
+            <i class="fas fa-crown"></i> Premium Tokens: <span id="tokenBalance">0</span>
+            <a href="premium-properties.html" class="token-link">Buy More</a>
+          </div>
+        </div>
         <div class="user-info">
           <p>Welcome, <span id="username"></span></p>
           <button id="logout-btn">Logout</button>

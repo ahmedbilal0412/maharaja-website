@@ -57,12 +57,13 @@
     
     .image-preview {
       width: 100%;
-      max-height: 300px;
+      max-height: 320px;
       object-fit: contain;
       margin-top: 15px;
       border-radius: 10px;
       border: 2px dashed #e0e0e0;
       padding: 10px;
+      justify-content: center;
       display: none;
     }
     
@@ -235,6 +236,7 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="my-listings.html">My Listings</a>
         <a href="add-property.html">Add Property</a>
+        <a href="premium-properties.html">Premium Properties</a>
         <a href="#" class="active">Promote Business</a>
         <a href="my-ads.html">My Ads</a>
       </nav>
@@ -253,6 +255,17 @@
         <img id="imagePreview" class="image-preview" alt="Preview">
       </div>
       
+      <div class="form-group">
+        <label>Payment Receipt *</label>
+        <input type="file" id="receiptImage" accept="image/*,application/pdf" required>
+        <small style="color: var(--text-light); display: block; margin-top: 5px;">
+          After making the payment, upload a screenshot or photo of the transaction receipt
+        </small>
+        <div id="receipt-preview" class="image-preview" style="display: none;">
+          <img id="receiptPreviewImg" src="" alt="Receipt Preview" style="max-height: 300px;">
+        </div>
+      </div>
+
       <div class="form-group">
         <label>Link URL (Optional)</label>
         <input type="url" id="linkUrl" placeholder="https://your-website.com">

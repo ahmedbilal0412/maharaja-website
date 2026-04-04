@@ -27,6 +27,7 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="my-listings.html">My Listings</a>
         <a href="#" class="active">Add Property</a>
+        <a href="premium-properties.html">Premium Properties</a>
         <a href="register-ad.html">Promote Business</a>
         <a href="my-ads.html">My Ads</a>
       </nav>
@@ -117,17 +118,6 @@
             </div>
           </div>
 
-          <!-- Premium Listing Option -->
-          <div class="premium-section">
-            <div class="checkbox-single premium-checkbox">
-              <input type="checkbox" id="isPremium" value="true">
-              <label for="isPremium">
-                <i class="fas fa-crown" style="color: var(--accent-gold);"></i> 
-                Premium Listing <span style="font-size: 0.85rem; color: var(--text-light);">(Additional PKR 500/month - gets priority placement in search results)</span>
-              </label>
-            </div>
-          </div>
-
           <!-- Property Details -->
           <h3 class="section-title">Property Details</h3>
           
@@ -209,6 +199,20 @@
             <input type="file" id="images" accept="image/*" multiple required>
             <small style="color: var(--text-light); display: block; margin-top: 5px;">You can select up to 5 images. First image will be the main/primary image.</small>
             <div id="image-preview" class="image-preview"></div>
+          </div>
+          
+          <!-- Payment Receipt -->
+          <h3 class="section-title">Payment Receipt</h3>
+
+          <div class="form-group">
+            <label>Payment Receipt *</label>
+            <input type="file" id="receiptImage" accept="image/*,application/pdf" required>
+            <small style="color: var(--text-light); display: block; margin-top: 5px;">
+              After making the payment, upload a screenshot or photo of the transaction receipt
+            </small>
+            <div id="receipt-preview" class="image-preview" style="display: none;">
+              <img id="receiptPreviewImg" src="" alt="Receipt Preview">
+            </div>
           </div>
 
           <!-- Submit Button -->

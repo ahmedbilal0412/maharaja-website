@@ -29,15 +29,13 @@
         ? 'http://localhost:5000' 
         : 'https://maharaja-website.onrender.com';
     
-    // ✅ NEW: Handle URLs that already have the correct /api/ format
+    // Handle URLs that already have the correct /api/ format
     if (url.startsWith('/api/')) {
         return imageBaseUrl + url;
     }
     
     // Handle old/wrong paths that might still be in the database
-    // This includes absolute server paths like //opt/render/project/...
     if (url.includes('/uploads/') || url.includes('\\uploads\\')) {
-        // Extract just the filename from any path
         const filename = url.split(/[/\\]/).pop();
         return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
     }
@@ -51,7 +49,6 @@
     // Handle relative paths starting with /uploads/
     if (url.indexOf("/uploads/") === 0) {
         const apiRoot = (API_BASE || "").replace(/\/api.*$/, "");
-        // If apiRoot is empty or localhost, use imageBaseUrl
         if (!apiRoot || apiRoot.includes('localhost')) {
             return imageBaseUrl + url;
         }
@@ -63,9 +60,20 @@
         return `${imageBaseUrl}/api/properties/uploads/properties/${url}`;
     }
     
-    // Default fallback
     return url;
-}
+  }
+
+  function viewReceipt(receiptUrl) {
+    if (receiptUrl) {
+      window.open(receiptUrl, '_blank');
+    } else {
+      if (typeof showToast === "function") {
+        showToast("No receipt uploaded for this property", "error");
+      } else {
+        alert("No receipt uploaded for this property");
+      }
+    }
+  }
 
   function deleteProperty(id, cardEl) {
     function doDelete() {
@@ -115,12 +123,18 @@
         "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80";
       const statusClass =
         p.status === "approved" ? "approved" : p.status === "pending_approval" ? "pending" : "rejected";
+      
+      const hasReceipt = p.receipt_image_url;
+      
       card.innerHTML =
         '<img src="' + imgSrc.replace(/"/g, "&quot;") + '" alt="">' +
         '<div class="info">' +
         "<h3>" + (p.title || "").replace(/</g, "&lt;") + "</h3>" +
         "<p>PKR " + Number(p.price).toLocaleString() + "</p>" +
         '<p><span class="status ' + statusClass + '">' + (p.status || "").replace(/</g, "&lt;") + "</span></p>" +
+        (hasReceipt ? 
+          '<button type="button" class="receipt-btn" data-receipt="' + resolveImageUrl(p.receipt_image_url) + '"><i class="fas fa-receipt"></i> View Receipt</button>' 
+          : '') +
         '<div class="action-btns">' +
         '<a href="property-details.html?id=' + p.id + '" class="action-btn view-btn">View details</a>' +
         (p.status === "pending_approval"
@@ -132,6 +146,17 @@
           : '<button type="button" class="delete-btn" data-id="' + p.id + '"><i class="fas fa-trash"></i> Delete</button>') +
         "</div>" +
         "</div>";
+      
+      // Add receipt button event listener
+      const receiptBtn = card.querySelector(".receipt-btn");
+      if (receiptBtn) {
+        receiptBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          const receiptUrl = this.dataset.receipt;
+          viewReceipt(receiptUrl);
+        });
+      }
+      
       const deleteBtn = card.querySelector(".delete-btn");
       if (deleteBtn) deleteBtn.addEventListener("click", () => deleteProperty(p.id, card));
       if (p.status === "pending_approval") {

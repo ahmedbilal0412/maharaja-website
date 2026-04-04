@@ -124,9 +124,9 @@ def list_properties():
     
     # Sort: premium active properties first, then by created date
     def sort_key(prop):
-        # Check if premium is active (paid and not expired)
-        is_premium_active = prop.is_premium and prop.premium_payment_status == "paid"
-        if is_premium_active and prop.premium_expiry and prop.premium_expiry > now:
+        # Check if premium is active (not expired)
+        is_premium_active = prop.is_premium and prop.premium_expiry and prop.premium_expiry > now
+        if is_premium_active:
             premium_score = 0  # Premium properties come first
         else:
             premium_score = 1  # Non-premium come after
@@ -288,7 +288,6 @@ def create_property():
         year_built=year_built,
         # Premium fields
         is_premium=is_premium,
-        premium_payment_status="unpaid"  # Default to unpaid, payment required to activate
     )
     
     db.session.add(prop)
@@ -369,3 +368,101 @@ def serve_uploaded_image(filename):
         return send_from_directory(str(uploads_dir), filename)
     except FileNotFoundError:
         return jsonify({"message": "Image not found"}), 404
+
+
+@properties_bp.route("/upload-receipt", methods=["POST"])
+@jwt_required()
+def upload_receipt():
+    """Upload payment receipt image."""
+    if 'receipt' not in request.files:
+        return jsonify({"message": "No receipt image provided"}), 400
+    
+    file = request.files['receipt']
+    if file.filename == '':
+        return jsonify({"message": "No selected file"}), 400
+    
+    if not allowed_file(file.filename):
+        return jsonify({"message": f"File type not allowed. Allowed: {ALLOWED_EXTENSIONS}"}), 400
+    
+    # Create receipts directory if it doesn't exist
+    receipt_folder = os.path.join(BASE_DIR, "uploads", "receipts")
+    os.makedirs(receipt_folder, exist_ok=True)
+    
+    # Generate unique filename
+    timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S_%f')
+    original_name = secure_filename(file.filename)
+    unique_filename = f"receipt_{timestamp}_{original_name}"
+    filepath = os.path.join(receipt_folder, unique_filename)
+    
+    file.save(filepath)
+    
+    # Return URL path
+    receipt_url = f"/api/properties/uploads/receipts/{unique_filename}"
+    
+    return jsonify({"receipt_url": receipt_url}), 200
+
+@properties_bp.route("/<int:prop_id>/use-premium-token", methods=["POST"])
+@jwt_required()
+def use_premium_token(prop_id):
+    """Use one premium token to make a property premium for 30 days."""
+    from app.models import User
+    from datetime import datetime, timedelta
+    
+    user_id = get_jwt_identity()
+    
+    # Get user
+    try:
+        user_id_int = int(user_id)
+    except (TypeError, ValueError):
+        return jsonify({"message": "Invalid user ID"}), 400
+    
+    user = User.query.get(user_id_int)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    
+    # Check if user has tokens
+    if user.premium_tokens < 1:
+        return jsonify({"message": "Insufficient premium tokens. Please purchase more tokens."}), 400
+    
+    # Get property
+    prop = Property.query.get_or_404(prop_id)
+    
+    # Check if user owns the property
+    if prop.seller_id != user_id_int:
+        return jsonify({"message": "You can only add premium to your own properties."}), 403
+    
+    # Check if property is approved
+    if prop.status != PROPERTY_STATUS_APPROVED:
+        return jsonify({"message": "Property must be approved before adding premium."}), 400
+    
+    # Use one token
+    user.premium_tokens -= 1
+    
+    # Set premium for 30 days
+    now = datetime.utcnow()
+    if prop.is_premium and prop.premium_expiry and prop.premium_expiry > now:
+        # Extend existing premium
+        prop.premium_expiry = prop.premium_expiry + timedelta(days=30)
+    else:
+        # Set new premium
+        prop.is_premium = True
+        prop.premium_expiry = now + timedelta(days=30)
+    
+    db.session.commit()
+    
+    return jsonify({
+        "message": "Premium activated! Your property will now appear at the top of search results for 30 days.",
+        "tokens_remaining": user.premium_tokens,
+        "premium_expiry": prop.premium_expiry.isoformat()
+    }), 200
+
+@properties_bp.route("/uploads/receipts/<path:filename>", methods=["GET"])
+def serve_property_receipt(filename):
+    """Serve uploaded property payment receipts."""
+    from flask import send_from_directory
+    import os
+    
+    receipt_folder = os.path.join(BASE_DIR, "uploads", "receipts")
+    print(f"DEBUG: Serving property receipt: {filename} from {receipt_folder}")
+    
+    return send_from_directory(receipt_folder, filename)

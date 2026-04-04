@@ -1,3 +1,8 @@
+:root {
+  --primary-green: #0b3d2e;
+  --secondary-green: #145f47;
+}
+
 /* Base Styles - Mobile First */
 body {
   margin: 0;
@@ -731,4 +736,44 @@ body {
     background: white;
     font-size: 12pt;
   }
+}
+
+/* Token Balance Display */
+.token-balance {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(11, 61, 46, 0.05));
+  border-radius: 12px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 500;
+  color: var(--primary-green);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.token-balance i {
+  color: var(--accent-gold);
+  font-size: 1.1rem;
+}
+
+.token-balance span {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--accent-gold);
+}
+
+.token-link {
+  background: var(--primary-green);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.token-link:hover {
+  background: var(--secondary-green);
+  transform: translateY(-2px);
 }

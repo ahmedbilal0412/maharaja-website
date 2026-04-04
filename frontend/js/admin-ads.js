@@ -8,6 +8,9 @@
   const token = getToken();
   let currentFilter = 'all';
 
+  const logoutBtn = document.getElementById("admin-logout-btn");
+  if (logoutBtn) logoutBtn.addEventListener("click", logout);
+
   const adsGrid = document.getElementById('adsGrid');
   const filterTabs = document.querySelectorAll('.filter-tab');
 
@@ -84,6 +87,14 @@
     totalRevenueEl.textContent = 'PKR ' + revenue.toLocaleString();
   }
 
+  function viewReceipt(receiptUrl) {
+    if (receiptUrl) {
+      window.open(receiptUrl, '_blank');
+    } else {
+      showToast('No receipt uploaded for this ad', 'error');
+    }
+  }
+
   function renderAds(ads) {
     if (ads.length === 0) {
       adsGrid.innerHTML = `
@@ -102,6 +113,7 @@
                       ad.end_date && new Date(ad.end_date) > new Date();
       
       const durationText = formatDuration(ad);
+      const hasReceipt = ad.receipt_image_url;
       
       return `
         <div class="ad-card" data-ad-id="${ad.id}">
@@ -147,6 +159,14 @@
               <a href="${ad.link_url}" target="_blank" style="color: var(--primary-green); text-decoration: none; display: block; margin: 10px 0;">
                 <i class="fas fa-external-link-alt"></i> ${ad.link_url}
               </a>
+            ` : ''}
+
+            ${hasReceipt ? `
+              <div class="receipt-section">
+                <button class="view-receipt-btn" onclick="viewReceipt('${resolveImageUrl(ad.receipt_image_url)}')">
+                  <i class="fas fa-receipt"></i> View Payment Receipt
+                </button>
+              </div>
             ` : ''}
 
             ${ad.status === 'pending' && ad.payment_status === 'paid' ? `
@@ -258,6 +278,8 @@
       });
     });
   };
+
+  window.viewReceipt = viewReceipt;
 
   // Load initial data
   loadAds('all');

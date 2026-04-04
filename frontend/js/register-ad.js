@@ -20,6 +20,7 @@
   let selectedStartDate = null;
   let selectedEndDate = null;
   let uploadedImageUrl = null;
+  let uploadedReceiptUrl = null;
 
   // Helper function to calculate days between dates
   function getDaysDifference(startDate, endDate) {
@@ -192,7 +193,7 @@
     reader.onload = function(e) {
       const preview = document.getElementById('imagePreview');
       preview.src = e.target.result;
-      preview.style.display = 'block';
+      preview.style.display = 'flex';
     };
     reader.readAsDataURL(file);
 
@@ -222,13 +223,54 @@
     updateSubmitButton();
   });
 
+  // Receipt image upload
+  document.getElementById('receiptImage').addEventListener('change', async function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Preview
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const preview = document.getElementById('receiptPreviewImg');
+      const previewContainer = document.getElementById('receipt-preview');
+      preview.src = e.target.result;
+      previewContainer.style.display = 'flex';
+    };
+    reader.readAsDataURL(file);
+
+    // Upload
+    const formData = new FormData();
+    formData.append('receipt', file);
+
+    try {
+      const response = await fetch(`${API_BASE}/ads/upload-receipt`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        uploadedReceiptUrl = data.receipt_url;
+        showToast('Receipt uploaded successfully!', 'success');
+      } else {
+        showToast('Receipt upload failed: ' + (data.message || 'Unknown error'), 'error');
+      }
+    } catch (error) {
+      console.error('Receipt upload error:', error);
+      showToast('Receipt upload failed. Please try again.', 'error');
+    }
+
+    updateSubmitButton();
+  });
+
   function updateSubmitButton() {
     const submitBtn = document.getElementById('submitBtn');
     const availabilityMessage = document.getElementById('availabilityMessage');
     const isAvailable = !availabilityMessage || availabilityMessage.style.display === 'none';
     const hasValidDates = selectedStartDate && selectedEndDate && 
                           getDaysDifference(selectedStartDate, selectedEndDate) >= 7;
-    submitBtn.disabled = !(uploadedImageUrl && hasValidDates && isAvailable);
+    submitBtn.disabled = !(uploadedImageUrl && uploadedReceiptUrl && hasValidDates && isAvailable);
   }
 
   // Form submission
@@ -271,6 +313,7 @@
         },
         body: JSON.stringify({
           image_url: uploadedImageUrl,
+          receipt_image_url: uploadedReceiptUrl,
           link_url: linkUrl,
           duration: durationStr,
           start_date: selectedStartDate,

@@ -25,6 +25,21 @@
     return "PKR " + Number(price).toLocaleString();
   }
 
+  // Load token balance
+  function loadTokenBalance() {
+    fetch(`${API_BASE}/tokens/balance`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      const tokenSpan = document.getElementById('tokenBalance');
+      if (tokenSpan) {
+        tokenSpan.textContent = data.balance || 0;
+      }
+    })
+    .catch(err => console.error('Error loading token balance:', err));
+  }
+
   function resolveImageUrl(url) {
     if (!url) return null;
     
@@ -156,6 +171,8 @@
     .then((data) => {
       if (data && data.properties) renderListings(data.properties);
       else renderListings([]);
+
+      loadTokenBalance();
     })
     .catch(() => renderListings([]));
 })();
