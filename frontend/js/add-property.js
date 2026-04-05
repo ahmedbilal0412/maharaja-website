@@ -6,6 +6,8 @@ const locationInput = document.getElementById("location");
 const freeMsg = document.getElementById("freeListingMsg");
 const paymentSection = document.getElementById("paymentSection");
 const basePaymentSpan = document.getElementById("basePaymentAmount");
+const receiptSection = document.querySelector('.receipt-section');
+const receiptInput = document.getElementById('receiptImage');
 let uploadedReceiptUrl = null;
 
 // Function to update payment amount based on location
@@ -42,16 +44,18 @@ if (locationInput) {
     if (isFreeLocation) {
       freeMsg.style.display = "block";
       paymentSection.style.display = "none";
+      if (receiptSection) receiptSection.style.display = "none";
+      if (receiptInput) receiptInput.required = false;
     } else {
       freeMsg.style.display = "none";
       paymentSection.style.display = "block";
       updatePaymentAmount();
+      if (receiptSection) receiptSection.style.display = "block";
+      if (receiptInput) receiptInput.required = true;
     }
   });
 }
 
-// Receipt image upload
-const receiptInput = document.getElementById('receiptImage');
 if (receiptInput) {
   receiptInput.addEventListener('change', async function(e) {
     const file = e.target.files[0];
@@ -65,6 +69,7 @@ if (receiptInput) {
       if (preview && previewContainer) {
         preview.src = e.target.result;
         previewContainer.style.display = 'block';
+        preview.style.maxHeight = '300px';
       }
     };
     reader.readAsDataURL(file);
@@ -175,7 +180,7 @@ if (form) {
         amenities: amenities,
         images: image_urls, 
         primary_image_index: 0,  // First image is primary
-        receipt_image_url: uploadedReceiptUrl,
+        receipt_image_url: uploadedReceiptUrl || null,
         
         // New fields
         description: description || null,
@@ -189,6 +194,16 @@ if (form) {
       if (!payload.title || !payload.location || !payload.price) {
         if (typeof showToast === "function") showToast("Please fill in title, location and price.", "error");
         else alert("Please fill in title, location and price.");
+        return;
+      }
+
+      const isFreeLocation = (location.toLowerCase().indexOf("dha") >= 0 ||
+        location.toLowerCase().indexOf("bahria town") >= 0 ||
+        location.toLowerCase().indexOf("bahria") >= 0);
+
+      // Only require receipt for paid listings
+      if (!isFreeLocation && !uploadedReceiptUrl) {
+        showToast('Please upload payment receipt', 'error');
         return;
       }
 

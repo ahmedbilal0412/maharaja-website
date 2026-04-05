@@ -212,16 +212,13 @@ def create_property():
     size_sqft = data.get("size_sqft") or data.get("size")
     amenities = data.get("amenities")
     city = (data.get("city") or "").strip()
-    
-    # New optional fields
     description = data.get("description", "").strip()
     parking = data.get("parking", False)
     furnished = data.get("furnished", "")
     total_floors = data.get("total_floors")
     electricity_backup = data.get("electricity_backup", False)
     year_built = data.get("year_built")
-    
-    # Premium field
+    receipt_image_url = data.get("receipt_image_url", "").strip()
     is_premium = data.get("is_premium", False)
 
     # Validation
@@ -279,14 +276,13 @@ def create_property():
         size_sqft=int(size_sqft),
         amenities=amenities_str or None,
         status=status,
-        # New fields
         description=description or None,
         parking=parking,
         furnished=furnished if furnished else None,
         total_floors=total_floors,
         electricity_backup=electricity_backup,
         year_built=year_built,
-        # Premium fields
+        receipt_image_url=receipt_image_url or None,
         is_premium=is_premium,
     )
     

@@ -125,6 +125,7 @@
         p.status === "approved" ? "approved" : p.status === "pending_approval" ? "pending" : "rejected";
       
       const hasReceipt = p.receipt_image_url;
+      console.log(p.receipt_image_url);
       
       card.innerHTML =
         '<img src="' + imgSrc.replace(/"/g, "&quot;") + '" alt="">' +

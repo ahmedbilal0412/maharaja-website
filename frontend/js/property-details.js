@@ -39,14 +39,20 @@
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
-  const token = getToken();
+  
+  const token = typeof getToken === 'function' ? getToken() : null;
 
   if (!id) {
     document.querySelector(".property-info-panel").innerHTML = "<h2>Property not found</h2>";
     return;
   }
 
-  fetch(API_BASE + "/properties/" + id, { headers: { Authorization: "Bearer " + token } })
+  const headers = {};
+  if (token) {
+    headers['Authorization'] = 'Bearer ' + token;
+  }
+
+  fetch(API_BASE + "/properties/" + id, { headers: headers })
     .then(function (r) {
       if (!r.ok) throw new Error("Not found");
       return r.json();

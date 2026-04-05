@@ -13,6 +13,10 @@
 </head>
 <body>
   <div class="admin-container">
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">
+      <p>☰</p>
+    </button>
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="header-container">
@@ -80,5 +84,11 @@
   <script src="js/auth.js"></script>
   <script src="js/notify.js"></script>
   <script src="js/admin-ads.js"></script>
+  <script>
+    function toggleSidebar() {
+      const nav = document.querySelector('.sidebar-nav');
+      if (nav) nav.classList.toggle('collapsed');
+    }
+  </script>
 </body>
 </html>

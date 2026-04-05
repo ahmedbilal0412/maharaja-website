@@ -8,7 +8,8 @@
     return;
   }
 
-  document.getElementById("admin-logout-btn").addEventListener("click", logout);
+  const logoutBtn = document.getElementById("admin-logout-btn");
+  if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
   const headers = { Authorization: "Bearer " + token };
 
@@ -28,44 +29,36 @@
         ? 'http://localhost:5000' 
         : 'https://maharaja-website.onrender.com';
     
-    // ✅ NEW: Handle URLs that already have the correct /api/ format
     if (url.startsWith('/api/')) {
         return imageBaseUrl + url;
     }
     
-    // Handle old/wrong paths that might still be in the database
-    // This includes absolute server paths like //opt/render/project/...
     if (url.includes('/uploads/') || url.includes('\\uploads\\')) {
-        // Extract just the filename from any path
         const filename = url.split(/[/\\]/).pop();
         return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
     }
     
-    // Handle local file paths (C:/Users/...)
     if (url.includes(':/') || url.includes('\\')) {
         const filename = url.split(/[/\\]/).pop();
         return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
     }
     
-    // Handle relative paths starting with /uploads/
     if (url.indexOf("/uploads/") === 0) {
         const apiRoot = (API_BASE || "").replace(/\/api.*$/, "");
-        // If apiRoot is empty or localhost, use imageBaseUrl
         if (!apiRoot || apiRoot.includes('localhost')) {
             return imageBaseUrl + url;
         }
         return apiRoot + url;
     }
     
-    // Handle other relative paths (just filename)
     if (!url.startsWith('/')) {
         return `${imageBaseUrl}/api/properties/uploads/properties/${url}`;
     }
     
-    // Default fallback
     return url;
-}
+  }
 
+  // Load stats
   fetch(API_BASE + "/admin/stats", { headers })
     .then((r) => (r.ok ? r.json() : {}))
     .then((data) => {
@@ -76,6 +69,7 @@
     })
     .catch(() => {});
 
+  // Load recent pending properties (show limited number with View All link)
   const pendingGrid = document.getElementById("admin-pending-grid");
   const activityList = document.getElementById("admin-activity-list");
 
@@ -91,7 +85,9 @@
       if (list.length === 0) {
         pendingGrid.innerHTML = "<p class=\"no-pending\">No pending approvals.</p>";
       } else {
-        list.forEach((p) => {
+        // Show only first 3 properties on dashboard
+        const recentList = list.slice(0, 3);
+        recentList.forEach((p) => {
           const card = document.createElement("div");
           card.className = "property-card";
           const imgSrc =
@@ -103,19 +99,21 @@
             "<h4>" + (p.title || "").replace(/</g, "&lt;") + "</h4>" +
             "<p>PKR " + formatPrice(p.price) + "</p>" +
             "<p class=\"seller-info\">" + (p.seller_name || "").replace(/</g, "&lt;") + "</p>" +
-            "<button type=\"button\" class=\"approve-btn\" data-id=\"" + p.id + "\">Approve</button> " +
-            "<button type=\"button\" class=\"reject-btn\" data-id=\"" + p.id + "\">Reject</button>" +
+            "<a href=\"admin-listings.html\" class=\"view-link\">View Details</a>" +
             "</div>";
-          card.querySelector(".approve-btn").addEventListener("click", function () {
-            approveReject(p.id, true, card);
-          });
-          card.querySelector(".reject-btn").addEventListener("click", function () {
-            approveReject(p.id, false, card);
-          });
           pendingGrid.appendChild(card);
         });
+        
+        // Add "View All" button if there are more than 3
+        if (list.length > 3) {
+          const viewAllBtn = document.createElement("div");
+          viewAllBtn.className = "view-all-container";
+          viewAllBtn.innerHTML = `<a href="admin-listings.html?status=pending" class="view-all-btn">View All ${list.length} Pending Properties →</a>`;
+          pendingGrid.appendChild(viewAllBtn);
+        }
       }
 
+      // Update activity list (show limited)
       if (activityList) {
         activityList.innerHTML = list.length
           ? list.slice(0, 5).map((p) => "<li><i class=\"fas fa-home\"></i> Pending: " + (p.title || "").replace(/</g, "&lt;") + " – " + (p.seller_name || "").replace(/</g, "&lt;") + "</li>").join("")
@@ -125,24 +123,6 @@
     .catch(() => {
       pendingGrid.innerHTML = "<p class=\"no-pending\">Failed to load pending list.</p>";
     });
-
-  function approveReject(id, approve, cardEl) {
-    const path = approve ? "/approve" : "/reject";
-    fetch(API_BASE + "/admin/properties/" + id + path, { method: "POST", headers })
-      .then((r) => r.json())
-      .then((data) => {
-        if (cardEl && cardEl.parentNode) cardEl.parentNode.removeChild(cardEl);
-        const pendingGrid = document.getElementById("admin-pending-grid");
-        if (pendingGrid && pendingGrid.children.length === 0) pendingGrid.innerHTML = "<p class=\"no-pending\">No pending approvals.</p>";
-        const statPending = document.getElementById("stat-pending");
-        if (statPending) statPending.textContent = Math.max(0, parseInt(statPending.textContent, 10) - 1);
-        if (approve && document.getElementById("stat-approved")) {
-          const el = document.getElementById("stat-approved");
-          el.textContent = parseInt(el.textContent, 10) + 1;
-        }
-      })
-      .catch(function () { if (typeof showToast === "function") showToast("Request failed.", "error"); else alert("Request failed."); });
-  }
 })();
 
 function toggleSidebar() {

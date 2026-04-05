@@ -1,3 +1,8 @@
+:root {
+  --primary-green: #0b3d2e;
+  --secondary-green: #145f47;
+}
+
 /* Base Styles - Mobile First */
 body {
   font-family: "Poppins", sans-serif;
@@ -256,36 +261,6 @@ body {
   flex-direction: column;
   gap: 8px;
   margin-top: 15px;
-}
-
-.approve-btn,
-.reject-btn {
-  padding: 10px;
-  border: none;
-  border-radius: 20px;
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 0.9rem;
-  width: 100%;
-  transition: all 0.3s ease;
-}
-
-.approve-btn {
-  background: #0b3d2e;
-  color: white;
-}
-
-.approve-btn:hover {
-  background: #145f47;
-}
-
-.reject-btn {
-  background: #e63946;
-  color: white;
-}
-
-.reject-btn:hover {
-  background: #c82333;
 }
 
 /* Recent Activity */
@@ -623,4 +598,46 @@ body {
 
 .admin-table table {
   min-width: 600px;
+}
+
+.view-all-container {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 20px;
+  padding: 15px;
+}
+
+.view-all-btn {
+  display: inline-block;
+  background: var(--primary-green);
+  color: white;
+  padding: 12px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.view-all-btn:hover {
+  background: var(--secondary-green);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(11, 61, 46, 0.2);
+}
+
+.view-link {
+  display: inline-block;
+  background: var(--accent-gold);
+  color: var(--primary-green);
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.view-link:hover {
+  background: var(--primary-green);
+  color: white;
 }
