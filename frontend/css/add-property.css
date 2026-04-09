@@ -33,6 +33,7 @@
 .payment-info {
   font-size: 14px;
   color: #444;
+  margin-bottom: 20px;
 }
 
 .image-preview {
@@ -124,4 +125,15 @@
     grid-template-columns: 1fr;
     gap: 15px;
   }
+}
+
+.payment-image {
+  max-height: 300px;
+  height: 50vw;
+}
+
+.payment-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -6,6 +6,7 @@
   <title>Premium Properties - Maharaja Builders</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="img/maharaja.png">
   <link rel="stylesheet" href="css/variables.css" />
   <link rel="stylesheet" href="css/common.css" />
   <link rel="stylesheet" href="css/navbar.css" />
@@ -301,6 +302,38 @@
         width: 100%;
       }
     }
+
+    .payment-section {
+      display: block;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 10px;
+    }
+
+    .payment-info {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .payment-image {
+      max-height: 300px;
+      height: 50vw;
+    }
+
+    .payment-image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
@@ -351,6 +384,20 @@
         <h2 class="section-title">Purchase Tokens</h2>
         <div class="packs-grid" id="packsGrid">
           <!-- Token packs will be loaded here -->
+        </div>
+
+        <div id="paymentSection" class="payment-section">
+          <div class="payment-methods">
+            <b>EasyPaisa or JazzCash</b>
+          </div>
+          <div class="payment-info">
+            Send payment to: <strong>0300-1234567</strong><br>
+            Once paid, click "Purchase Tokens".
+          </div>
+          <div class="payment-image-container">
+            <img class="payment-image" src="img/payment.jpg" alt="payment">
+            <img class="payment-image" src="img/ep-payment.jpg" alt="ep-payment">
+          </div>
         </div>
 
         <!-- Receipt Upload Section -->

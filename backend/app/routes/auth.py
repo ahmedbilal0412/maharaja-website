@@ -1,15 +1,15 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
+from app.utils.email_service import send_welcome_email, send_login_notification
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
-from app import db
+from app import db, mail
 from app.models import User
 from datetime import datetime, timedelta
 from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Message
 import os
 
 auth_bp = Blueprint("auth", __name__)
 
-# Initialize serializer for generating secure tokens
-serializer = URLSafeTimedSerializer(os.environ.get("SECRET_KEY", "dev-secret-key"))
 
 @auth_bp.route("/signup", methods=["POST"])
 def signup():
@@ -32,6 +32,8 @@ def signup():
     db.session.add(user)
     db.session.commit()
 
+    send_welcome_email(user)
+
     return jsonify({"message": "Account created successfully.", "user": user.to_dict()}), 201
 
 
@@ -49,9 +51,120 @@ def login():
         return jsonify({"message": "Invalid email or password."}), 401
 
     token = create_access_token(str(user.id), additional_claims={"is_admin": user.is_admin})
+    send_login_notification(user, request.remote_addr)
     return jsonify({"token": token, "user": user.to_dict()}), 200
 
+
 # ==================== FORGOT PASSWORD ====================
+
+def send_reset_email(to_email, reset_link):
+    """Send password reset email using Flask-Mail."""
+    from flask_mail import Message
+    from app import mail
+    
+    try:
+        msg = Message(
+            subject='Password Reset Request - Maharaja Builders',
+            recipients=[to_email],
+            html=f'''
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Password Reset</title>
+                <style>
+                    body {{
+                        font-family: 'Poppins', Arial, sans-serif;
+                        line-height: 1.6;
+                        color: #333;
+                        margin: 0;
+                        padding: 0;
+                    }}
+                    .container {{
+                        max-width: 600px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        background: #f9f9f9;
+                        border-radius: 10px;
+                    }}
+                    .header {{
+                        text-align: center;
+                        padding: 20px 0;
+                        border-bottom: 3px solid #d4af37;
+                    }}
+                    .logo {{
+                        max-width: 150px;
+                    }}
+                    .content {{
+                        padding: 30px 20px;
+                    }}
+                    .button {{
+                        display: inline-block;
+                        padding: 12px 30px;
+                        background: #0b3d2e;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 5px;
+                        margin: 20px 0;
+                        font-weight: 600;
+                    }}
+                    .button:hover {{
+                        background: #145f47;
+                    }}
+                    .footer {{
+                        text-align: center;
+                        padding: 20px;
+                        font-size: 12px;
+                        color: #666;
+                        border-top: 1px solid #ddd;
+                    }}
+                    .link-text {{
+                        word-break: break-all;
+                        background: #f0f0f0;
+                        padding: 10px;
+                        border-radius: 5px;
+                        font-size: 12px;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <img src="https://maharajabuilders.pk/img/maharaja.png" alt="Maharaja Builders" class="logo" style="max-width: 150px;">
+                        <h2 style="color: #0b3d2e;">Password Reset Request</h2>
+                    </div>
+                    <div class="content">
+                        <p>Hello,</p>
+                        <p>We received a request to reset your password for your Maharaja Builders account.</p>
+                        <p>Click the button below to reset your password:</p>
+                        <div style="text-align: center;">
+                            <a href="{reset_link}" class="button">Reset Password</a>
+                        </div>
+                        <p>If the button doesn't work, copy and paste this link into your browser:</p>
+                        <p class="link-text">{reset_link}</p>
+                        <p>This link will expire in <strong>1 hour</strong>.</p>
+                        <p>If you didn't request this, you can safely ignore this email. Your password will not be changed.</p>
+                        <hr style="margin: 20px 0;">
+                        <p style="font-size: 12px; color: #999;">This is an automated message from Maharaja Builders. Please do not reply to this email.</p>
+                    </div>
+                    <div class="footer">
+                        <p>&copy; 2025 Maharaja Builders & Realtors. All rights reserved.</p>
+                        <p>Pakistan's most trusted real estate partner</p>
+                        <p><a href="https://maharajabuilders.pk" style="color: #0b3d2e;">Visit our website</a></p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            '''
+        )
+        mail.send(msg)
+        print(f"Password reset email sent to {to_email}")
+        return True
+    except Exception as e:
+        print(f"Error sending email: {str(e)}")
+        return False
+
 
 @auth_bp.route("/forgot-password", methods=["POST"])
 def forgot_password():
@@ -68,6 +181,7 @@ def forgot_password():
         return jsonify({"message": "If your email is registered, you will receive a reset link."}), 200
     
     # Generate reset token (expires in 1 hour)
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     token = serializer.dumps(email, salt='password-reset-salt')
     expiry = datetime.utcnow() + timedelta(hours=1)
     
@@ -76,19 +190,17 @@ def forgot_password():
     user.reset_token_expiry = expiry
     db.session.commit()
     
-    # In production, send email here
-    # For development, return the token in response (or log it)
-    reset_link = f"{request.host_url}reset-password.html?token={token}"
+    # Build reset link
+    frontend_url = os.environ.get("FRONTEND_URL", "https://maharajabuilders.pk")
+    reset_link = f"{frontend_url}/reset-password.html?token={token}"
     
-    # For testing, return the token (remove in production)
-    print(f"Password reset link: {reset_link}")
+    # Send email
+    email_sent = send_reset_email(email, reset_link)
     
-    # For production, you'd send an actual email
-    # For now, return success with the link for testing
-    return jsonify({
-        "message": "Password reset email sent.",
-        "reset_link": reset_link  # Remove this in production!
-    }), 200
+    if email_sent:
+        return jsonify({"message": "Password reset email sent. Please check your inbox."}), 200
+    else:
+        return jsonify({"message": "Unable to send reset email. Please try again later."}), 500
 
 
 @auth_bp.route("/reset-password", methods=["POST"])
@@ -115,6 +227,7 @@ def reset_password():
         return jsonify({"message": "Reset token has expired. Please request a new one."}), 400
     
     # Verify token with serializer
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     try:
         email = serializer.loads(token, salt='password-reset-salt', max_age=3600)
         if email != user.email:

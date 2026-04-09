@@ -6,6 +6,7 @@ from app.models import Property, User, PROPERTY_STATUS_APPROVED, PROPERTY_STATUS
 import os
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+from app.utils.email_service import send_property_created_email, send_property_deleted_email
 
 properties_bp = Blueprint("properties", __name__)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # routes folder → app → backend
@@ -300,7 +301,8 @@ def create_property():
         db.session.add(prop_image)
 
     db.session.commit()
-    print("DEBUG: Property images:", [img.to_dict() for img in prop.images])
+    user = User.query.get(user_id)
+    send_property_created_email(user, prop)  
     return jsonify({"message": "Property submitted.", "property": prop.to_dict()}), 201
 
 
@@ -315,10 +317,15 @@ def delete_property(prop_id):
     if not can_access:
         return jsonify({"message": "Not allowed to delete this property."}), 403
         
-    deleted_files = delete_property_images(prop)
+    property_title = prop.title
+    user = User.query.get(user_id)
 
+    deleted_files = delete_property_images(prop)
     db.session.delete(prop)
     db.session.commit()
+
+    send_property_deleted_email(user, property_title)
+
     return jsonify({"message": "Property deleted.", "deleted_images": len(deleted_files)}), 200
 
 

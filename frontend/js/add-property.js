@@ -28,10 +28,6 @@ function updatePaymentAmount() {
   if (paymentInfo) {
     let message = "Send payment to: <strong>0300-1234567</strong><br>Once paid, click \"Submit for Approval\".";
     
-    if (!isFreeLocation) {
-      message += "<br><strong>Note: Standard listing fee (PKR 500).</strong>";
-    }
-    
     paymentInfo.innerHTML = message;
   }
 }

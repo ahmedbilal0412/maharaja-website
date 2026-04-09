@@ -1764,6 +1764,28 @@ header.hero::before {
   margin: 0 auto;
   position: relative;
   z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.buyer-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 30vw;
+  min-width: 300px;
+}
+
+.buyer-logo-img {
+  width: inherit;
+  min-width: inherit;
+}
+
+@media (max-width: 995px) {
+  .buyer-logo {
+    display: none;
+  }
 }
 
 .buyer-content {

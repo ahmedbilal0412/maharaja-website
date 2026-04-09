@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add Property - Maharaja Builders</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="img/maharaja.png">
   <link rel="stylesheet" href="css/dashboard.css" />
   <link rel="stylesheet" href="css/add-property.css" />
   <link rel="stylesheet" href="css/notify.css" />
+  <link rel="icon" type="image/png" href="img/maharaja.png">
   <script src="https://kit.fontawesome.com/a2d9d6f6a7.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -70,18 +72,6 @@
 
           <div id="freeListingMsg" class="free-listing">
             ✅ Listing is free for this location (DHA or Bahria Town).
-          </div>
-
-          <div id="paymentSection" class="payment-section">
-            <label>Payment Required: Rs. <span id="basePaymentAmount">500</span></label>
-            <div class="payment-methods">
-              <label><input type="radio" name="payment" value="easypaisa"> Easypaisa</label>
-              <label><input type="radio" name="payment" value="jazzcash"> JazzCash</label>
-            </div>
-            <div class="payment-info">
-              Send payment to: <strong>0300-1234567</strong><br>
-              Once paid, click "Submit for Approval".
-            </div>
           </div>
 
           <div class="form-row">
@@ -199,6 +189,22 @@
             <input type="file" id="images" accept="image/*" multiple required>
             <small style="color: var(--text-light); display: block; margin-top: 5px;">You can select up to 5 images. First image will be the main/primary image.</small>
             <div id="image-preview" class="image-preview"></div>
+          </div>
+
+          <div id="paymentSection" class="payment-section">
+            <label>Payment Required: Rs. <span id="basePaymentAmount">500</span></label>
+            <div class="payment-methods">
+              <b>EasyPaisa or JazzCash</b>
+            </div>
+            <div class="payment-info">
+              Send payment to: <strong>0300-1234567</strong><br>
+              Once paid, click "Submit for Approval".
+              
+            </div>
+            <div class="payment-image-container">
+              <img class="payment-image" src="img/payment.jpg" alt="payment">
+              <img class="payment-image" src="img/ep-payment.jpg" alt="ep-payment">
+            </div>
           </div>
           
           <!-- Payment Receipt -->

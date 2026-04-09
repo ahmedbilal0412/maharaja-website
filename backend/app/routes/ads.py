@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import os
 from werkzeug.utils import secure_filename
 from pathlib import Path
+from app.utils.email_service import send_ad_created_email
 
 ads_bp = Blueprint("ads", __name__)
 
@@ -155,6 +156,9 @@ def register_ad():
     db.session.add(ad)
     db.session.commit()
     
+    user = User.query.get(user_id)
+    send_ad_created_email(user, ad)  
+
     return jsonify({
         "message": "Ad submitted for approval.",
         "ad": ad.to_dict(),

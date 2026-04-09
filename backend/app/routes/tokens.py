@@ -5,6 +5,7 @@ from app.models import User, TokenPurchase
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
+from app.utils.email_service import send_token_purchase_email
 
 tokens_bp = Blueprint("tokens", __name__)
 
@@ -101,6 +102,9 @@ def purchase_tokens():
     db.session.add(purchase)
     db.session.commit()
     
+    user = User.query.get(user_id)
+    send_token_purchase_email(user, purchase)
+
     return jsonify({
         "message": "Token purchase request submitted for approval.",
         "purchase": purchase.to_dict()

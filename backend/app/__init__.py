@@ -5,11 +5,13 @@ from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+from flask_mail import Mail
 
 from config import Config
 
 db = SQLAlchemy()
 jwt = JWTManager()
+mail = Mail()
 
 
 def _cors_origins():
@@ -35,6 +37,7 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     jwt.init_app(app)
+    mail.init_app(app)
 
     from app.routes.auth import auth_bp
     from app.routes.properties import properties_bp
