@@ -4,7 +4,7 @@
     return;
   }
 
-  const API_BASE = window.API_BASE || "https://maharajabuilders.pk/api";
+  const API_BASE = window.API_BASE || "https://api.maharajabuilders.pk/api";
   const token = getToken();
 
   let selectedPack = null;

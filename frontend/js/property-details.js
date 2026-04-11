@@ -1,5 +1,5 @@
 (function () {
-  const API_BASE = window.API_BASE || "https://maharajabuilders.pk/api";
+  const API_BASE = window.API_BASE || "https://api.maharajabuilders.pk/api";
 
   function resolveImageUrl(url) {
     if (!url) return null;

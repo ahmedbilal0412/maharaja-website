@@ -15,7 +15,7 @@
   const logoutBtn = document.getElementById("logout-btn");
   if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
-  const API_BASE = window.API_BASE || "https://maharajabuilders.pk/api";
+  const API_BASE = window.API_BASE || "https://api.maharajabuilders.pk/api";
   const token = getToken();
 
   function formatPrice(price, listingType) {

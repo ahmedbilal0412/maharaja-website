@@ -1,5 +1,5 @@
 (function () {
-  const API_BASE = window.API_BASE || "https://maharajabuilders.pk/api";
+  const API_BASE = window.API_BASE || "https://api.maharajabuilders.pk/api";
   const form = document.getElementById("login-form");
   const messageEl = document.getElementById("login-message");
   const submitBtn = form ? form.querySelector('button[type="submit"]') : null;

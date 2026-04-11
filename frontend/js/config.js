@@ -6,7 +6,7 @@
   // Set base URL based on environment
   let base = isLocal 
     ? 'http://localhost:5000/api' 
-    : 'https://maharajabuilders.pk/api';
+    : 'https://api.maharajabuilders.pk/api';
   
   
   // Allow override via window.__API_BASE__ (highest priority)
