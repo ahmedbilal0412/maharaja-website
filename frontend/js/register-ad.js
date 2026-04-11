@@ -5,7 +5,7 @@
     return;
   }
 
-  const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
+  const API_BASE = window.API_BASE || "https://maharajabuilders.pk/api";
   const token = getToken();
 
   // Pricing per day (in PKR)

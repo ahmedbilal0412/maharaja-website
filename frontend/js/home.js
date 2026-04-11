@@ -68,7 +68,7 @@
   
   async function loadCurrentAd() {
     try {
-      const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
+      const API_BASE = window.API_BASE || "https://maharajabuilders.pk/api";
       const response = await fetch(`${API_BASE}/ads/current`);
       const data = await response.json();
       
@@ -124,7 +124,7 @@
     `;
 
     // Get API base from window or use default
-    const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
+    const API_BASE = window.API_BASE || "https://maharajabuilders.pk/api";
 
     // Build URL with city filter if provided
     let url = `${API_BASE}/properties?listing_type=sale&limit=10`;

@@ -1,5 +1,5 @@
 (function() {
-  const API_BASE = window.API_BASE || "https://maharaja-website.onrender.com/api";
+  const API_BASE = window.API_BASE || "https://maharajabuilders.pk/api";
   const form = document.getElementById("reset-password-form");
   const messageEl = document.getElementById("message");
   const submitBtn = form.querySelector('button[type="submit"]');
