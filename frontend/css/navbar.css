@@ -5,12 +5,10 @@
   align-items: center;
   background: var(--pure-white);
   box-shadow: 0 4px 12px rgba(13, 46, 30, 0.08);
-  padding: 15px 40px;
+  padding: 1vh 2vw;
   position: sticky;
   top: 0;
   z-index: 999;
-  flex-wrap: nowrap;
-  gap: 20px;
 }
 
 .nav-left {
@@ -22,11 +20,10 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
 }
 
 .navbar .logo {
-  height: 50px;
+  height: clamp(35px, 4vw, 55px);
   transition: transform 0.3s ease;
 }
 
@@ -34,34 +31,30 @@
   transform: scale(1.05);
 }
 
+/* Center Navigation */
 .nav-center {
   display: flex;
-  gap: 1vw;
-  margin: 0 40px;
-  flex-wrap: nowrap;
+  gap: 1.5vw;
   justify-content: center;
   flex: 1;
-  max-width: 800px;
-  min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none; /* Hide scrollbar in Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
-}
-
-.nav-center::-webkit-scrollbar {
-  display: none; /* Hide scrollbar in Chrome/Safari */
 }
 
 .nav-center a {
   text-decoration: none;
   color: var(--primary-green);
   font-weight: 500;
-  font-size: 15px;
+  font-size: 1vw;
   transition: all 0.3s ease;
   position: relative;
   padding: 5px 0;
   white-space: nowrap;
-  flex-shrink: 0;
+}
+
+/* Prevent text from getting too small on mobile */
+@media (max-width: 768px) {
+  .nav-center a {
+    font-size: 14px;
+  }
 }
 
 .nav-center a:hover {
@@ -83,12 +76,12 @@
   width: 100%;
 }
 
+/* Right Navigation - Buttons group */
 .user-nav {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 1vw;
   flex-shrink: 0;
-  flex-wrap: nowrap;
 }
 
 .user-nav a {
@@ -97,14 +90,30 @@
   font-weight: 500;
   transition: all 0.3s ease;
   white-space: nowrap;
+  font-size: 1vw;
+  padding: 0.6vw 1vw;
+  border-radius: 8px;
+}
+
+/* Prevent text from getting too small on mobile */
+@media (max-width: 768px) {
+  .user-nav a {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+}
+
+/* Button styles */
+.user-nav .signup-btn,
+.user-nav .seller-btn {
+  padding: 0.6vw 1.2vw;
+  border-radius: 8px;
+  font-weight: 600;
 }
 
 .user-nav .signup-btn {
   background: var(--primary-green);
   color: var(--pure-white);
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
 }
 
 .user-nav .signup-btn:hover {
@@ -116,10 +125,6 @@
 .user-nav .seller-btn {
   background: var(--accent-gold);
   color: var(--primary-green);
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  margin-left: 10px;
 }
 
 .user-nav .seller-btn:hover {
@@ -128,24 +133,39 @@
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
 }
 
+/* Regular links (Login) */
+.user-nav a:not(.signup-btn):not(.seller-btn) {
+  padding: 0.6vw 0.8vw;
+}
+
+.user-nav a:not(.signup-btn):not(.seller-btn):hover {
+  color: var(--secondary-green);
+}
+
 .user-nav .nav-welcome {
-  font-size: 0.9rem;
+  font-size: 0.9vw;
   color: var(--primary-green);
   max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 0.6vw 0.8vw;
+}
+
+@media (max-width: 768px) {
+  .user-nav .nav-welcome {
+    font-size: 13px;
+  }
 }
 
 .user-nav .logout-nav-btn {
   background: none;
   border: 1px solid var(--primary-green);
   color: var(--primary-green);
-  padding: 8px 14px;
+  padding: 0.6vw 1.2vw;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
-  font-size: 14px;
   font-family: inherit;
 }
 
@@ -158,9 +178,10 @@
   text-decoration: none;
   color: var(--primary-green);
   font-weight: 500;
-  font-size: 14px;
+  padding: 0.6vw 1vw;
 }
 
+/* Mobile menu */
 .mobile-menu {
   display: none;
 }
@@ -169,7 +190,7 @@
   display: none;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: var(--primary-green);
   cursor: pointer;
   padding: 5px;
@@ -184,146 +205,8 @@
   transform: rotate(90deg);
 }
 
-/* ========== RESPONSIVE SIZING - PROGRESSIVE REDUCTION ========== */
-
-/* 1400px and below - reduce padding and gaps */
-@media (max-width: 1400px) {
-  .navbar {
-    padding: 12px 30px;
-    gap: 15px;
-  }
-  
-  .navbar .logo {
-    height: 45px;
-  }
-  
-  .nav-center {
-    margin: 0 25px;
-  }
-  
-  .nav-center a {
-    font-size: 14px;
-  }
-  
-  .user-nav {
-    gap: 12px;
-  }
-  
-  .user-nav .signup-btn,
-  .user-nav .seller-btn {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-  
-  .user-nav .nav-welcome {
-    font-size: 0.85rem;
-    max-width: 100px;
-  }
-  
-  .user-nav .logout-nav-btn {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-  
-  .user-nav .admin-link {
-    font-size: 13px;
-  }
-}
-
-/* 1300px and below - further reduce */
-@media (max-width: 1300px) {
-  .navbar {
-    padding: 10px 25px;
-    gap: 12px;
-  }
-  
-  .navbar .logo {
-    height: 42px;
-  }
-  
-  .nav-center {
-    margin: 0 20px;
-  }
-  
-  .nav-center a {
-    font-size: 13px;
-  }
-  
-  .user-nav {
-    gap: 10px;
-  }
-  
-  .user-nav .signup-btn,
-  .user-nav .seller-btn {
-    padding: 7px 14px;
-    font-size: 12px;
-  }
-  
-  .user-nav .nav-welcome {
-    font-size: 0.8rem;
-    max-width: 90px;
-  }
-  
-  .user-nav .logout-nav-btn {
-    padding: 5px 10px;
-    font-size: 12px;
-  }
-  
-  .user-nav .admin-link {
-    font-size: 12px;
-  }
-}
-
-/* 1200px and below */
-@media (max-width: 1200px) {
-  .navbar {
-    padding: 10px 20px;
-    gap: 10px;
-  }
-  
-  .navbar .logo {
-    height: 40px;
-  }
-  
-  .nav-center {
-    margin: 0 15px;
-  }
-  
-  .nav-center a {
-    font-size: 12px;
-  }
-  
-  .user-nav {
-    gap: 8px;
-  }
-  
-  .user-nav .signup-btn,
-  .user-nav .seller-btn {
-    padding: 6px 12px;
-    font-size: 11px;
-  }
-  
-  .user-nav .nav-welcome {
-    font-size: 0.75rem;
-    max-width: 80px;
-  }
-  
-  .user-nav .logout-nav-btn {
-    padding: 4px 8px;
-    font-size: 11px;
-  }
-  
-  .user-nav .admin-link {
-    font-size: 11px;
-  }
-}
-
-/* 1100px and below - switch to mobile menu */
-@media (max-width: 975px) {
-  .navbar {
-    padding: 12px 20px;
-  }
-  
+/* Mobile menu toggle - collapses navbar on smaller screens */
+@media (max-width: 976px) {
   .nav-center {
     display: none;
   }
@@ -339,7 +222,7 @@
   .mobile-menu {
     display: none;
     position: fixed;
-    top: 10%;
+    top: 65px;
     left: 0;
     right: 0;
     background: var(--pure-white);
@@ -376,12 +259,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 15px 20px;
+    padding: 14px 20px;
     text-decoration: none;
     color: var(--primary-green);
     font-weight: 500;
     border-bottom: 1px solid rgba(13, 46, 30, 0.1);
     transition: all 0.3s ease;
+    font-size: 16px;
   }
   
   .mobile-nav-links a:hover {
@@ -399,8 +283,8 @@
   .mobile-user-nav {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    gap: 10px;
+    margin-top: 10px;
   }
   
   .mobile-user-nav a {
@@ -413,6 +297,7 @@
     font-weight: 600;
     border-radius: 8px;
     transition: all 0.3s ease;
+    font-size: 14px;
   }
   
   .mobile-user-nav .login-btn {
@@ -443,26 +328,5 @@
   .mobile-user-nav .seller-btn:hover {
     background: #e0b832;
     transform: translateY(-2px);
-  }
-}
-
-/* Very small screens - further reduce mobile menu padding */
-@media (max-width: 480px) {
-  .navbar {
-    padding: 10px 15px;
-  }
-  
-  .navbar .logo {
-    height: 35px;
-  }
-  
-  .mobile-nav-links a {
-    padding: 12px 15px;
-    font-size: 14px;
-  }
-  
-  .mobile-user-nav a {
-    padding: 10px 15px;
-    font-size: 14px;
   }
 }

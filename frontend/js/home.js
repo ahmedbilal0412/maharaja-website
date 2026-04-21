@@ -333,27 +333,6 @@
     });
   }
 
-  // UAE Modal functions
-  function openUaeModal() {
-    var modal = document.getElementById('uaeModal');
-    if (!modal) return;
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-    setTimeout(function () {
-      modal.style.animation = 'fadeIn 0.3s ease';
-    }, 10);
-  }
-
-  function closeUaeModal() {
-    var modal = document.getElementById('uaeModal');
-    if (!modal) return;
-    modal.style.animation = 'fadeOut 0.3s ease';
-    setTimeout(function () {
-      modal.style.display = 'none';
-      document.body.style.overflow = 'auto';
-    }, 300);
-  }
-
   // Home page search functionality (old search bar)
   function setupHomeSearch() {
     const searchBtn = document.getElementById('home-search-btn');
@@ -436,6 +415,34 @@ document.querySelectorAll('.toggle-btn').forEach(btn => {
   });
 });
 
+// Video source switcher for responsive hero video
+function initResponsiveVideo() {
+  const video = document.getElementById('hero-video');
+  if (!video) return;
+  
+  function updateVideoSource() {
+    const isMobile = window.innerWidth <= 540;
+    const sources = video.getElementsByTagName('source');
+    const newSrc = isMobile ? 'img/mobile-video.mp4' : 'img/hero-video.mp4';
+    
+    if (sources.length > 0 && !sources[0].src.includes(newSrc)) {
+      sources[0].src = newSrc;
+      video.load();
+      video.play().catch(e => console.log('Video autoplay prevented:', e));
+    }
+  }
+  
+  // Initial check
+  updateVideoSource();
+  
+  // Debounced resize handler
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(updateVideoSource, 250);
+  });
+}
+
   // ==================== INIT FUNCTION ====================
 
   function init() {
@@ -443,6 +450,7 @@ document.querySelectorAll('.toggle-btn').forEach(btn => {
     setupCityTabs();
     loadLatestProperties();
     loadCurrentAd();
+    initResponsiveVideo();
     
     var modal = document.getElementById('uaeModal');
     if (modal) {
@@ -468,9 +476,6 @@ document.querySelectorAll('.toggle-btn').forEach(btn => {
   }
 
   // ==================== EXPOSE GLOBALS ====================
-
-  window.openUaeModal = openUaeModal;
-  window.closeUaeModal = closeUaeModal;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
