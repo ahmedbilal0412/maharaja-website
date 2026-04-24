@@ -21,18 +21,11 @@ body {
 
 /* Sidebar - Mobile Styles */
 .sidebar {
-  width: 100%;
   background-color: #0b3d2e;
   color: white;
   padding: 15px;
   position: relative;
   z-index: 1000;
-}
-
-.logo-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .mobile-menu-toggle {
@@ -42,8 +35,8 @@ body {
   color: white;
   font-size: 1.5rem;
   position: absolute;
-  top: 15px;
-  right: 60px;
+  top: 32px;
+  right: 20px;
   cursor: pointer;
 }
 
@@ -54,12 +47,6 @@ body {
   transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
   padding-top: 0;
   padding-bottom: 0;
-}
-
-.sidebar .logo img {
-  width: 150px;
-  max-width: 100%;
-  margin-bottom: 15px;
 }
 
 .sidebar nav {
@@ -75,11 +62,12 @@ body {
 .sidebar nav a {
   text-decoration: none;
   color: white;
-  padding: 12px 15px;
+  padding: 12px;
   border-radius: 8px;
   font-weight: 500;
   font-size: 0.95rem;
   transition: all 0.3s ease;
+  width: calc(100% - 30px);
 }
 
 .sidebar nav a:hover,
@@ -331,16 +319,6 @@ body {
   transition: 0.3s;
   width: calc(100% - 50px);
   text-align: center;
-}
-
-.logo {
-  background-color: white;
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-  padding-top: 20px;
-  width: 200px;
 }
 
 /* Card Actions */
@@ -638,11 +616,6 @@ body {
     gap: 10px;
   }
 
-  .logo-container {
-    justify-content: start;
-    padding-left: 20px;
-  }
-
   .stat-card {
     padding: 12px;
   }
@@ -776,4 +749,10 @@ body {
 .token-link:hover {
   background: var(--secondary-green);
   transform: translateY(-2px);
+}
+
+.sidebar a img {
+  width: 50%;
+  min-width: 250px;
+  margin-left: -20px;
 }

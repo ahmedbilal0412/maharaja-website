@@ -469,3 +469,30 @@ def serve_property_receipt(filename):
     print(f"DEBUG: Serving property receipt: {filename} from {receipt_folder}")
     
     return send_from_directory(receipt_folder, filename)
+
+@properties_bp.route("/locations", methods=["GET"])
+def get_unique_locations():
+    """Get unique cities and areas from approved properties."""
+    cities = db.session.query(Property.city).filter(
+        Property.status == PROPERTY_STATUS_APPROVED,
+        Property.city.isnot(None),
+        Property.city != ''
+    ).distinct().all()
+    
+    areas = db.session.query(Property.area).filter(
+        Property.status == PROPERTY_STATUS_APPROVED,
+        Property.area.isnot(None),
+        Property.area != ''
+    ).distinct().all()
+    
+    suggestions = []
+    
+    for city in cities:
+        if city[0]:
+            suggestions.append({'text': city[0], 'type': 'city', 'value': city[0].lower()})
+    
+    for area in areas:
+        if area[0]:
+            suggestions.append({'text': area[0], 'type': 'area', 'value': area[0]})
+    
+    return jsonify({"locations": suggestions}), 200

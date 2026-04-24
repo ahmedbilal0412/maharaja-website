@@ -39,38 +39,145 @@
         <p class="subtitle">Find properties to rent, buy or invest in Pakistan</p>
       </div>
 
-      <!-- Filter Tabs -->
-      <div class="filter-tabs">
-        <div class="filter-tab active" data-filter="rent">Rent</div>
-        <div class="filter-tab" data-filter="buy">Buy</div>
+      <!-- Tabs above search bar -->
+      <div class="search-tabs">
+        <button class="search-tab active" data-tab="buy">BUY</button>
+        <button class="search-tab" data-tab="rent">RENT</button>
+        <button class="search-tab" data-tab="projects">PROJECTS</button>
       </div>
 
-      <!-- Search Bar -->
-      <div class="search-bar-modern">
-        <div class="search-input-group">
-          <i class="fas fa-map-marker-alt"></i>
-          <select id="location-search" class="city-select">
-            <option value="">Select City</option>
-            <option value="islamabad">Islamabad</option>
-            <option value="rawalpindi">Rawalpindi</option>
-            <option value="lahore">Lahore</option>
-            <option value="karachi">Karachi</option>
-          </select>
+      <!-- Search Bar Container -->
+      <div class="search-container-modern">
+        <div class="search-fields">
+          <div class="search-field">
+            <label>CITY</label>
+            <select id="search-city">
+              <option value="">Select City</option>
+              <option value="islamabad">Islamabad</option>
+              <option value="rawalpindi">Rawalpindi</option>
+              <option value="lahore">Lahore</option>
+              <option value="karachi">Karachi</option>
+            </select>
+          </div>
+
+          <div class="search-field">
+            <label>LOCATION</label>
+            <div class="location-input-wrapper">
+              <input type="text" id="search-location" placeholder="Enter location" autocomplete="off">
+              <div id="location-suggestions" class="location-suggestions"></div>
+            </div>
+          </div>
+
+          <div class="search-field">
+            <label>PROPERTY TYPE</label>
+            <select id="search-property-type">
+              <option value="">Select Type</option>
+              <option value="house">Homes</option>
+              <option value="apartment">Apartments</option>
+              <option value="villa">Villas</option>
+              <option value="plot">Plots</option>
+              <option value="commercial">Commercial</option>
+            </select>
+          </div>
+
+          <!-- Price Field with Modal -->
+          <div class="search-field dropdown-field">
+            <label>PRICE (PKR)</label>
+            <div class="dropdown-trigger" id="price-trigger">
+              <span class="dropdown-value">0 to Any</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-modal" id="price-modal">
+              <div class="dropdown-content">
+                <div class="range-slider">
+                  <div class="range-inputs">
+                    <div class="range-input-group">
+                      <label>MIN:</label>
+                      <input type="number" id="price-modal-min" placeholder="0" value="0">
+                    </div>
+                    <div class="range-input-group">
+                      <label>MAX:</label>
+                      <input type="number" id="price-modal-max" placeholder="Any">
+                    </div>
+                  </div>
+                  <div class="range-buttons">
+                    <button class="range-btn" data-value="1000000">1M</button>
+                    <button class="range-btn" data-value="5000000">5M</button>
+                    <button class="range-btn" data-value="10000000">10M</button>
+                    <button class="range-btn" data-value="25000000">25M</button>
+                    <button class="range-btn" data-value="50000000">50M</button>
+                    <button class="range-btn" data-value="100000000">100M</button>
+                  </div>
+                </div>
+              </div>
+              <div class="dropdown-footer">
+                <button class="btn-apply" data-field="price">Apply</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Area Field with Modal -->
+          <div class="search-field dropdown-field">
+            <label>AREA (MARLA)</label>
+            <div class="dropdown-trigger" id="area-trigger">
+              <span class="dropdown-value">0 to Any</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-modal" id="area-modal">
+              <div class="dropdown-content">
+                <div class="range-slider">
+                  <div class="range-inputs">
+                    <div class="range-input-group">
+                      <label>MIN:</label>
+                      <input type="number" id="area-modal-min" placeholder="0" value="0">
+                    </div>
+                    <div class="range-input-group">
+                      <label>MAX:</label>
+                      <input type="number" id="area-modal-max" placeholder="Any">
+                    </div>
+                  </div>
+                  <div class="range-buttons">
+                    <button class="range-btn" data-value="1">1 Marla</button>
+                    <button class="range-btn" data-value="5">5 Marla</button>
+                    <button class="range-btn" data-value="10">10 Marla</button>
+                    <button class="range-btn" data-value="20">20 Marla</button>
+                    <button class="range-btn" data-value="50">1 Kanal (50 Marla)</button>
+                  </div>
+                </div>
+              </div>
+              <div class="dropdown-footer">
+                <button class="btn-apply" data-field="area">Apply</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Beds Field with Modal -->
+          <div class="search-field dropdown-field">
+            <label>BEDS</label>
+            <div class="dropdown-trigger" id="beds-trigger">
+              <span class="dropdown-value">All</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-modal" id="beds-modal">
+              <div class="dropdown-content">
+                <div class="bed-options">
+                  <button class="bed-option" data-value="">Studio</button>
+                  <button class="bed-option" data-value="1">1</button>
+                  <button class="bed-option" data-value="2">2</button>
+                  <button class="bed-option" data-value="3">3</button>
+                  <button class="bed-option" data-value="4">4+</button>
+                </div>
+              </div>
+              <div class="dropdown-footer">
+                <button class="btn-apply" data-field="beds">Apply</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="search-find-btn" id="search-find-btn">
+            FIND
+          </button>
         </div>
-        <div class="search-input-group">
-          <i class="fas fa-building"></i>
-          <select id="property-type-filter">
-            <option value="">Property type</option>
-            <option value="house">House</option>
-            <option value="apartment">Apartment</option>
-            <option value="villa">Villa</option>
-            <option value="commercial">Commercial</option>
-            <option value="plot">Plot</option>
-          </select>
-        </div>
-        <button class="search-btn-modern" id="hero-search-btn">
-          <i class="fas fa-search"></i> Search
-        </button>
       </div>
     </div>
   </section>
@@ -117,7 +224,7 @@
     <section class="simple-image-grid">
       <div class="container">
         <div class="section-header">
-          <h2>Projects by Developers</h2>
+          <h2>Our Partners</h2>
         </div>
         <div class="image-grid">
           <div class="grid-item">

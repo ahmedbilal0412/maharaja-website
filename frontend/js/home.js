@@ -100,7 +100,6 @@
         }
       } else {
         // No active ad - show default "Ad Space Available"
-        console.log('No active ad found');
       }
     } catch (error) {
       console.error('Error loading ad:', error);
@@ -333,39 +332,386 @@
     });
   }
 
-  // Home page search functionality (old search bar)
-  function setupHomeSearch() {
-    const searchBtn = document.getElementById('home-search-btn');
+  // Search functionality for the new form
+  function setupModernSearch() {
+    const searchBtn = document.getElementById('search-find-btn');
     if (!searchBtn) return;
 
+    // Get active tab (Buy/Rent/Projects)
+    function getActiveTab() {
+      const activeTab = document.querySelector('.search-tab.active');
+      return activeTab ? activeTab.dataset.tab : 'buy';
+    }
+
     searchBtn.addEventListener('click', function() {
-      const city = document.getElementById('home-city')?.value || '';
-      const area = document.getElementById('home-area')?.value || '';
-      const listingType = document.getElementById('home-listing-type')?.value || '';
-      const propertyType = document.getElementById('home-property-type')?.value || '';
+      const activeTab = getActiveTab();
+      const city = document.getElementById('search-city')?.value || '';
+      const location = document.getElementById('search-location')?.value || '';
+      const propertyType = document.getElementById('search-property-type')?.value || '';
+      const priceMin = document.getElementById('price-min')?.value || '';
+      const priceMax = document.getElementById('price-max')?.value || '';
+      const areaMin = document.getElementById('area-min')?.value || '';
+      const areaMax = document.getElementById('area-max')?.value || '';
+      const beds = document.getElementById('search-beds')?.value || '';
 
-      // Build query string
       const params = new URLSearchParams();
-      if (city) params.append('city', city);
-      if (area) params.append('area', area);
-      if (listingType) params.append('listing_type', listingType);
-      if (propertyType) params.append('property_type', propertyType);
 
-      // Redirect to properties page with filters
+      // Set listing type based on active tab
+      if (activeTab === 'buy') {
+        params.append('listing_type', 'sale');
+      } else if (activeTab === 'rent') {
+        params.append('listing_type', 'rent');
+      }
+      // Projects tab - you can handle differently if needed
+
+      // Use city or location
+      if (city) {
+        params.append('city', city.toLowerCase());
+      } else if (location) {
+        params.append('city', location.toLowerCase());
+      }
+
+      if (propertyType) params.append('property_type', propertyType);
+      if (beds) params.append('min_bedrooms', beds);
+      if (priceMin) params.append('min_price', priceMin);
+      if (priceMax) params.append('max_price', priceMax);
+      
+      // Area filter (convert marla to sqft if needed)
+      if (areaMin) params.append('min_size', areaMin);
+      if (areaMax) params.append('max_size', areaMax);
+
       window.location.href = `properties.html?${params.toString()}`;
     });
 
-    // Allow Enter key to trigger search
-    const inputs = ['home-city', 'home-area', 'home-listing-type', 'home-property-type'];
-    inputs.forEach(id => {
-      const element = document.getElementById(id);
-      if (element) {
-        element.addEventListener('keypress', function(e) {
-          if (e.key === 'Enter') searchBtn.click();
+    // Tab switching
+    document.querySelectorAll('.search-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  }
+
+  // Setup dropdown modals for Price, Area, Beds
+  function setupDropdownModals() {
+    // Close all modals function
+    function closeAllModals() {
+      document.querySelectorAll('.dropdown-modal').forEach(modal => {
+        modal.classList.remove('active');
+      });
+      document.querySelectorAll('.dropdown-trigger').forEach(trigger => {
+        trigger.classList.remove('active');
+      });
+    }
+
+    // Setup single dropdown
+    function setupDropdown(triggerId, modalId, fieldName) {
+      const trigger = document.getElementById(triggerId);
+      const modal = document.getElementById(modalId);
+      const closeBtn = modal.querySelector('.close-dropdown');
+      const applyBtn = modal.querySelector('.btn-apply');
+      const triggerValue = trigger.querySelector('.dropdown-value');
+
+      // Open modal
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeAllModals();
+        modal.classList.add('active');
+        trigger.classList.add('active');
+      });
+
+      // Close button
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          modal.classList.remove('active');
+          trigger.classList.remove('active');
         });
+      }
+
+      // Apply button
+      if (applyBtn) {
+        applyBtn.addEventListener('click', () => {
+          if (fieldName === 'price') {
+            const minVal = document.getElementById('price-modal-min')?.value || '0';
+            const maxVal = document.getElementById('price-modal-max')?.value;
+            const displayMax = maxVal ? maxVal : 'Any';
+            if (triggerValue) triggerValue.textContent = `${minVal} to ${displayMax}`;
+          } else if (fieldName === 'area') {
+            const minVal = document.getElementById('area-modal-min')?.value || '0';
+            const maxVal = document.getElementById('area-modal-max')?.value;
+            const displayMax = maxVal ? maxVal : 'Any';
+            if (triggerValue) triggerValue.textContent = `${minVal} to ${displayMax}`;
+          } else if (fieldName === 'beds') {
+            const selected = modal.querySelector('.bed-option.active');
+            if (selected && triggerValue) {
+              triggerValue.textContent = selected.textContent;
+            }
+          }
+          modal.classList.remove('active');
+          trigger.classList.remove('active');
+        });
+      }
+    }
+
+    // Setup bed options
+    const bedsModal = document.getElementById('beds-modal');
+    if (bedsModal) {
+      const bedOptions = bedsModal.querySelectorAll('.bed-option');
+      bedOptions.forEach(option => {
+        option.addEventListener('click', () => {
+          bedOptions.forEach(opt => opt.classList.remove('active'));
+          option.classList.add('active');
+        });
+      });
+    }
+
+    // Setup range buttons
+    function setupRangeButtons(modalId, inputId) {
+      const modal = document.getElementById(modalId);
+      if (!modal) return;
+      const buttons = modal.querySelectorAll('.range-btn');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const value = btn.dataset.value;
+          const input = document.getElementById(inputId);
+          if (input) {
+            input.value = value;
+          }
+        });
+      });
+    }
+
+    // Initialize dropdowns
+    setupDropdown('price-trigger', 'price-modal', 'price');
+    setupDropdown('area-trigger', 'area-modal', 'area');
+    setupDropdown('beds-trigger', 'beds-modal', 'beds');
+    setupRangeButtons('price-modal', 'price-modal-max');
+    setupRangeButtons('area-modal', 'area-modal-max');
+
+    // Close modal when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.dropdown-field')) {
+        closeAllModals();
       }
     });
   }
+
+  // ==================== LOCATION AUTOCOMPLETE ====================
+
+  let locationSuggestions = [];
+  let allCitiesAndAreas = [];
+
+  function buildLocationSuggestions() {
+    // Common locations based on your database
+    allCitiesAndAreas = [
+      // Cities
+      { text: 'Islamabad', type: 'city', value: 'islamabad' },
+      { text: 'Lahore', type: 'city', value: 'lahore' },
+      { text: 'Karachi', type: 'city', value: 'karachi' },
+      { text: 'Rawalpindi', type: 'city', value: 'rawalpindi' },
+      { text: 'Peshawar', type: 'city', value: 'peshawar' },
+      { text: 'Multan', type: 'city', value: 'multan' },
+      { text: 'Faisalabad', type: 'city', value: 'faisalabad' },
+      { text: 'Quetta', type: 'city', value: 'quetta' },
+      
+      // Areas
+      { text: 'DHA Islamabad', type: 'area', value: 'DHA' },
+      { text: 'DHA Lahore', type: 'area', value: 'DHA' },
+      { text: 'DHA Karachi', type: 'area', value: 'DHA' },
+      { text: 'DHA Rawalpindi', type: 'area', value: 'DHA' },
+      { text: 'Bahria Town Islamabad', type: 'area', value: 'Bahria Town' },
+      { text: 'Bahria Town Lahore', type: 'area', value: 'Bahria Town' },
+      { text: 'Bahria Town Karachi', type: 'area', value: 'Bahria Town' },
+      { text: 'Bahria Town Rawalpindi', type: 'area', value: 'Bahria Town' },
+      { text: 'Gulberg Lahore', type: 'area', value: 'Gulberg' },
+      { text: 'Clifton Karachi', type: 'area', value: 'Clifton' },
+      { text: 'F-6 Islamabad', type: 'area', value: 'F-6' },
+      { text: 'F-7 Islamabad', type: 'area', value: 'F-7' },
+      { text: 'G-9 Islamabad', type: 'area', value: 'G-9' },
+      { text: 'E-11 Islamabad', type: 'area', value: 'E-11' },
+    ];
+  }
+
+  function showLocationSuggestions(query) {
+    if (!query || query.length < 2) {
+      document.getElementById('location-suggestions').style.display = 'none';
+      return;
+    }
+
+    const term = query.toLowerCase();
+    const suggestions = [];
+
+    allCitiesAndAreas.forEach(item => {
+      if (item.text.toLowerCase().includes(term)) {
+        suggestions.push(item);
+      }
+    });
+
+    const suggestionsContainer = document.getElementById('location-suggestions');
+    
+    if (suggestions.length === 0) {
+      suggestionsContainer.style.display = 'none';
+      return;
+    }
+
+    suggestionsContainer.innerHTML = suggestions.slice(0, 8).map(s => `
+      <div class="location-suggestion-item" data-type="${s.type}" data-value="${s.value}" data-text="${s.text}">
+        <i class="fas fa-${s.type === 'city' ? 'city' : 'map-marker-alt'}"></i>
+        <span>${s.text}</span>
+        <small>${s.type}</small>
+      </div>
+    `).join('');
+
+    suggestionsContainer.style.display = 'block';
+
+    // Add click handlers
+    suggestionsContainer.querySelectorAll('.location-suggestion-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const text = this.dataset.text;
+        const value = this.dataset.value;
+        const type = this.datatype;
+        
+        const locationInput = document.getElementById('search-location');
+        if (locationInput) {
+          locationInput.value = text;
+        }
+        
+        suggestionsContainer.style.display = 'none';
+        
+        // Optionally, also set the city select if it's a city
+        if (type === 'city') {
+          const citySelect = document.getElementById('search-city');
+          if (citySelect) {
+            citySelect.value = value;
+          }
+        }
+      });
+    });
+  }
+
+  // ==================== LOCATION AUTOCOMPLETE ====================
+
+  let allLocations = [];
+
+  async function fetchLocationSuggestions() {
+    try {
+      const API_BASE = window.API_BASE || "https://api.maharajabuilders.pk/api";
+      const response = await fetch(`${API_BASE}/properties/locations`);
+      const data = await response.json();
+      allLocations = data.locations || [];
+      console.log(`Fetched ${allLocations.length} location suggestions`);
+    } catch (error) {
+      console.error('Error fetching locations:', error);
+      // Fallback to default suggestions
+      allLocations = [
+        { text: 'Islamabad', type: 'city', value: 'islamabad' },
+        { text: 'Lahore', type: 'city', value: 'lahore' },
+        { text: 'Karachi', type: 'city', value: 'karachi' },
+        { text: 'Rawalpindi', type: 'city', value: 'rawalpindi' },
+        { text: 'DHA', type: 'area', value: 'DHA' },
+        { text: 'Bahria Town', type: 'area', value: 'Bahria Town' },
+      ];
+    }
+  }
+
+  function showLocationSuggestions(query) {
+    if (!query || query.length < 2) {
+      const container = document.getElementById('location-suggestions');
+      if (container) container.style.display = 'none';
+      return;
+    }
+
+    const term = query.toLowerCase();
+    const suggestions = allLocations.filter(item => 
+      item.text.toLowerCase().includes(term)
+    );
+
+    const suggestionsContainer = document.getElementById('location-suggestions');
+    
+    if (suggestions.length === 0) {
+      suggestionsContainer.style.display = 'none';
+      return;
+    }
+
+    suggestionsContainer.innerHTML = suggestions.slice(0, 8).map(s => `
+      <div class="location-suggestion-item" data-type="${s.type}" data-value="${s.value}" data-text="${s.text}">
+        <i class="fas fa-${s.type === 'city' ? 'city' : 'map-marker-alt'}"></i>
+        <span>${escapeHtml(s.text)}</span>
+        <small>${s.type}</small>
+      </div>
+    `).join('');
+
+    suggestionsContainer.style.display = 'block';
+
+    suggestionsContainer.querySelectorAll('.location-suggestion-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const text = this.dataset.text;
+        const value = this.dataset.value;
+        const type = this.dataset.type;
+        
+        const locationInput = document.getElementById('search-location');
+        if (locationInput) {
+          locationInput.value = text;
+        }
+        
+        suggestionsContainer.style.display = 'none';
+        
+        if (type === 'city') {
+          const citySelect = document.getElementById('search-city');
+          if (citySelect) {
+            citySelect.value = value;
+          }
+        }
+      });
+    });
+  }
+
+  function setupLocationAutocomplete() {
+    // First fetch locations from API
+    fetchLocationSuggestions();
+    
+    const locationInput = document.getElementById('search-location');
+    if (!locationInput) return;
+    
+    // Create suggestions container if it doesn't exist
+    if (!document.getElementById('location-suggestions')) {
+      const wrapper = locationInput.parentElement;
+      wrapper.style.position = 'relative';
+      const container = document.createElement('div');
+      container.id = 'location-suggestions';
+      container.className = 'location-suggestions';
+      wrapper.appendChild(container);
+    }
+    
+    let searchTimeout;
+    
+    locationInput.addEventListener('input', function() {
+      const value = this.value.trim();
+      
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        showLocationSuggestions(value);
+      }, 300);
+    });
+    
+    document.addEventListener('click', function(e) {
+      const container = document.getElementById('location-suggestions');
+      const wrapper = document.querySelector('.location-input-wrapper');
+      if (container && !e.target.closest('.location-input-wrapper')) {
+        container.style.display = 'none';
+      }
+    });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }  
 
   // ==================== POPULAR LOCATIONS TAB FUNCTIONALITY ====================
 
@@ -446,33 +792,13 @@ function initResponsiveVideo() {
   // ==================== INIT FUNCTION ====================
 
   function init() {
-    setupHomeSearch();
     setupCityTabs();
     loadLatestProperties();
     loadCurrentAd();
     initResponsiveVideo();
-    
-    var modal = document.getElementById('uaeModal');
-    if (modal) {
-      modal.addEventListener('click', function (e) {
-        if (e.target === this) closeUaeModal();
-      });
-    }
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeUaeModal();
-    });
-
-    document.querySelectorAll('.country-card').forEach(function (card) {
-      card.addEventListener('click', function (e) {
-        if (!e.target.closest('button') && !e.target.closest('a')) {
-          if (this.classList.contains('pakistan-card')) {
-            window.location.href = 'buy-pakistan.html';
-          } else if (this.classList.contains('uae-card')) {
-            openUaeModal();
-          }
-        }
-      });
-    });
+    setupDropdownModals();
+    setupModernSearch();
+    setupLocationAutocomplete();
   }
 
   // ==================== EXPOSE GLOBALS ====================
