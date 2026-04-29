@@ -28,7 +28,7 @@
     // Determine the base URL for images
     const imageBaseUrl = window.location.hostname === 'localhost' 
         ? 'http://localhost:5000' 
-        : 'https://maharaja-website.onrender.com';
+        : 'https://api.maharajabuilders.pk';
     
     // ✅ NEW: Handle URLs that already have the correct /api/ format
     if (url.startsWith('/api/')) {

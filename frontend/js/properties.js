@@ -1,4 +1,5 @@
-// DOM Elements
+// ==================== DOM ELEMENTS ====================
+
 const propertyGrid = document.getElementById("properties-grid");
 const propertyCount = document.getElementById("properties-count-header");
 const resetBtn = document.getElementById("reset-filters");
@@ -20,14 +21,25 @@ if (searchInput && searchInput.parentNode) {
   searchInput.parentNode.appendChild(suggestionsContainer);
 }
 
-let searchTerm = '';
-let showSuggestions = true;
+// ==================== STATE ====================
 
-// State
 let allProperties = [];
 let filteredProperties = [];
+let searchTerm = '';
+let showSuggestions = true;
+let allLocations = [];
 
 // ==================== HELPER FUNCTIONS ====================
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
 
 function formatPrice(price, listingType) {
   if (listingType === "rent") return "PKR " + Number(price).toLocaleString() + "/month";
@@ -46,193 +58,39 @@ function formatPriceCompact(price) {
 function resolveImageUrl(url) {
   if (!url) return null;
 
-  // Already a full HTTP URL
   if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) return url;
 
-  // Determine the base URL for images
   const imageBaseUrl = window.location.hostname === 'localhost'
     ? 'http://localhost:5000'
-    : 'https://maharaja-website.onrender.com';
+    : 'https://api.maharajabuilders.pk';
 
-  // Handle URLs that already have the correct /api/ format
-  if (url.startsWith('/api/')) {
-    return imageBaseUrl + url;
-  }
+  if (url.startsWith('/api/')) return imageBaseUrl + url;
 
-  // Handle old/wrong paths that might still be in the database
   if (url.includes('/uploads/') || url.includes('\\uploads\\')) {
     const filename = url.split(/[/\\]/).pop();
     return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
   }
 
-  // Handle local file paths (C:/Users/...)
   if (url.includes(':/') || url.includes('\\')) {
     const filename = url.split(/[/\\]/).pop();
     return `${imageBaseUrl}/api/properties/uploads/properties/${filename}`;
   }
 
-  // Handle relative paths starting with /uploads/
   if (url.indexOf("/uploads/") === 0) {
     const apiRoot = (API_BASE || "").replace(/\/api.*$/, "");
-    if (!apiRoot || apiRoot.includes('localhost')) {
-      return imageBaseUrl + url;
-    }
+    if (!apiRoot || apiRoot.includes('localhost')) return imageBaseUrl + url;
     return apiRoot + url;
   }
 
-  // Handle other relative paths (just filename)
   if (!url.startsWith('/')) {
     return `${imageBaseUrl}/api/properties/uploads/properties/${url}`;
   }
 
-  // Default fallback
   return url;
 }
 
-// ==================== AUTOCOMPLETE SUGGESTIONS ====================
-
-function getSuggestions(query) {
-  if (!query || query.length < 2) return [];
-
-  const term = query.toLowerCase();
-  const suggestions = new Set(); // Use Set to avoid duplicates
-  
-  // Common areas and cities to suggest
-  const commonTerms = [
-    // Cities
-    { text: 'Islamabad', type: 'city', filter: 'city', value: 'islamabad' },
-    { text: 'Lahore', type: 'city', filter: 'city', value: 'lahore' },
-    { text: 'Karachi', type: 'city', filter: 'city', value: 'karachi' },
-    { text: 'Rawalpindi', type: 'city', filter: 'city', value: 'rawalpindi' },
-    { text: 'Peshawar', type: 'city', filter: 'city', value: 'peshawar' },
-    { text: 'Multan', type: 'city', filter: 'city', value: 'multan' },
-    { text: 'Faisalabad', type: 'city', filter: 'city', value: 'faisalabad' },
-    { text: 'Quetta', type: 'city', filter: 'city', value: 'quetta' },
-    
-    // Areas
-    { text: 'DHA Islamabad', type: 'area', filter: 'area', value: 'DHA' },
-    { text: 'DHA Lahore', type: 'area', filter: 'area', value: 'DHA' },
-    { text: 'DHA Karachi', type: 'area', filter: 'area', value: 'DHA' },
-    { text: 'DHA Rawalpindi', type: 'area', filter: 'area', value: 'DHA' },
-    { text: 'Bahria Town Islamabad', type: 'area', filter: 'area', value: 'Bahria Town' },
-    { text: 'Bahria Town Lahore', type: 'area', filter: 'area', value: 'Bahria Town' },
-    { text: 'Bahria Town Karachi', type: 'area', filter: 'area', value: 'Bahria Town' },
-    { text: 'Bahria Town Rawalpindi', type: 'area', filter: 'area', value: 'Bahria Town' },
-    { text: 'Gulberg Lahore', type: 'area', filter: 'area', value: 'Gulberg' },
-    { text: 'Clifton Karachi', type: 'area', filter: 'area', value: 'Clifton' },
-    { text: 'F-6 Islamabad', type: 'area', filter: 'area', value: 'F-6' },
-    { text: 'F-7 Islamabad', type: 'area', filter: 'area', value: 'F-7' },
-    { text: 'G-9 Islamabad', type: 'area', filter: 'area', value: 'G-9' },
-    { text: 'E-11 Islamabad', type: 'area', filter: 'area', value: 'E-11' },
-  ];
-  
-  // Filter common terms based on query
-  commonTerms.forEach(commonTerm => {
-    if (commonTerm.text.toLowerCase().includes(query.toLowerCase())) {
-      suggestions.add(JSON.stringify({
-        text: commonTerm.text,
-        type: commonTerm.type,
-        filter: commonTerm.filter,
-        value: commonTerm.value
-      }));
-    }
-  });  
-  // Also suggest from actual properties in the database
-  allProperties.forEach(prop => {
-    // Suggest cities from properties
-    if (prop.city && prop.city.toLowerCase().includes(term)) {
-      suggestions.add(JSON.stringify({
-        text: prop.city,
-        type: 'city',
-        filter: 'city',
-        value: prop.city.toLowerCase()
-      }));
-    }
-    
-    // Suggest areas from properties
-    if (prop.area && prop.area.toLowerCase().includes(term)) {
-      suggestions.add(JSON.stringify({
-        text: prop.area + (prop.city ? `, ${prop.city}` : ''),
-        type: 'area',
-        filter: 'area',
-        value: prop.area
-      }));
-    }
-    
-    // Suggest locations
-    if (prop.location && prop.location.toLowerCase().includes(term)) {
-      // Only add if it's reasonably short
-      if (prop.location.length < 30) {
-        suggestions.add(JSON.stringify({
-          text: prop.location,
-          type: 'location',
-          filter: 'location',
-          value: prop.location
-        }));
-      }
-    }
-  });
-  
-  // Convert back from Set and limit to 8 suggestions
-  return Array.from(suggestions)
-    .map(s => JSON.parse(s))
-    .slice(0, 8);
-}
-
-function showSuggestionsDropdown(query) {
-  if (!showSuggestions || !suggestionsContainer) return;
-
-  const suggestions = getSuggestions(query);
-  
-  if (suggestions.length === 0) {
-    suggestionsContainer.style.display = 'none';
-    return;
-  }
-  
-  suggestionsContainer.innerHTML = suggestions.map(s => `
-    <div class="suggestion-item" data-filter="${s.filter}" data-value="${s.value}" data-text="${s.text}">
-      <i class="fas fa-${s.type === 'city' ? 'city' : s.type === 'area' ? 'map-marker-alt' : 'map-pin'}"></i>
-      <span>${s.text}</span>
-      <small>${s.type}</small>
-    </div>
-  `).join('');
-  
-  suggestionsContainer.style.display = 'block';
-  
-  // Add click handlers to suggestions
-  suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
-    item.addEventListener('click', function() {
-      const filter = this.dataset.filter;
-      const value = this.dataset.value;
-      const text = this.dataset.text;
-      
-      // Apply the filter
-      if (filter === 'city' && cityFilterSelect) {
-        cityFilterSelect.value = value;
-        searchInput.value = text;
-        searchTerm = text;
-      } else if (filter === 'area') {
-        searchInput.value = text;
-        searchTerm = text;
-      } else {
-        searchInput.value = text;
-        searchTerm = text;
-      }
-      
-      // Clear suggestions
-      suggestionsContainer.style.display = 'none';
-      
-      // Trigger filter
-      filterProperties();
-    });
-  });
-}
-
-// ==================== SEARCH FUNCTION ====================
-
 function filterBySearch(property) {
   if (!searchTerm) return true;
-  
   const term = searchTerm.toLowerCase();
   const searchableFields = [
     property.title || '',
@@ -240,20 +98,165 @@ function filterBySearch(property) {
     property.city || '',
     property.area || ''
   ];
-  
-  return searchableFields.some(field => 
-    field.toLowerCase().includes(term)
-  );
+  return searchableFields.some(field => field.toLowerCase().includes(term));
 }
 
-// ==================== FILTER & SORT FUNCTIONS ====================
+// ==================== LOCATION AUTOCOMPLETE ====================
+
+async function fetchLocationSuggestions() {
+  try {
+    const response = await fetch(`${API_BASE}/properties/locations`);
+    const data = await response.json();
+    allLocations = data.locations || [];
+  } catch (error) {
+    console.error('Error fetching locations:', error);
+    allLocations = [
+      { text: 'Islamabad', type: 'city', value: 'islamabad' },
+      { text: 'Lahore', type: 'city', value: 'lahore' },
+      { text: 'Karachi', type: 'city', value: 'karachi' },
+      { text: 'Rawalpindi', type: 'city', value: 'rawalpindi' },
+      { text: 'DHA', type: 'area', value: 'DHA' },
+      { text: 'Bahria Town', type: 'area', value: 'Bahria Town' },
+    ];
+  }
+}
+
+function showLocationSuggestions(query) {
+  if (!query || query.length < 2) {
+    const container = document.getElementById('search-suggestions');
+    if (container) container.style.display = 'none';
+    return;
+  }
+
+  const term = query.toLowerCase();
+  const suggestions = allLocations.filter(item => 
+    item.text.toLowerCase().includes(term)
+  );
+
+  const suggestionsContainer = document.getElementById('search-suggestions');
+  
+  if (suggestions.length === 0) {
+    suggestionsContainer.style.display = 'none';
+    return;
+  }
+
+  suggestionsContainer.innerHTML = suggestions.slice(0, 8).map(s => `
+    <div class="suggestion-item" data-type="${s.type}" data-value="${s.value}" data-text="${s.text}">
+      <i class="fas fa-${s.type === 'city' ? 'city' : 'map-marker-alt'}"></i>
+      <span>${escapeHtml(s.text)}</span>
+      <small>${s.type}</small>
+    </div>
+  `).join('');
+
+  suggestionsContainer.style.display = 'block';
+
+  suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
+    item.addEventListener('click', function() {
+      const text = this.dataset.text;
+      const value = this.dataset.value;
+      const type = this.dataset.type;
+      
+      if (searchInput) {
+        searchInput.value = text;
+        searchTerm = text;
+      }
+      
+      suggestionsContainer.style.display = 'none';
+      
+      if (type === 'city' && cityFilterSelect) {
+        cityFilterSelect.value = value;
+      }
+      
+      filterProperties();
+    });
+  });
+}
+
+function setupLocationAutocomplete() {
+  fetchLocationSuggestions();
+  
+  if (!searchInput) return;
+  
+  let searchTimeout;
+  
+  const newSearchInput = searchInput.cloneNode(true);
+  searchInput.parentNode.replaceChild(newSearchInput, searchInput);
+  
+  const updatedSearchInput = document.getElementById('search-input');
+  
+  if (updatedSearchInput) {
+    updatedSearchInput.addEventListener('input', function() {
+      const value = this.value.trim();
+      
+      clearTimeout(searchTimeout);
+      if (value.length >= 2) {
+        searchTimeout = setTimeout(() => {
+          showLocationSuggestions(value);
+        }, 300);
+      } else {
+        const container = document.getElementById('search-suggestions');
+        if (container) container.style.display = 'none';
+        searchTerm = value;
+        filterProperties();
+      }
+    });
+  }
+}
+
+// ==================== SUGGESTIONS DROPDOWN ====================
+
+function showSuggestionsDropdown(query) {
+  if (!showSuggestions || !suggestionsContainer) return;
+
+  const term = query.toLowerCase();
+  const suggestions = allLocations.filter(item => 
+    item.text.toLowerCase().includes(term)
+  );
+  
+  if (suggestions.length === 0) {
+    suggestionsContainer.style.display = 'none';
+    return;
+  }
+
+  suggestionsContainer.innerHTML = suggestions.slice(0, 8).map(s => `
+    <div class="suggestion-item" data-filter="${s.type === 'city' ? 'city' : 'area'}" data-value="${s.value}" data-text="${s.text}">
+      <i class="fas fa-${s.type === 'city' ? 'city' : 'map-marker-alt'}"></i>
+      <span>${s.text}</span>
+      <small>${s.type}</small>
+    </div>
+  `).join('');
+  
+  suggestionsContainer.style.display = 'block';
+  
+  suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
+    item.addEventListener('click', function() {
+      const filter = this.dataset.filter;
+      const value = this.dataset.value;
+      const text = this.dataset.text;
+      
+      if (filter === 'city' && cityFilterSelect) {
+        cityFilterSelect.value = value;
+        searchInput.value = text;
+        searchTerm = text;
+      } else {
+        searchInput.value = text;
+        searchTerm = text;
+      }
+      
+      suggestionsContainer.style.display = 'none';
+      filterProperties();
+    });
+  });
+}
+
+// ==================== FILTER & SORT ====================
 
 function filterProperties() {
-  // Get values from all filter types
   const propertyType = propertyTypeSelect ? propertyTypeSelect.value : "";
   const city = cityFilterSelect ? cityFilterSelect.value : "";
   const priceRange = priceFilterSelect ? priceFilterSelect.value : "";
-  let selectedListingType = 'sale'; // default
+  let selectedListingType = 'sale';
+  
   listingTypeRadios.forEach(radio => {
     if (radio.checked) selectedListingType = radio.value;
   });
@@ -264,39 +267,27 @@ function filterProperties() {
   const activeBedrooms = Array.from(bedroomFilters || [])
     .filter((cb) => cb.checked)
     .map((cb) => cb.value);
-  
-  // Get selected property types from checkboxes (new design)
   const selectedTypes = Array.from(propertyTypeFilters || [])
     .filter(cb => cb.checked)
     .map(cb => cb.value);
 
   filteredProperties = allProperties.filter((property) => {
-    // Listing type filter (sale/rent)
     if (property.listing_type !== selectedListingType) return false;
-    // Search filter (from suggestions/search input)
     if (!filterBySearch(property)) return false;
-    
-    // Property type filter (from dropdown)
     if (propertyType && property.property_type !== propertyType) return false;
-    
-    // Property type filter (from checkboxes - new design)
     if (selectedTypes.length > 0 && !selectedTypes.includes(property.property_type)) return false;
 
-    // City filter
     const cityVal = (property.city || "").toLowerCase();
     if (city && cityVal.indexOf(city.toLowerCase()) < 0) return false;
 
-    // Listing type filter (sale/rent)
     if (activeListingTypes.length > 0 && !activeListingTypes.includes(property.listing_type)) return false;
 
-    // Bedrooms filter
     if (activeBedrooms.length > 0) {
       const beds = property.bedrooms || 0;
       if (activeBedrooms.includes("4") && beds < 4) return false;
       if (!activeBedrooms.includes("4") && !activeBedrooms.includes(String(beds))) return false;
     }
 
-    // Price range filter
     if (priceRange) {
       if (priceRange === "100000000+") {
         if (property.price < 100000000) return false;
@@ -326,17 +317,11 @@ function sortProperties() {
     case "bedrooms":
       filteredProperties.sort((a, b) => (b.bedrooms || 0) - (a.bedrooms || 0));
       break;
-    case "newest":
-    case "featured":
     default:
       filteredProperties.sort((a, b) => {
-        // Premium properties come first (if active and paid)
         const aPremium = a.is_premium && a.is_premium_active === true ? 0 : 1;
         const bPremium = b.is_premium && b.is_premium_active === true ? 0 : 1;
-        if (aPremium !== bPremium) {
-          return aPremium - bPremium;
-        }
-        // Then sort by created date (newest first)
+        if (aPremium !== bPremium) return aPremium - bPremium;
         const da = a.created_at ? new Date(a.created_at).getTime() : 0;
         const db = b.created_at ? new Date(b.created_at).getTime() : 0;
         return db - da;
@@ -346,34 +331,26 @@ function sortProperties() {
 }
 
 function resetFilters() {
-  // Reset dropdowns
   if (propertyTypeSelect) propertyTypeSelect.value = "";
   if (cityFilterSelect) cityFilterSelect.value = "";
   if (priceFilterSelect) priceFilterSelect.value = "";
   if (sortSelect) sortSelect.value = "newest";
   document.querySelector('input[name="listing-type"][value="sale"]').checked = true;
   
-  // Reset search
   if (searchInput) searchInput.value = "";
   searchTerm = "";
   
-  // Reset checkboxes
   (listingFilters || []).forEach((cb) => (cb.checked = false));
   (bedroomFilters || []).forEach((cb) => (cb.checked = false));
   propertyTypeFilters.forEach(cb => cb.checked = false);
 
-  // Hide suggestions
-  if (suggestionsContainer) {
-    suggestionsContainer.style.display = 'none';
-  }
+  if (suggestionsContainer) suggestionsContainer.style.display = 'none';
 
   filteredProperties = [...allProperties];
   sortProperties();
   renderProperties();
 
-  if (clearSearchBtn) {
-    clearSearchBtn.style.display = 'none';
-  }
+  if (clearSearchBtn) clearSearchBtn.style.display = 'none';
 }
 
 // ==================== URL PARAMETER HANDLING ====================
@@ -382,52 +359,29 @@ function applyFiltersFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
 
   const cityParam = urlParams.get('city');
-  const areaParam = urlParams.get('area');
   const listingTypeParam = urlParams.get('listing_type');
   const propertyTypeParam = urlParams.get('property_type');
 
-  console.log("📋 URL Parameters received:", {
-    city: cityParam,
-    area: areaParam,
-    listing_type: listingTypeParam,
-    property_type: propertyTypeParam
-  });
-  
-  // Apply city filter
-  if (cityParam && cityFilterSelect) {
-    cityFilterSelect.value = cityParam;
-  }
-
-  // Apply listing type filter (sale/rent)
+  if (cityParam && cityFilterSelect) cityFilterSelect.value = cityParam;
   if (listingTypeParam && listingFilters) {
     listingFilters.forEach(cb => {
       if (cb.value === listingTypeParam) cb.checked = true;
     });
   }
-
-  // Apply property type filter
-  if (propertyTypeParam && propertyTypeSelect) {
-    propertyTypeSelect.value = propertyTypeParam;
-  }
+  if (propertyTypeParam && propertyTypeSelect) propertyTypeSelect.value = propertyTypeParam;
   
-  // Also set search input if there's a city
   if (cityParam && searchInput) {
     const cityNames = {
-      islamabad: 'Islamabad',
-      lahore: 'Lahore',
-      karachi: 'Karachi',
-      rawalpindi: 'Rawalpindi',
-      peshawar: 'Peshawar',
-      faisalabad: 'Faisalabad',
-      multan: 'Multan',
-      quetta: 'Quetta'
+      islamabad: 'Islamabad', lahore: 'Lahore', karachi: 'Karachi',
+      rawalpindi: 'Rawalpindi', peshawar: 'Peshawar', faisalabad: 'Faisalabad',
+      multan: 'Multan', quetta: 'Quetta'
     };
     searchInput.value = cityNames[cityParam] || cityParam;
     searchTerm = searchInput.value;
   }
 }
 
-// ==================== RENDER FUNCTION ====================
+// ==================== RENDER ====================
 
 function renderProperties() {
   propertyGrid.innerHTML = "";
@@ -447,14 +401,10 @@ function renderProperties() {
     const card = document.createElement("div");
     card.classList.add("property-card");
 
-    const priceText = formatPrice(property.price, property.listing_type);
     const compactPrice = formatPriceCompact(property.price);
     
-    // Determine tag style
     let tagClass = 'property-tag';
     let tagText = property.listing_type === 'rent' ? 'FOR RENT' : 'FOR SALE';
-    
-    // Check if property is premium and active
     const isPremiumActive = property.is_premium && property.is_premium_active === true;
     
     if (isPremiumActive) {
@@ -485,21 +435,17 @@ function renderProperties() {
           <div class="feature"><i class="fas fa-ruler-combined"></i><span>${property.size_sqft || 0} sqft</span></div>
         </div>
         <div class="price">${compactPrice}</div>
-        <a href="property-details.html?id=${property.id}" class="view-details-btn">
-          View Details
-        </a>
+        <a href="property-details.html?id=${property.id}" class="view-details-btn">View Details</a>
       </div>`;
 
     propertyGrid.appendChild(card);
   });
 
-  // Update count
   propertyCount.textContent = filteredProperties.length.toLocaleString() + " properties";
 }
 
 // ==================== EVENT LISTENERS ====================
 
-// All filter change listeners
 if (propertyTypeSelect) propertyTypeSelect.addEventListener("change", filterProperties);
 if (cityFilterSelect) cityFilterSelect.addEventListener("change", filterProperties);
 if (priceFilterSelect) priceFilterSelect.addEventListener("change", filterProperties);
@@ -512,20 +458,17 @@ listingTypeRadios.forEach(radio => radio.addEventListener("change", filterProper
 
 // Search event listeners
 if (searchInput) {
-  // Debounce search to avoid too many updates while typing
   let searchTimeout;
   
   searchInput.addEventListener('input', function() {
     const value = this.value.trim();
     
-    // Show suggestions
     if (value.length >= 2) {
       showSuggestionsDropdown(value);
     } else {
       if (suggestionsContainer) suggestionsContainer.style.display = 'none';
     }
     
-    // Debounce the actual search
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
       searchTerm = value;
@@ -533,7 +476,6 @@ if (searchInput) {
     }, 300);
   });
   
-  // Hide suggestions when clicking outside
   document.addEventListener('click', function(e) {
     if (suggestionsContainer && 
         !searchInput.contains(e.target) && 
@@ -542,7 +484,6 @@ if (searchInput) {
     }
   });
   
-  // Handle keyboard navigation in suggestions
   searchInput.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -565,85 +506,70 @@ if (clearSearchBtn) {
   });
 }
 
-// ==================== VIEW TOGGLE FUNCTIONALITY ====================
+// ==================== VIEW TOGGLE ====================
 
 const gridViewBtn = document.getElementById('grid-view-btn');
 const columnViewBtn = document.getElementById('column-view-btn');
 const propertiesGrid = document.getElementById('properties-grid');
 
-// Grid view button click
 if (gridViewBtn) {
   gridViewBtn.addEventListener('click', function() {
-    // Update button states
     gridViewBtn.classList.add('active');
     columnViewBtn.classList.remove('active');
-    
-    // Update grid class
     propertiesGrid.classList.remove('column-view');
     propertiesGrid.classList.add('grid-view');
-    
-    // Save preference to localStorage (optional)
     localStorage.setItem('property-view-preference', 'grid');
   });
 }
 
-// Column view button click
 if (columnViewBtn) {
   columnViewBtn.addEventListener('click', function() {
-    // Update button states
     columnViewBtn.classList.add('active');
     gridViewBtn.classList.remove('active');
-    
-    // Update grid class
     propertiesGrid.classList.remove('grid-view');
     propertiesGrid.classList.add('column-view');
-    
-    // Save preference to localStorage (optional)
     localStorage.setItem('property-view-preference', 'column');
   });
 }
 
-// Load saved preference (optional)
 document.addEventListener('DOMContentLoaded', function() {
   const savedPreference = localStorage.getItem('property-view-preference');
   if (savedPreference === 'column') {
     columnViewBtn.click();
   } else {
-    gridViewBtn.click(); // Default to grid
+    if (gridViewBtn) gridViewBtn.click();
   }
 });
 
-// Tab switching
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', function() {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     this.classList.add('active');
-    // You could filter by off-plan/ready here if you add those fields to your data
   });
 });
 
 // ==================== INITIAL DATA LOAD ====================
 
-fetch(API_BASE + "/properties")
-  .then((r) => r.json())
-  .then((data) => {
-    allProperties = (data && data.properties) ? data.properties : [];
-    filteredProperties = [...allProperties];
-    
-    // Apply URL parameters if needed
-    applyFiltersFromURL();
-    
-    sortProperties();
-    renderProperties();
-  })
-  .catch(() => {
-    allProperties = [];
-    filteredProperties = [];
-    propertyCount.textContent = "0 properties";
-    propertyGrid.innerHTML = `
-      <div class="no-results">
-        <i class="fas fa-exclamation-triangle"></i>
-        <h3>Could not load properties</h3>
-        <p>Please try again later.</p>
-      </div>`;
-  });
+fetchLocationSuggestions().then(() => {
+  setupLocationAutocomplete();
+  fetch(API_BASE + "/properties")
+    .then((r) => r.json())
+    .then((data) => {
+      allProperties = (data && data.properties) ? data.properties : [];
+      filteredProperties = [...allProperties];
+      applyFiltersFromURL();
+      sortProperties();
+      renderProperties();
+    })
+    .catch(() => {
+      allProperties = [];
+      filteredProperties = [];
+      propertyCount.textContent = "0 properties";
+      propertyGrid.innerHTML = `
+        <div class="no-results">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h3>Could not load properties</h3>
+          <p>Please try again later.</p>
+        </div>`;
+    });
+});

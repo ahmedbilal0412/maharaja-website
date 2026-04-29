@@ -27,7 +27,9 @@ function updatePaymentAmount() {
   const paymentInfo = paymentSection.querySelector('.payment-info');
   if (paymentInfo) {
     let message = "Send payment to: <strong>0300-1234567</strong><br>Once paid, click \"Submit for Approval\".";
-    
+    if (isFreeLocation) {
+      message = "No payment required for DHA/Bahria Town.<br>Click \"Submit for Approval\" to submit your listing.";
+    }
     paymentInfo.innerHTML = message;
   }
 }
@@ -134,9 +136,9 @@ if (form) {
       else alert("Please select at least one image");
       return;
     }
-    if (files.length > 5) {
-      if (typeof showToast === "function") showToast("Maximum 5 images allowed.", "error");
-      else alert("Maximum 5 images allowed");
+    if (files.length > 10) {
+      if (typeof showToast === "function") showToast("Maximum 10 images allowed.", "error");
+      else alert("Maximum 10 images allowed");
       return;
     }
 
@@ -167,7 +169,14 @@ if (form) {
         title: (document.getElementById("title") && document.getElementById("title").value || "").trim(),
         city: (document.getElementById("city") && document.getElementById("city").value) || "",
         location: location,
-        price: parseInt((document.getElementById("price") && document.getElementById("price").value) || 0, 10),
+        price: (function() {
+          const priceEl = document.getElementById("price");
+          if (priceEl) {
+            const rawValue = priceEl.value.replace(/,/g, '');
+            return parseInt(rawValue) || 0;
+          }
+          return 0;
+        })(),
         property_type: (document.getElementById("type") && document.getElementById("type").value || "").trim(),
         listing_type: (document.getElementById("listing") && document.getElementById("listing").value || "").trim(),
         bedrooms: parseInt((document.getElementById("beds") && document.getElementById("beds").value) || 0, 10),
@@ -221,9 +230,7 @@ if (form) {
             return;
           }
           
-          let successMsg = isFreeLocation
-            ? "Property listed successfully!"
-            : "Property submitted for admin approval. You will see it in My Listings.";
+          let successMsg = "Property submitted for admin approval. You will see it in My Listings.";
           
           if (typeof showToast === "function") showToast(successMsg, "success");
           else alert(successMsg);

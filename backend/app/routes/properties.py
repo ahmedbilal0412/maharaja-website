@@ -231,12 +231,7 @@ def create_property():
         return jsonify({"message": "Bedrooms, bathrooms and size are required."}), 400
 
     area = _infer_area(location)
-    if is_premium:
-        status = PROPERTY_STATUS_PENDING
-    elif _location_is_free_listing(location):
-        status = PROPERTY_STATUS_APPROVED
-    else:
-        status = PROPERTY_STATUS_PENDING
+    status = PROPERTY_STATUS_PENDING
 
     # Handle amenities (convert list to comma-separated string)
     if isinstance(amenities, list):

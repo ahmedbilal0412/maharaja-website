@@ -12,14 +12,14 @@
       mobileMenu.classList.remove('active');
       mobileMenuToggle.classList.remove('active');
       mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-      document.body.style.overflow = 'auto';
+      document.body.style.overflowY = 'auto';
     }
 
     function openMenu() {
       mobileMenu.classList.add('active');
       mobileMenuToggle.classList.add('active');
       mobileMenuToggle.innerHTML = '<i class="fas fa-times"></i>';
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflowY = 'hidden';
     }
 
     function toggleMenu(e) {

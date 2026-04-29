@@ -25,7 +25,7 @@
     if (url.startsWith('http')) return url;
     const baseUrl = window.location.hostname === 'localhost' 
       ? 'http://localhost:5000' 
-      : 'https://maharaja-website.onrender.com';
+      : 'https://api.maharajabuilders.pk';
     return baseUrl + (url.startsWith('/') ? url : '/' + url);
   }
 
