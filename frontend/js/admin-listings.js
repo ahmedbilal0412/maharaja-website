@@ -125,17 +125,18 @@
         p.status === "approved" ? "approved" : p.status === "pending_approval" ? "pending" : "rejected";
       
       const hasReceipt = p.receipt_image_url;
-      console.log(p.receipt_image_url);
       
       card.innerHTML =
         '<img src="' + imgSrc.replace(/"/g, "&quot;") + '" alt="">' +
         '<div class="info">' +
+        "<div>" +
         "<h3>" + (p.title || "").replace(/</g, "&lt;") + "</h3>" +
         "<p>PKR " + Number(p.price).toLocaleString() + "</p>" +
         '<p><span class="status ' + statusClass + '">' + (p.status || "").replace(/</g, "&lt;") + "</span></p>" +
         (hasReceipt ? 
           '<button type="button" class="receipt-btn" data-receipt="' + resolveImageUrl(p.receipt_image_url) + '"><i class="fas fa-receipt"></i> View Receipt</button>' 
           : '') +
+        "</div>" +
         '<div class="action-btns">' +
         '<a href="property-details.html?id=' + p.id + '" class="action-btn view-btn">View details</a>' +
         (p.status === "pending_approval"

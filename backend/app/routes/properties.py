@@ -219,8 +219,13 @@ def create_property():
     total_floors = data.get("total_floors")
     electricity_backup = data.get("electricity_backup", False)
     year_built = data.get("year_built")
-    receipt_image_url = data.get("receipt_image_url", "").strip()
     is_premium = data.get("is_premium", False)
+
+    receipt_image_url = data.get("receipt_image_url")
+    if receipt_image_url:
+        receipt_image_url = receipt_image_url.strip()
+    else:
+        receipt_image_url = None
 
     # Validation
     if not title or not location or price is None:

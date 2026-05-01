@@ -329,6 +329,7 @@ a {
   overflow: hidden;
   transition: 0.3s;
   max-width: 400px;
+  height: 510px;
 }
 
 .property-card img {
@@ -527,6 +528,8 @@ a {
 .property-card .info {
   display: flex;
   flex-direction: column;
+  height: 260px;
+  justify-content: space-between;
   gap: 8px;
 }
 
