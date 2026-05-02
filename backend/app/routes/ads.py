@@ -65,7 +65,7 @@ def upload_ad_image():
 def register_ad():
     """Submit ad for approval with custom dates."""
     from app import db
-    from app.models import Ad
+    from app.models import Ad, User
     from datetime import datetime
     
     user_id = get_jwt_identity()

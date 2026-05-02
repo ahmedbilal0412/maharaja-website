@@ -1,11 +1,19 @@
 (function() {
+  if (!window.getToken || !window.getUser || !window.logout) {
+    document.body.innerHTML = "<p>Please enable JavaScript and reload. (auth.js required.)</p>";
+    return;
+  }
   if (!getToken()) {
-    window.location.href = 'login.html';
+    window.location.href = "login.html";
     return;
   }
 
-  const API_BASE = window.API_BASE || "https://api.maharajabuilders.pk/api";
-  const token = getToken();
+  const user = getUser();
+  const usernameEl = document.getElementById("username");
+  if (usernameEl && user) usernameEl.textContent = user.full_name || user.email || "User";
+
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
   let selectedPack = null;
   let uploadedReceiptUrl = null;

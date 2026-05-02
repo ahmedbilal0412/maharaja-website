@@ -126,9 +126,6 @@
               <span class="ad-id">Ad #${ad.id}</span>
               <span class="ad-duration">
                 ${durationText}
-                <span class="payment-badge ${ad.payment_status === 'unpaid' ? 'unpaid' : ''}">
-                  ${ad.payment_status === 'paid' ? '✓ Paid' : '⏳ Unpaid'}
-                </span>
               </span>
             </div>
 
@@ -169,7 +166,7 @@
               </div>
             ` : ''}
 
-            ${ad.status === 'pending' && ad.payment_status === 'paid' ? `
+            ${ad.status === 'pending' ? `
               <div class="ad-actions">
                 <button class="btn-approve" onclick="handleApprove(${ad.id})">
                   <i class="fas fa-check"></i> Approve
@@ -177,12 +174,6 @@
                 <button class="btn-reject" onclick="handleReject(${ad.id})">
                   <i class="fas fa-times"></i> Reject
                 </button>
-              </div>
-            ` : ''}
-
-            ${ad.status === 'pending' && ad.payment_status === 'unpaid' ? `
-              <div style="margin-top: 15px; padding: 10px; background: #f8d7da; border-radius: 8px; color: #721c24;">
-                <i class="fas fa-exclamation-triangle"></i> Waiting for payment
               </div>
             ` : ''}
           </div>
