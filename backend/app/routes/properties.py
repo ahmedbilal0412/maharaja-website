@@ -197,7 +197,7 @@ def _can_access_property(prop, user_id):
 @properties_bp.route("", methods=["POST"])
 @jwt_required()
 def create_property():
-    """Create property. DHA/Bahria Town -> approved; Other -> pending_approval (after payment step on frontend)."""
+    """Create property. DHA/Bahria Town -> pending; Other -> pending_approval (after payment step on frontend)."""
     user_id = get_jwt_identity()
     data = request.get_json() or {}
     print("DEBUG: Received data:", data)  
@@ -208,11 +208,13 @@ def create_property():
     price = data.get("price")
     property_type = (data.get("property_type") or data.get("type") or "").strip()
     listing_type = (data.get("listing_type") or data.get("listing") or "").strip()
+    city = (data.get("city") or "").strip()
+    
+    # Optional fields (may not be sent for plots)
     bedrooms = data.get("bedrooms")
     bathrooms = data.get("bathrooms")
     size_sqft = data.get("size_sqft") or data.get("size")
     amenities = data.get("amenities")
-    city = (data.get("city") or "").strip()
     description = data.get("description", "").strip()
     parking = data.get("parking", False)
     furnished = data.get("furnished", "")
@@ -232,8 +234,18 @@ def create_property():
         return jsonify({"message": "Title, location and price are required."}), 400
     if not property_type or not listing_type:
         return jsonify({"message": "Property type and listing type are required."}), 400
-    if bedrooms is None or bathrooms is None or size_sqft is None:
-        return jsonify({"message": "Bedrooms, bathrooms and size are required."}), 400
+    
+    # Conditional validation based on property type
+    is_plot = (property_type.lower() == "plot")
+    
+    if not is_plot:
+        # For houses/apartments/villas, bedrooms and bathrooms are required
+        if bedrooms is None or bathrooms is None:
+            return jsonify({"message": "Bedrooms and bathrooms are required for this property type."}), 400
+    
+    # size_sqft is always required
+    if size_sqft is None:
+        return jsonify({"message": "Size (sq ft) is required."}), 400
 
     area = _infer_area(location)
     status = PROPERTY_STATUS_PENDING
@@ -272,17 +284,17 @@ def create_property():
         price=int(price),
         property_type=property_type,
         listing_type=listing_type,
-        bedrooms=int(bedrooms),
-        bathrooms=int(bathrooms),
+        bedrooms=int(bedrooms) if bedrooms is not None else 0,
+        bathrooms=int(bathrooms) if bathrooms is not None else 0,
         size_sqft=int(size_sqft),
         amenities=amenities_str or None,
         status=status,
         description=description or None,
-        parking=parking,
-        furnished=furnished if furnished else None,
-        total_floors=total_floors,
-        electricity_backup=electricity_backup,
-        year_built=year_built,
+        parking=parking if not is_plot else False,
+        furnished=furnished if furnished and not is_plot else None,
+        total_floors=total_floors if not is_plot else None,
+        electricity_backup=electricity_backup if not is_plot else False,
+        year_built=year_built if not is_plot else None,
         receipt_image_url=receipt_image_url or None,
         is_premium=is_premium,
     )
@@ -304,7 +316,6 @@ def create_property():
     user = User.query.get(user_id)
     send_property_created_email(user, prop)  
     return jsonify({"message": "Property submitted.", "property": prop.to_dict()}), 201
-
 
 @properties_bp.route("/<int:prop_id>", methods=["DELETE"])
 @jwt_required()

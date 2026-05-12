@@ -27,7 +27,8 @@
   const receiptPreview = document.getElementById('receiptPreview');
   const receiptPreviewImg = document.getElementById('receiptPreviewImg');
   const purchaseBtn = document.getElementById('purchaseBtn');
-  const tokenBalanceEl = document.getElementById('tokenBalance');
+  const tokenBalanceEl1 = document.getElementById('tokenBalance1');
+  const tokenBalanceEl2 = document.getElementById('tokenBalance2');
   const propertiesList = document.getElementById('propertiesList');
 
   // Helper function to resolve image URLs
@@ -89,7 +90,8 @@
       });
       const data = await response.json();
       tokenBalance = data.balance;
-      tokenBalanceEl.textContent = tokenBalance;
+      tokenBalanceEl1.textContent = tokenBalance;
+      tokenBalanceEl2.textContent = tokenBalance;
     } catch (error) {
       console.error('Error loading token balance:', error);
     }

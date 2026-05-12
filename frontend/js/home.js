@@ -384,7 +384,59 @@
       document.querySelectorAll('.action-popup').forEach(popup => popup.classList.remove('active'));
       if (overlay) overlay.classList.remove('active');
     }
+
+    const unitConversions = {
+      marla: {
+        label: 'MARLA',
+        factors: [2, 5, 10, 20],
+        displayValues: ['2', '5', '10', '20']
+      },
+      square_feet: {
+        label: 'SQ FT',
+        factors: [2 * 225, 5 * 225, 10 * 225, 20 * 225],
+        displayValues: ['450', '1125', '2250', '4500']
+      },
+      square_yards: {
+        label: 'SQ YD',
+        factors: [2 * 25, 5 * 25, 10 * 25, 20 * 25],
+        displayValues: ['50', '125', '250', '500']
+      },
+      square_meters: {
+        label: 'SQ M',
+        factors: [Math.round(2 * 20.9), Math.round(5 * 20.9), Math.round(10 * 20.9), Math.round(20 * 20.9)],
+        displayValues: ['42', '105', '209', '418']
+      },
+      kanal: {
+        label: 'KANAL',
+        factors: [2 / 20, 5 / 20, 10 / 20, 20 / 20],
+        displayValues: ['0.1', '0.25', '0.5', '1']
+      }
+    };
+
+    let currentUnit = 'marla';
     
+      function updateRangeButtons(unit) {
+        const unitData = unitConversions[unit];
+        if (!unitData) return;
+        
+        const areaModal = document.getElementById('area-modal');
+        if (!areaModal) return;
+        
+        const rangeButtons = areaModal.querySelectorAll('.range-btn');
+        rangeButtons.forEach((btn, index) => {
+          if (unitData.displayValues[index]) {
+            btn.textContent = unitData.displayValues[index];
+            btn.dataset.value = unitData.factors[index];
+          }
+        });
+        
+        // Also update the area field label
+        const areaLabel = document.querySelector('#area-field label');
+        if (areaLabel) {
+          areaLabel.innerHTML = `AREA (${unitData.label})`;
+        }
+      }
+
     function openPopup(popupId) {
       closeAllPopups();
       const popup = document.getElementById(popupId);
@@ -416,6 +468,8 @@
       opt.addEventListener('click', function() {
         document.querySelectorAll('.unit-option').forEach(o => o.classList.remove('active'));
         this.classList.add('active');
+        currentUnit = this.dataset.unit;
+        updateRangeButtons(currentUnit);
       });
     });
     
@@ -446,8 +500,30 @@
             marla: 'MARLA', square_feet: 'SQ FT', square_yards: 'SQ YD',
             square_meters: 'SQ M', kanal: 'KANAL'
           };
-          const areaLabel = document.querySelector('#area-field label');
-          if (areaLabel && unitNames[unit]) areaLabel.innerHTML = `AREA (${unitNames[unit]})`;
+
+          currentUnit = unit;
+          updateRangeButtons(currentUnit);
+
+          // Also update the area dropdown display value conversion
+          const areaMin = document.getElementById('area-modal-min');
+          const areaMax = document.getElementById('area-modal-max');
+          const areaTrigger = document.querySelector('#area-trigger .dropdown-value');
+          
+          // If there are existing values, convert them
+          if (areaMin && areaMin.value !== '0') {
+            // Convert from marla to new unit
+            const conversionFactor = {
+              marla: 1,
+              square_feet: 225,
+              square_yards: 25,
+              square_meters: 20.9,
+              kanal: 1/20
+            };
+            const oldValue = parseFloat(areaMin.value);
+            const newValue = Math.round(oldValue * conversionFactor[unit] / conversionFactor.marla);
+            areaMin.value = newValue;
+          }
+
           if (typeof showToast === 'function') showToast(`Area unit changed to ${unitNames[unit]}`, 'success');
           else alert(`Area unit changed to ${unitNames[unit]}`);
         }
@@ -473,6 +549,8 @@
         if (areaMax) areaMax.value = '';
         const areaTrigger = document.querySelector('#area-trigger .dropdown-value');
         if (areaTrigger) areaTrigger.textContent = '0 to Any';
+        currentUnit = 'marla';
+        updateRangeButtons('marla');
         
         // Reset beds
         const bedsTrigger = document.querySelector('#beds-trigger .dropdown-value');
@@ -510,6 +588,8 @@
         if (areaMin) areaMin.dispatchEvent(new Event('change'));
       });
     }
+
+    updateRangeButtons('marla');
   }
 
   // ==================== LOCATION AUTOCOMPLETE ====================

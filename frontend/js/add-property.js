@@ -8,7 +8,21 @@ const paymentSection = document.getElementById("paymentSection");
 const basePaymentSpan = document.getElementById("basePaymentAmount");
 const receiptSection = document.querySelector('.receipt-section');
 const receiptInput = document.getElementById('receiptImage');
+const submitBtn = document.querySelector('.submit-btn');  // Add this
 let uploadedReceiptUrl = null;
+
+// Function to set loading state on button
+function setButtonLoading(isLoading, originalText = "Submit for Approval") {
+  if (!submitBtn) return;
+  
+  if (isLoading) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+  } else {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalText;
+  }
+}
 
 // Function to update payment amount based on location
 function updatePaymentAmount() {
@@ -26,11 +40,62 @@ function updatePaymentAmount() {
   // Update payment message
   const paymentInfo = paymentSection.querySelector('.payment-info');
   if (paymentInfo) {
-    let message = "Send payment to: <strong>0300-1234567</strong><br>Once paid, click \"Submit for Approval\".";
+    let message = "Send payment to: <strong>0333-5256719</strong> on EasyPaisa or <strong>0323-5472636</strong> on JazzCash<br>Once paid, click \"Submit for Approval\".";
     if (isFreeLocation) {
       message = "No payment required for DHA/Bahria Town.<br>Click \"Submit for Approval\" to submit your listing.";
     }
     paymentInfo.innerHTML = message;
+  }
+}
+
+// Function to toggle plot-specific fields
+function togglePlotFields() {
+  const propertyType = document.getElementById("type")?.value;
+  const isPlot = propertyType === "plot";
+  
+  // Get all fields that should be hidden for plots
+  const bedsField = document.getElementById("beds")?.closest(".form-group");
+  const bathsField = document.getElementById("baths")?.closest(".form-group");
+  const totalFloorsField = document.getElementById("totalFloors")?.closest(".form-group");
+  const furnishedField = document.getElementById("furnished")?.closest(".form-group");
+  const parkingField = document.getElementById("parking")?.closest(".checkbox-single");
+  const electricityField = document.getElementById("electricityBackup")?.closest(".checkbox-single");
+  const yearBuiltField = document.getElementById("yearBuilt")?.closest(".form-group");
+  const amenitiesFields = document.getElementById("amenities-fields");
+  const amenitiesTitle = document.getElementById("amenities-title");
+  
+  // For checkboxes, find their parent containers
+  const parkingParent = parkingField?.closest(".form-row");
+  const electricityParent = electricityField?.closest(".form-row");
+  
+  if (isPlot) {
+    // Hide plot-specific fields
+    if (bedsField) bedsField.style.display = "none";
+    if (bathsField) bathsField.style.display = "none";
+    if (totalFloorsField) totalFloorsField.style.display = "none";
+    if (furnishedField) furnishedField.style.display = "none";
+    if (parkingParent) parkingParent.style.display = "none";
+    if (electricityParent) electricityParent.style.display = "none";
+    if (yearBuiltField) yearBuiltField.style.display = "none";
+    if (amenitiesFields) amenitiesFields.style.display = "none";
+    if (amenitiesTitle) amenitiesTitle.style.display = "none";
+    
+    // Set default values for plot (so validation passes)
+    const bedsInput = document.getElementById("beds");
+    const bathsInput = document.getElementById("baths");
+    if (bedsInput && !bedsInput.value) bedsInput.value = "0";
+    if (bathsInput && !bathsInput.value) bathsInput.value = "0";
+  } else {
+    // Show fields for non-plot properties
+    if (bedsField) bedsField.style.display = "block";
+    if (bathsField) bathsField.style.display = "block";
+    if (totalFloorsField) totalFloorsField.style.display = "block";
+    if (furnishedField) furnishedField.style.display = "block";
+    if (parkingParent) parkingParent.style.display = "flex";
+    if (electricityParent) electricityParent.style.display = "flex";
+    if (yearBuiltField) yearBuiltField.style.display = "block";
+    if (amenitiesFields) amenitiesFields.style.display = "block";
+    if (amenitiesTitle) amenitiesTitle.style.display = "block";
   }
 }
 
@@ -52,6 +117,14 @@ if (locationInput) {
       if (receiptInput) receiptInput.required = true;
     }
   });
+}
+
+// Listen for property type change to toggle plot fields
+const propertyTypeSelect = document.getElementById("type");
+if (propertyTypeSelect) {
+  propertyTypeSelect.addEventListener("change", togglePlotFields);
+  // Call once on page load to set initial state
+  togglePlotFields();
 }
 
 if (receiptInput) {
@@ -100,6 +173,16 @@ if (receiptInput) {
   });
 }
 
+function isValidPrice(value) {
+  // Check if value only contains digits and commas
+  const regex = /^[0-9,]+$/;
+  if (!regex.test(value)) {
+    return false;
+  }
+
+  return true;
+}
+
 const form = document.getElementById("addPropertyForm");
 if (form) {
   form.addEventListener("submit", async (e) => {
@@ -126,7 +209,17 @@ if (form) {
       paymentMsg = ""; // No payment needed
     } else {
       totalAmount = 500;
-      paymentMsg = `Standard listing fee: Rs. 500 (JazzCash/EasyPaisa: 0300-1234567).\n\nHave you made the payment?`;
+      paymentMsg = `Standard listing fee: Rs. 500 (JazzCash: 0323-5472636 / EasyPaisa: 0333-5256719).\n\nHave you made the payment?`;
+    }
+
+    const priceValue = document.getElementById("price").value;
+    if (!isValidPrice(priceValue)) {
+      if (typeof showToast === "function") {
+        showToast("Please enter a valid price (only numbers and commas)", "error");
+      } else {
+        alert("Please enter a valid price (only numbers and commas)");
+      }
+      return;
     }
 
     const filesEl = document.getElementById("images");
@@ -141,6 +234,9 @@ if (form) {
       else alert("Maximum 10 images allowed");
       return;
     }
+
+    // Show loading state
+    setButtonLoading(true);
 
     const image_urls = await uploadImages(files);
 
@@ -164,6 +260,7 @@ if (form) {
       const furnished = document.getElementById("furnished") ? document.getElementById("furnished").value : "";
       const totalFloors = document.getElementById("totalFloors") ? parseInt(document.getElementById("totalFloors").value, 10) || null : null;
       const yearBuilt = document.getElementById("yearBuilt") ? parseInt(document.getElementById("yearBuilt").value, 10) || null : null;
+      const isPlot = document.getElementById("type")?.value === "plot";
 
       var payload = {
         title: (document.getElementById("title") && document.getElementById("title").value || "").trim(),
@@ -179,26 +276,26 @@ if (form) {
         })(),
         property_type: (document.getElementById("type") && document.getElementById("type").value || "").trim(),
         listing_type: (document.getElementById("listing") && document.getElementById("listing").value || "").trim(),
-        bedrooms: parseInt((document.getElementById("beds") && document.getElementById("beds").value) || 0, 10),
-        bathrooms: parseInt((document.getElementById("baths") && document.getElementById("baths").value) || 0, 10),
+        bedrooms: isPlot ? 0 : parseInt((document.getElementById("beds") && document.getElementById("beds").value) || 0, 10),
+        bathrooms: isPlot ? 0 : parseInt((document.getElementById("baths") && document.getElementById("baths").value) || 0, 10),
         size_sqft: parseInt((document.getElementById("size") && document.getElementById("size").value) || 0, 10),
         amenities: amenities,
         images: image_urls, 
-        primary_image_index: 0,  // First image is primary
+        primary_image_index: 0,
         receipt_image_url: uploadedReceiptUrl || null,
         
-        // New fields
         description: description || null,
-        parking: parking,
-        furnished: furnished || null,
-        total_floors: totalFloors,
-        electricity_backup: electricity_backup,
-        year_built: yearBuilt,
+        parking: isPlot ? false : parking,
+        furnished: isPlot ? null : (furnished || null),
+        total_floors: isPlot ? null : totalFloors,
+        electricity_backup: isPlot ? false : electricity_backup,
+        year_built: isPlot ? null : yearBuilt,
       };
 
       if (!payload.title || !payload.location || !payload.price) {
         if (typeof showToast === "function") showToast("Please fill in title, location and price.", "error");
         else alert("Please fill in title, location and price.");
+        setButtonLoading(false);
         return;
       }
 
@@ -209,6 +306,7 @@ if (form) {
       // Only require receipt for paid listings
       if (!isFreeLocation && !uploadedReceiptUrl) {
         showToast('Please upload payment receipt', 'error');
+        setButtonLoading(false);
         return;
       }
 
@@ -224,6 +322,8 @@ if (form) {
         .then(function (_) {
           var res = _.res;
           var data = _.data;
+          setButtonLoading(false);
+          
           if (!res.ok) {
             if (typeof showToast === "function") showToast(data.message || "Failed to submit property.", "error");
             else alert(data.message || "Failed to submit property.");
@@ -242,6 +342,7 @@ if (form) {
         })
         .catch(function (err) {
           console.error("Submit error:", err);
+          setButtonLoading(false);
           if (typeof showToast === "function") showToast("An error occurred. Please try again.", "error");
           else alert("An error occurred. Please try again.");
         });
@@ -251,9 +352,13 @@ if (form) {
     if (totalAmount > 0) {
       if (typeof showConfirm === "function") {
         showConfirm(paymentMsg, doSubmit);
+        setButtonLoading(false); // Button will be re-enabled if user cancels
         return;
       }
-      if (!confirm(paymentMsg)) return;
+      if (!confirm(paymentMsg)) {
+        setButtonLoading(false);
+        return;
+      }
     }
     doSubmit();
   });
@@ -270,11 +375,10 @@ async function uploadImages(files) {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`
-            // No Content-Type header for FormData
         },
         body: formData
     });
     
     const data = await response.json();
-    return data.image_urls;  // Array of URLs
+    return data.image_urls;
 }
